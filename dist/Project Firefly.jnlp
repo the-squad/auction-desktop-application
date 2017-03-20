@@ -15,6 +15,6 @@
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Project Firefly" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="app.app"  name="Project Firefly" />
+  <jfx:javafx-desc  width="800" height="600" main-class="project.ProjectFirefly"  name="Project Firefly" />
   <update check="always"/>
 </jnlp>
