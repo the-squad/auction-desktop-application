@@ -21,3 +21,46 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
+.input-field .label {
+    -fx-color: #18181C;
+    -fx-font-weight: 400;
+    -fx-font-size: 14px;
+    -fx-font-family: OpenSans;
+}
+
+.input-field .input {
+    -fx-padding: 0 30px 0 10px;
+    -fx-min-height: 44px;
+    -fx-font-size: 16px;
+    -fx-min-width: 300px;
+    -fx-outline: none;
+    -fx-focus-color: transparent;
+    -fx-background-color: #fff;
+    -fx-border-color: #9092A5;
+    -fx-color: #18181C;
+    -fx-border-radius: 4px;
+    -fx-prompt-text-fill: #9092A5 !important;
+    
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right 8px center;
+}
+
+.input-field .input:focused {
+    -fx-border-color: #4d89fb;
+    -fx-effect: dropshadow(three-pass-box, rgba(77,137,251,1), 1, 0, 0, 0);
+}
+
+.input-field--danger .input {
+    -fx-border-color: #f94e4e;
+    -fx-background-image:url('../../assets/error-icon.png');
+}
+
+.input-field .error-message {
+    -fx-max-width: 300px;
+    -fx-text-fill: #f94e4e;
+    -fx-font-weight: 400;
+    -fx-font-size: 14px;
+    -fx-font-family: OpenSans;
+}
