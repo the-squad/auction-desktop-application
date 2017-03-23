@@ -63,10 +63,14 @@ $RECYCLE.BIN/
 *.lnk
 
 # NetBeans
-nbproject/private/
+nbproject/
 build/
-nbbuild/
+nbuild/
 dist/
 nbdist/
 .nb-gradle/
 *.properties
+
+build.xml
+manifest.mf
+Project Firefly.iml
