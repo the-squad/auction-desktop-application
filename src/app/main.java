@@ -1,17 +1,12 @@
 package app;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import app.components.InputField;
 import java.util.ArrayList;
-import javafx.scene.control.Label;
 
 /**
  *
@@ -23,6 +18,7 @@ public class main extends Application {
     public void start(Stage primaryStage) throws FileNotFoundException, IOException {        
         //App container
         BorderPane app = new BorderPane();
+        
         
         //App Scene
         Scene scene = new Scene(app, 1100, 600);
