@@ -1,17 +1,13 @@
 package app;
 
-import java.io.BufferedReader;
+import app.components.InputField;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import app.components.InputField;
 import java.util.ArrayList;
-import javafx.scene.control.Label;
 
 /**
  *
@@ -20,9 +16,18 @@ import javafx.scene.control.Label;
 public class main extends Application {
     
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException, IOException {        
+    public void start(Stage primaryStage) throws FileNotFoundException, IOException { 
+        InputField firstNameField = new InputField("First name", "Text", "");
+        InputField lastNameField = new InputField("Last name", "Text", "");
+        
+        
+
         //App container
         BorderPane app = new BorderPane();
+        app.setCenter(firstNameField.render());
+        app.setLeft(lastNameField.render());
+        
+        System.out.println(firstNameField.getValue());
         
         //App Scene
         Scene scene = new Scene(app, 1100, 600);
