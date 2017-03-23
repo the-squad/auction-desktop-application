@@ -23,6 +23,8 @@
  */
 package app.components;
 
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -32,6 +34,7 @@ import javafx.scene.layout.GridPane;
  * @author Muhammad
  */
 public class InputField {
+
     private final String inputName;
     private final String inputType;
     private final String placeholder;
@@ -48,39 +51,59 @@ public class InputField {
     }
     
     public GridPane render() {
-        inputLabel = new Label(inputName);
-        inputLabel.getStyleClass().add("label");
+        //Input label
+        this.inputLabel = new Label(inputName);
+        this.inputLabel.getStyleClass().add("label");
+
+        //Input field
+        this.input = new TextField("Muhammad TArek");
+        this.input.setPromptText(placeholder);
+        this.input.getStyleClass().add("input");
         
-        input = new TextField(placeholder);
-        input.getStyleClass().add("input");
+        this.input.focusedProperty().addListener(
+            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue)
+                onBlur();
+        });
+
+        //Error message
+        this.errorMessage = new Label("Please enter a valid mail");
+        this.errorMessage.getStyleClass().add("error-message");
+        this.errorMessage.setWrapText(true);
+        this.errorMessage.setVisible(false);
+
+        //Adding to the grid pane
+        this.inputFieldContainer = new GridPane();
+        this.inputFieldContainer.getStyleClass().add("input-field");
         
-        errorMessage = new Label("Error Message");
-        errorMessage.getStyleClass().add("error-message");
+        this.inputFieldContainer.setConstraints(inputLabel, 0, 0);
+        this.inputFieldContainer.setMargin(inputLabel, new Insets(0, 0, 3, 0));
         
-        inputFieldContainer = new GridPane();
-        inputFieldContainer.getStyleClass().add("input-field");
-        inputFieldContainer.setConstraints(inputLabel, 0, 0);
-        inputFieldContainer.setConstraints(input, 0, 1);
-        inputFieldContainer.setConstraints(errorMessage, 0, 2);
-        inputFieldContainer.getChildren().addAll(inputLabel, input, errorMessage);
+        this.inputFieldContainer.setConstraints(input, 0, 1);
+        this.inputFieldContainer.setMargin(input, new Insets(0, 0, 3, 0));
         
-        return inputFieldContainer;
+        this.inputFieldContainer.setConstraints(errorMessage, 0, 2);
+        this.inputFieldContainer.getChildren().addAll(inputLabel, input, errorMessage);
+        
+        return this.inputFieldContainer;
     }
     
     public String getValue() {
-        //TODO
-        return " ";  
+        return this.input.getText();
     }
     
-    private void markAsDanger() {
-        //TODO
+    private void markAsDanger(String error) {
+        this.inputFieldContainer.getStyleClass().add("input-field--danger");
+        this.errorMessage.setText(error);
+        this.errorMessage.setVisible(true);
     }
     
     private void markAsNormal() {
-        
+        this.inputFieldContainer.getStyleClass().remove("input-field--danger");
+        this.errorMessage.setVisible(false);
     }
     
     private void onBlur() {
-        
+        //TODO
     }
 }
