@@ -34,37 +34,28 @@ import javafx.scene.layout.GridPane;
  * @author Muhammad
  */
 public class InputField {
-
-    private final String inputName;
-    private final String inputType;
-    private final String placeholder;
     
     private GridPane inputFieldContainer;
     private Label inputLabel;
     private TextField input;
     private Label errorMessage;
+
     
-    public InputField(String inputName, String inputType, String placeholder) {
-        this.inputName = inputName;
-        this.inputType = inputType;
-        this.placeholder = placeholder;
-    }
-    
-    public GridPane render() {
+    public GridPane render(String inputName, String inputType, String placeholder) {
         //Input label
         this.inputLabel = new Label(inputName);
         this.inputLabel.getStyleClass().add("label");
 
         //Input field
-        this.input = new TextField("Muhammad TArek");
+        this.input = new TextField();
         this.input.setPromptText(placeholder);
         this.input.getStyleClass().add("input");
         
         this.input.focusedProperty().addListener(
-            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (!newValue)
-                onBlur();
-        });
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (!newValue)
+                    onBlur();
+                });
 
         //Error message
         this.errorMessage = new Label("Please enter a valid mail");
@@ -118,16 +109,17 @@ public class InputField {
     private void onBlur() {
         //TODO
 
-        String message= ""; //Call the validation message validate(getValue(), text)
+        String message; //Call the validation message validate(getValue(), text)
 
         /*
          If there is an error message the input field will be highlighted
          else it will set it to normal
          */
+        /*
         if (message != "true") {
             markAsDanger(message);
         } else {
             markAsNormal();
-        }
+        }*/
     }
 }
