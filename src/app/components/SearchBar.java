@@ -23,10 +23,52 @@
  */
 package app.components;
 
+import javafx.scene.control.TextField;
+
 /**
  *
  * @author Muhammad
  */
 public class SearchBar {
-    
+    private TextField searchbar;
+
+    public TextField render() {
+        //Searchbar
+        searchbar = new TextField();
+        searchbar.getStyleClass().add("searchbar");
+        searchbar.setPromptText("Search");
+
+        //Making a search query when pressing enter
+        searchbar.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER:
+                    onSearch(); //Making the search
+                    clear(); //Clearing the field
+                    break;
+            }
+        });
+
+        //When typing a search
+        searchbar.textProperty().addListener((observable, oldValue, newValue) -> {
+            onTyping(getValue());
+        });
+
+        return searchbar;
+    }
+
+    private void clear() {
+        searchbar.setText("");
+    }
+
+    private void onSearch() {
+        //TODO
+    }
+
+    private void onTyping(String currentSearch) {
+        //TODO
+    }
+
+    private String getValue() {
+        return searchbar.getText();
+    }
 }
