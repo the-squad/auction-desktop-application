@@ -1,15 +1,9 @@
 package app;
 
-import app.components.DropdownField;
-import app.components.InputField;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
@@ -24,7 +18,7 @@ public class app extends Application {
         //App container
         BorderPane app = new BorderPane();
         app.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> app.requestFocus());
-        
+
         //App Scene
         Scene scene = new Scene(app, 1100, 600);
         primaryStage.setTitle("Auction System!");
