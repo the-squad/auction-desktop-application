@@ -22,38 +22,44 @@
  * THE SOFTWARE.
  */
 
-.input-field .label {
+.input-field .label,
+.dropdown-field .label{
     -fx-color: #18181C;
-    -fx-font-weight: 400;
     -fx-font-size: 14px;
     -fx-font-family: OpenSans;
 }
 
-.input-field .input {
+.input-field .input,
+.combo-box {
     -fx-padding: 0 30px 0 10px;
     -fx-min-height: 44px;
     -fx-font-size: 16px;
-    -fx-min-width: 300px;
     -fx-outline: none;
     -fx-focus-color: transparent;
     -fx-background-color: #fff;
-    -fx-border-color: -fx-medium-gray-color;
+    -fx-border-color: -fx-dark-gray-color;
     -fx-color: -fx-darker-gray-color;
     -fx-border-radius: 4px;
-    -fx-prompt-text-fill: -fx-medium-gray-color !important;
-    
-    -fx-background-size: 16px;
+    -fx-prompt-text-fill: -fx-medium-gray-color;
     -fx-background-repeat: no-repeat;
-    -fx-background-position: right 8px center;
 }
 
-.input-field .input:focused {
+.input-field .input:focused,
+.combo-box:focused,
+.combo-box:hover {
     -fx-border-color: -fx-primary-color;
     -fx-effect: dropshadow(three-pass-box, -fx-primary-color, 1, 0, 0, 0);
 }
 
+.input-field .input {
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+}
+
 .input-field--danger .input {
     -fx-border-color: -fx-danger-color;
+    -fx-background-size: 16px;
+    -fx-background-position: right 8px center;
     -fx-background-image:url('../../assets/error-icon.png');
 }
 
@@ -63,4 +69,63 @@
     -fx-font-weight: 400;
     -fx-font-size: 14px;
     -fx-font-family: OpenSans;
+}
+
+/*
+ DROPDOWN MENU
+ */
+
+.combo-box {
+    -fx-padding: 0 30px 0 0px;
+    -fx-background-size: 10px;
+    -fx-background-position: right 14px center;
+    -fx-background-image:url('../../assets/down-arrow.png');
+    -fx-cursor: hand;
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+    -fx-text-fill: #18181C;
+}
+
+.combo-box:hover,
+.combo-box:focused {
+    -fx-background-image:url('../../assets/down-arrow-active.png');
+}
+
+.combo-box .cell:selected {
+    -fx-text-fill: #18181C;
+}
+
+.dropdown-field--danger .combo-box {
+    -fx-border-color: -fx-danger-color;
+}
+
+.combo-box-popup .list-view  {
+    -fx-background-color: #fff;
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+    -fx-padding: 4px;
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+    -fx-border-color: -fx-light-gray-color;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0, 0.3), 2, 0, 0, 0);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-min-width: 190px;
+    -fx-padding: 7px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-text-fill: #18181C;
+}
+
+.combo-box-popup .list-view .list-cell:hover,
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(77,137,251, 0.2);
+    -fx-border-color: rgba(77,137,251, 0.3);
+    -fx-text-fill: #18181C;
+}
+
+.combo-box .arrow, .combo-box .arrow-button {
+    -fx-background-color: transparent;
 }
