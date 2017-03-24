@@ -13,10 +13,10 @@ import java.util.ArrayList;
  *
  * @author Muhammad
  */
-public class main extends Application {
+public class app extends Application {
     
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException, IOException { 
+    public void start(Stage primaryStage) {
         InputField firstNameField = new InputField("First name", "Text", "");
         InputField lastNameField = new InputField("Last name", "Text", "");
         
@@ -34,16 +34,15 @@ public class main extends Application {
         primaryStage.setTitle("Auction System!");
         
         //Imporing CSS Files
-        importCSS().stream().forEach((cssFile) -> {
-            scene.getStylesheets().add("/styles/components/" + cssFile + ".css");
-        });
+        scene.getStylesheets().add("/styles/colors.css");
+        importCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
         
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     
     private ArrayList<String> importCSS() {
-        ArrayList<String> cssFiles = new ArrayList<String>();
+        ArrayList<String> cssFiles = new ArrayList<>();
         
         //Components CSS
         cssFiles.add("buttons");

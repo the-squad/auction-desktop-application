@@ -70,7 +70,8 @@ dist/
 nbdist/
 .nb-gradle/
 *.properties
-.idea
+.idea/
+out/
 build.xml
 manifest.mf
 Project Firefly.iml

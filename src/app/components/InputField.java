@@ -87,23 +87,47 @@ public class InputField {
         
         return this.inputFieldContainer;
     }
-    
+
+    /*
+     Returns the input's value
+     */
     public String getValue() {
         return this.input.getText();
     }
-    
+
+    /*
+     Change's input field to danger and shows an error message
+     */
     private void markAsDanger(String error) {
         this.inputFieldContainer.getStyleClass().add("input-field--danger");
         this.errorMessage.setText(error);
         this.errorMessage.setVisible(true);
     }
-    
+
+    /*
+     Removes the danger class and hide the error message
+     */
     private void markAsNormal() {
         this.inputFieldContainer.getStyleClass().remove("input-field--danger");
         this.errorMessage.setVisible(false);
     }
-    
+
+    /*
+     When the user lose focus on an input it will validate the value
+     */
     private void onBlur() {
         //TODO
+
+        String message= ""; //Call the validation message validate(getValue(), text)
+
+        /*
+         If there is an error message the input field will be highlighted
+         else it will set it to normal
+         */
+        if (message != "true") {
+            markAsDanger(message);
+        } else {
+            markAsNormal();
+        }
     }
 }
