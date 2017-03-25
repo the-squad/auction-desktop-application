@@ -23,10 +23,26 @@
  */
 package app.pages;
 
+import app.components.Header;
+import javafx.scene.layout.BorderPane;
+
 /**
  *
  * @author Muhammad
  */
 public class HomePage {
-    
+
+    private BorderPane homePageContainer;
+    private BorderPane header;
+
+    public BorderPane render() {
+        //Importing the header component
+        header = new Header().render();
+
+        //Home page container
+        homePageContainer = new BorderPane();
+        homePageContainer.setTop(header);
+
+        return homePageContainer;
+    }
 }

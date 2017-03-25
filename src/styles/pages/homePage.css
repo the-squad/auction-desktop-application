@@ -22,53 +22,6 @@
  * THE SOFTWARE.
  */
 
-.header {
-    -fx-min-height: 60px;
-    -fx-max-height: 60px;
-    -fx-background-color: #fff;
-    -fx-effect: dropshadow(three-pass-box, -fx-dark-gray-color, 2, 0, 0, 0);
-}
-
-.tab {
-    -fx-font-size: 16px;
-    -fx-text-fill: -fx-dark-gray-color;
-    -fx-opacity: 0.6;
-    -fx-cursor: hand;
-    -fx-padding: 20px 12px 18px 12px;
-}
-
-.tab--active,
-.tab:hover {
-    -fx-opacity: 1;
-}
-
-.tab--active {
-    -fx-text-fill: -fx-primary-color;
-}
-
-.active-indicator {
-    -fx-fill: -fx-primary-color;
-    -fx-smooth: true;
-}
-
-.notification-icon {
-    -fx-opacity: 0.5;
-    -fx-cursor: hand;
-    -fx-background-image: url("../../assets/notification.png");
-    -fx-min-height: 30px;
-    -fx-max-height: 30px;
-    -fx-min-width: 30px;
-    -fx-max-width: 30px;
-    -fx-background-size: 20px;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-.notification-icon:hover,
-.notification-icon:focused {
-    -fx-opacity: 1;
-}
-
-.picture {
-    -fx-cursor: hand;
+.root {
+    -fx-background-color: -fx-light-gray-color;
 }
