@@ -64,7 +64,8 @@
 .combo-box-popup .list-view .list-cell,
 .searchbar,
 .tab,
-.input-field .error-message {
+.input-field .error-message,
+.btn-primary {
   -fx-font-family: Lato;
 }
 

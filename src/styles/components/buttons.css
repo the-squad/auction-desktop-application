@@ -22,3 +22,46 @@
  * THE SOFTWARE.
  */
 
+.btn-primary,
+.btn-secondary {
+    -fx-cursor: hand;
+    -fx-border-radius: 4px;
+    -fx-focus-color: transparent;
+    -fx-font-size: 16px;
+    -fx-border-width: 0;
+}
+
+.btn-primary {
+    -fx-padding: 10px 20px;
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: #fff;
+    -fx-font-weight: 700;
+}
+
+.btn-primary:hover,
+.btn-primary:pressed {
+    -fx-background-color: -fx-primary-color-dark;
+
+}
+
+.btn-primary:hover {
+    -fx-effect: innershadow(one-pass-box, rgba(0, 0, 0, 0.3), 0, 0, 0, -3);
+}
+
+.btn-primary:disabled {
+    -fx-background-color: -fx-medium-gray-color;
+}
+
+.btn-secondary {
+    -fx-text-fill: -fx-primary-color;
+    -fx-background-color: transparent;
+}
+
+.btn-secondary:hover,
+.btn-secondary:pressed {
+    -fx-text-fill: -fx-primary-color-dark;
+}
+
+.btn-primary:disabled {
+    -fx-text-fill: -fx-medium-gray-color;
+}
