@@ -49,15 +49,22 @@
 .body,
 .default,
 .small-body {
-  -fx-color: #18181C;
+  -fx-color: -fx-darker-gray-color;
 }
 
 .section-title,
 .headingy,
 .body,
 .default,
-.small-body{
-  -fx-font-family: 'Open Sans';
+.small-body,
+.input-field .label,
+.dropdown-field .label,
+.input-field .input,
+.combo-box,
+.combo-box-popup .list-view .list-cell,
+.searchbar,
+.tab {
+  -fx-font-family: Lato;
 }
 
 .section-title {
