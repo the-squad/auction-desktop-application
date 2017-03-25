@@ -24,13 +24,14 @@
 
 .searchbar {
     -fx-padding: 0 10px 0 36px;
-    -fx-min-height: 44px;
+    -fx-min-height: 35px;
     -fx-max-width: 250px;
     -fx-font-size: 16px;
     -fx-outline: none;
     -fx-focus-color: transparent;
     -fx-background-color: #fff;
     -fx-border-color: -fx-medium-gray-color;
+    -fx-border: 1;
     -fx-color: -fx-darker-gray-color;
     -fx-border-radius: 4px;
     -fx-prompt-text-fill: -fx-medium-gray-color;
@@ -42,6 +43,6 @@
 
 .searchbar:focused,
 .searchbar:hover {
-    -fx-border-color: -fx-primary-color;
     -fx-background-image:url('../../assets/search-icon-active.png');
+    -fx-border-color: -fx-primary-color;
 }
