@@ -133,20 +133,11 @@ public class Header {
         notificationsIcon.getStyleClass().add("notification-icon");
         notificationsIcon.setTranslateY(13);
 
-
-        notificationsIcon.setOnMouseClicked(e ->  {
-            Bounds notificationsProps = notificationsIcon.localToScene(notificationsIcon.getBoundsInLocal());
-            System.out.print(notificationsProps);
-            notificationsCenter.show(notificationsIcon,
-                    notificationsProps.getMaxX(),
-                    notificationsProps.getMaxY());
-        });
+        notificationsIcon.setOnMouseClicked(e ->  { /*TODO*/ });
 
         //Notifications center
         notificationsCenter = new ContextMenu();
-        MenuItem text = new MenuItem("Hello");
-
-        notificationsCenter.getItems().add(text);
+        //TODO
 
         //Profile picture
         profilePicture = new Rectangle(30, 30, new ImagePattern((new Image(getClass().getResourceAsStream("/assets/picture.jpg"), 30, 30, true, true))));
@@ -154,6 +145,11 @@ public class Header {
         profilePicture.setArcHeight(50);
         profilePicture.setArcWidth(50);
         profilePicture.setTranslateY(13);
+
+        //Menu
+        appMenuPanel = new ContextMenu();
+
+        appMenuPanel.setOnAction(e -> { /*TODO*/ });
 
         //Right part container
         rightSideContainer = new GridPane();
