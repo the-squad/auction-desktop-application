@@ -26,7 +26,7 @@
 .dropdown-field .label{
     -fx-color: #18181C;
     -fx-font-size: 14px;
-    -fx-font-family: OpenSans;
+    -fx-font-weight: 900;
 }
 
 .input-field .input,
@@ -42,6 +42,7 @@
     -fx-border-radius: 4px;
     -fx-prompt-text-fill: -fx-medium-gray-color;
     -fx-background-repeat: no-repeat;
+    -fx-font-weight: 400;
 }
 
 .input-field .input:focused,
@@ -68,7 +69,6 @@
     -fx-text-fill: -fx-danger-color;
     -fx-font-weight: 400;
     -fx-font-size: 14px;
-    -fx-font-family: OpenSans;
 }
 
 /*
