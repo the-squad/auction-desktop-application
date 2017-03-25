@@ -2,9 +2,11 @@ package app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
 /**
@@ -24,21 +26,22 @@ public class app extends Application {
         primaryStage.setTitle("Auction System!");
         
         //Importing CSS Files
-        scene.getStylesheets().add("/styles/colors.css");
-        importCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
+        importComponentsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
+        importPartialsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/partials/" + cssFile + ".css"));
+        importPagesCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/pages/" + cssFile + ".css"));
         
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image("/assets/app-logo.png"));
         primaryStage.show();
     }
     
-    private ArrayList<String> importCSS() {
+    private ArrayList<String> importComponentsCSS() {
         ArrayList<String> cssFiles = new ArrayList<>();
         
         //Components CSS
         cssFiles.add("buttons");
         cssFiles.add("cards");
         cssFiles.add("filter");
-        cssFiles.add("fonts");
         cssFiles.add("header");
         cssFiles.add("inputField");
         cssFiles.add("photos");
@@ -46,6 +49,26 @@ public class app extends Application {
         cssFiles.add("searchBar");
         cssFiles.add("scrollbar");
         
+        return cssFiles;
+    }
+
+    private ArrayList<String> importPartialsCSS() {
+        ArrayList<String> cssFiles = new ArrayList<>();
+
+        //Partials CSS
+        cssFiles.add("fonts");
+        cssFiles.add("colors");
+
+        return cssFiles;
+    }
+
+    private ArrayList<String> importPagesCSS() {
+        ArrayList<String> cssFiles = new ArrayList<>();
+
+        //Partials CSS
+        cssFiles.add("landingPage");
+        cssFiles.add("homePage");
+
         return cssFiles;
     }
 
