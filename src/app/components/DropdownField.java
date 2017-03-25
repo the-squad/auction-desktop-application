@@ -43,16 +43,16 @@ public class DropdownField {
 
     public GridPane render(String inputName, String ...items) {
         //Dropdown label
-        this.dropdownLabel = new Label(inputName);
-        this.dropdownLabel.getStyleClass().add("label");
+        dropdownLabel = new Label(inputName);
+        dropdownLabel.getStyleClass().add("label");
 
         //Dropdown field
-        this.input = new ComboBox();
-        this.input.setVisibleRowCount(6);
+        input = new ComboBox();
+        input.setVisibleRowCount(6);
 
         //Placeholder styling
-        this.input.setPromptText("Select");
-        this.input.setButtonCell(new ListCell() {
+        input.setPromptText("Select");
+        input.setButtonCell(new ListCell() {
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
@@ -68,7 +68,7 @@ public class DropdownField {
 
         //Loading dropdown menu items
         for (String item : items) {
-            this.input.getItems().add(item);
+            input.getItems().add(item);
         }
 
         //Checking if the user selecting an item or not
@@ -105,11 +105,11 @@ public class DropdownField {
     }
 
     private void markAsDanger() {
-        this.dropdownFieldContainer.getStyleClass().add("dropdown-field--danger");
+        dropdownFieldContainer.getStyleClass().add("dropdown-field--danger");
     }
 
     private void markAsNormal() {
-        this.dropdownFieldContainer.getStyleClass().remove("dropdown-field--danger");
+        dropdownFieldContainer.getStyleClass().remove("dropdown-field--danger");
     }
 
     private String getValue() {
@@ -117,6 +117,6 @@ public class DropdownField {
     }
 
     public void clearItems() {
-        this.input.getItems().clear();
+        input.getItems().clear();
     }
 }
