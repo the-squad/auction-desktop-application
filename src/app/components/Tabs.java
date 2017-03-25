@@ -23,10 +23,46 @@
  */
 package app.components;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+
 /**
  *
  * @author Muhammad
  */
 public class Tabs {
-    
+
+    private GridPane tabsContainer;
+    private Label tabs[];
+
+    public GridPane render(String ...categories) {
+        //Tabs Containers
+        tabsContainer = new GridPane();
+
+        //Generating tabs
+        tabs = new Label[categories.length];
+
+        int counter = 0;
+        for (String category : categories) {
+            tabs[counter] = new Label(category);
+            tabs[counter].getStyleClass().add("tab--category");
+
+            Label currentTab = tabs[counter];
+            tabs[counter].setOnMouseClicked(e -> switchTab(currentTab));
+
+            if (counter == 0) tabs[counter].getStyleClass().add("tab--category-active");
+            tabsContainer.setConstraints(tabs[counter], counter, 0);
+            tabsContainer.getChildren().add(tabs[counter]);
+            counter++;
+        }
+
+        return tabsContainer;
+    }
+
+    private void switchTab(Label label) {
+        //Highlighting the active tab
+        Label activeLabel = (Label) tabsContainer.lookup(".tab--category-active");
+        activeLabel.getStyleClass().remove("tab--category-active");
+        label.getStyleClass().add("tab--category-active");
+    }
 }

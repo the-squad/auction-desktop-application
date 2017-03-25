@@ -48,6 +48,7 @@ public class app extends Application {
         cssFiles.add("radioButtons");
         cssFiles.add("searchBar");
         cssFiles.add("scrollbar");
+        cssFiles.add("tabs");
         
         return cssFiles;
     }

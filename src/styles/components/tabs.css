@@ -22,3 +22,19 @@
  * THE SOFTWARE.
  */
 
+.tab--category {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-opacity: 0.6;
+    -fx-cursor: hand;
+    -fx-padding: 15px 8px 15px 8px;
+}
+
+.tab--category-active,
+.tab--category:hover {
+    -fx-opacity: 1;
+}
+
+.tab--category-active {
+    -fx-font-weight: 700;
+}

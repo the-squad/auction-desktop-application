@@ -23,10 +23,29 @@
  */
 package app.pages;
 
+import app.components.Tabs;
+import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+
 /**
  *
  * @author Muhammad
  */
 public class ExplorePage {
-    
+
+    private BorderPane exploreTabContainer;
+    private GridPane tabs;
+
+    public BorderPane render() {
+        //Categories tabs
+        tabs = new Tabs().render("All", "Tech", "Music", "Cars", "Boards", "Buildings");
+
+        //Explore tab container
+        exploreTabContainer = new BorderPane();
+        exploreTabContainer.setPadding(new Insets(0, 50, 0, 50));
+        exploreTabContainer.setTop(tabs);
+
+        return exploreTabContainer;
+    }
 }
