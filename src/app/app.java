@@ -1,5 +1,6 @@
 package app;
 
+import app.pages.HomePage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -48,7 +49,7 @@ public class app extends Application {
         cssFiles.add("radioButtons");
         cssFiles.add("searchBar");
         cssFiles.add("scrollbar");
-        cssFiles.add("tabs");
+        cssFiles.add("categoriesPanel");
         
         return cssFiles;
     }

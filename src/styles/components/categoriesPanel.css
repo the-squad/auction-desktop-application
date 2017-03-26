@@ -22,19 +22,42 @@
  * THE SOFTWARE.
  */
 
-.tab--category {
-    -fx-font-size: 16px;
+.tabs-container {
+    -fx-background-color: #fff;
+    -fx-background-radius: 2px;
+    -fx-border: 0;
+    -fx-min-width: 150px;
+    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
+}
+
+.headline--category {
+    -fx-font-size: 14px;
     -fx-text-fill: -fx-dark-gray-color;
-    -fx-opacity: 0.6;
+    -fx-padding: 3px 8px;
+    -fx-min-width: 134px;
+    -fx-font-weight: 700;
+}
+
+.tab--category {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray-color;
     -fx-cursor: hand;
-    -fx-padding: 15px 8px 15px 8px;
+    -fx-padding: 3px 8px;
+    -fx-min-width: 134px;
 }
 
 .tab--category-active,
+.tab--category-active:hover ,
 .tab--category:hover {
-    -fx-opacity: 1;
+    -fx-text-fill: #fff;
+    -fx-background-radius: 4px;
 }
 
-.tab--category-active {
-    -fx-font-weight: 700;
+.tab--category:hover {
+    -fx-background-color: rgba(77,137,251, 0.5);
+}
+
+.tab--category-active,
+.tab--category-active:hover {
+    -fx-background-color: -fx-primary-color;
 }

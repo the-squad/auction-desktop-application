@@ -72,7 +72,7 @@ public class Header {
         logo = new ImageView(new Image(getClass().getResourceAsStream("/assets/logo.png")));
         logo.setTranslateY(2);
 
-        //Tabs
+        //CategoriesPanel
         exploreTab = new Label("Explore");
         exploreTab.getStyleClass().add("tab");
         exploreTab.getStyleClass().add("tab--active");
@@ -101,7 +101,7 @@ public class Header {
         activeTabIndicator.setArcWidth(3);
         activeTabIndicator.setArcHeight(3);
 
-        //Tabs container
+        //CategoriesPanel container
         tabsContainer = new GridPane();
         tabsContainer.setConstraints(exploreTab, 0, 0);
         tabsContainer.setConstraints(feedTab, 1, 0);
@@ -110,7 +110,7 @@ public class Header {
 
         tabsContainer.getChildren().addAll(exploreTab, feedTab, inventoryTab, auctionsTab);
 
-        //Tabs container big parent
+        //CategoriesPanel container big parent
         navigationTabsConatiner = new BorderPane();
         navigationTabsConatiner.setTop(tabsContainer);
         navigationTabsConatiner.setBottom(activeTabIndicator);

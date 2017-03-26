@@ -23,7 +23,7 @@
  */
 package app.pages;
 
-import app.components.Tabs;
+import app.components.CategoriesPanel;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -39,12 +39,12 @@ public class ExplorePage {
 
     public BorderPane render() {
         //Categories tabs
-        tabs = new Tabs().render("All", "Tech", "Music", "Cars", "Boards", "Buildings");
+        tabs = new CategoriesPanel().render("All", "Tech", "Music", "Cars", "Boards", "Buildings", "Planes", "Boats", "T.Vs");
 
         //Explore tab container
         exploreTabContainer = new BorderPane();
-        exploreTabContainer.setPadding(new Insets(0, 50, 0, 50));
-        exploreTabContainer.setTop(tabs);
+        exploreTabContainer.setPadding(new Insets(25, 50, 0, 50));
+        exploreTabContainer.setLeft(tabs);
 
         return exploreTabContainer;
     }

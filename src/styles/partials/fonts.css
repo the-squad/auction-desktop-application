@@ -65,7 +65,9 @@
 .searchbar,
 .tab,
 .input-field .error-message,
-.btn-primary {
+.btn-primary,
+headline--category,
+tab--category {
   -fx-font-family: Lato;
 }
 
