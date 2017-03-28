@@ -26,35 +26,49 @@ package app.components;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+
+import static app.partials.*;
 
 /**
  *
  * @author Muhammad
  */
-public class InputField {
+public class InputField extends GridPane {
+
+    private final String inputName;
+    private final int inputType;
+    private final String placeholder;
     
     private GridPane inputFieldContainer;
     private Label inputLabel;
     private TextField input;
     private Label errorMessage;
 
-    
-    public GridPane render(String inputName, String inputType, String placeholder) {
+    public InputField(String inputName, int inputType, String placeholder) {
+        this.inputName = inputName;
+        this.inputType = inputType;
+        this.placeholder = placeholder;
+
+        this.render();
+    }
+
+    private void render() {
         //Input label
         inputLabel = new Label(inputName);
         inputLabel.getStyleClass().add("label");
 
         //Input field
-        input = new TextField();
+        input = (inputType == TEXT) ? new TextField() : new PasswordField();
         input.setPromptText(placeholder);
         input.getStyleClass().add("input");
-        
+
         input.focusedProperty().addListener(
                 (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                if (!newValue)
-                    onBlur();
+                    if (!newValue)
+                        onBlur();
                 });
 
         //Error message
@@ -66,16 +80,18 @@ public class InputField {
         //Adding to the grid pane
         inputFieldContainer = new GridPane();
         inputFieldContainer.getStyleClass().add("input-field");
-        
+
         inputFieldContainer.setConstraints(inputLabel, 0, 0);
         inputFieldContainer.setMargin(inputLabel, new Insets(0, 0, 3, 0));
-        
+
         inputFieldContainer.setConstraints(input, 0, 1);
         inputFieldContainer.setMargin(input, new Insets(0, 0, 3, 0));
-        
+
         inputFieldContainer.setConstraints(errorMessage, 0, 2);
         inputFieldContainer.getChildren().addAll(inputLabel, input, errorMessage);
-        
+    }
+
+    public GridPane getInputField() {
         return inputFieldContainer;
     }
 
@@ -89,7 +105,7 @@ public class InputField {
     /*
      Change's input field to danger and shows an error message
      */
-    private void markAsDanger(String error) {
+    public void markAsDanger(String error) {
         inputFieldContainer.getStyleClass().add("input-field--danger");
         errorMessage.setText(error);
         errorMessage.setVisible(true);

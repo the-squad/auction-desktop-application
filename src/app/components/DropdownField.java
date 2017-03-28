@@ -35,13 +35,21 @@ import javafx.scene.layout.GridPane;
  *
  * @author Muhammad
  */
-public class DropdownField {
+public class DropdownField extends GridPane{
+
+    private final String inputName;
+    private String []items;
 
     private GridPane dropdownFieldContainer;
     private Label dropdownLabel;
     private ComboBox input;
 
-    public GridPane render(String inputName, String ...items) {
+    public DropdownField(String inputName, String ...items) {
+        this.inputName = inputName;
+        this.items = items.clone();
+    }
+
+    public GridPane render() {
         //Dropdown label
         dropdownLabel = new Label(inputName);
         dropdownLabel.getStyleClass().add("label");
