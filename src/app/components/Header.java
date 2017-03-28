@@ -156,10 +156,11 @@ public class Header extends BorderPane {
         profilePicture.setArcWidth(50);
         profilePicture.setTranslateY(13);
 
+        profilePicture.setOnMouseClicked(e -> { /*TODO*/});
+
         //Menu
         appMenuPanel = new ContextMenu();
-
-        appMenuPanel.setOnAction(e -> { /*TODO*/ });
+        //TODO
 
         //Right part container
         rightSideContainer = new GridPane();
