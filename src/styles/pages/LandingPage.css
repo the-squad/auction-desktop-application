@@ -22,4 +22,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+.landing-bg {
+    -fx-background-color: #fff;
+}
 
+.landing {
+    -fx-background-image:url('../../assets/landing-bg.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: cover;
+    -fx-min-height: 100%;
+}
+
+.welcome-text,
+.app-name {
+    -fx-text-fill: #fff;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
+
+.app-name {
+    -fx-font-weight: 700;
+    -fx-font-size: 30px;
+}
+
+.welcome-text {
+    -fx-font-size: 25px;
+}
+
+.auto-height {
+    -fx-max-height: 250px;
+}
+
+.form-headline {
+    -fx-font-size: 25px;
+}

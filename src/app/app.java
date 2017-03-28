@@ -1,6 +1,6 @@
 package app;
 
-import app.pages.HomePage;
+import app.pages.LandingPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -15,12 +15,19 @@ import java.util.ArrayList;
  * @author Muhammad
  */
 public class app extends Application {
+
+    private LandingPage landingPage;
+    public static BorderPane app;
     
     @Override
     public void start(Stage primaryStage) {
         //App container
-        BorderPane app = new BorderPane();
+        app = new BorderPane();
         app.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> app.requestFocus());
+
+        //Landing page
+        landingPage = LandingPage.getInstance();
+        app.setCenter(landingPage.getLandingPage());
 
         //App Scene
         Scene scene = new Scene(app, 1100, 600);
@@ -72,6 +79,10 @@ public class app extends Application {
         cssFiles.add("homePage");
 
         return cssFiles;
+    }
+
+    public static BorderPane getMainContainer() {
+        return app;
     }
 
     /**
