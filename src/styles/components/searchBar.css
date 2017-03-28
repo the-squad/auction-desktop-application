@@ -24,7 +24,7 @@
 
 .searchbar {
     -fx-padding: 0 10px 0 36px;
-    -fx-min-height: 35px;
+    -fx-min-height: 36px;
     -fx-max-width: 250px;
     -fx-font-size: 16px;
     -fx-outline: none;
