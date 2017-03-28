@@ -236,17 +236,44 @@ public class LandingPage extends GridPane {
     }
 
     private void login() {
+        //Getting values
+        emailField.getValue();
+        passwordField.getValue();
 
+        /*
+         TODO
+         - Call the login method
+         - Check if the data is correct, then call goToHomePage and get user photo
+         - If the data are incorrect show an error message to the field
+         - If the email doesn't exist switch to sign up form and fill the email automatically
+         */
     }
 
     private void signup() {
+        //Getting values
+        nameField.getValue();
+        emailField.getValue();
+        passwordField.getValue();
+        repeatPassword.getValue();
+
+        /*
+         TODO
+         - Check if all data are valid and the password matches, any invalid data shows an error message
+         - Call the sign up method
+         - Check if the data is correct, then call goToHomePage
+         - If the email is already exist switch to the login form and fill the email automatically
+         */
 
     }
 
     private void goToHomePage() {
+        //Getting the homePage container and main app container
         homePage = HomePage.getInstance();
         appContainer = getMainContainer();
 
+        // TODO sent the user picture to the home page
+
+        //Switching to the home page
         fade(appContainer, landingPageContainer, homePage.getHomePage());
     }
 
