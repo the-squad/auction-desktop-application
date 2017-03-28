@@ -37,9 +37,10 @@
     -fx-outline: none;
     -fx-focus-color: transparent;
     -fx-background-color: #fff;
-    -fx-border-color: -fx-dark-gray-color;
+    -fx-border-color: -fx-medium-gray-color;
     -fx-color: -fx-darker-gray-color;
     -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
     -fx-prompt-text-fill: -fx-medium-gray-color;
     -fx-background-repeat: no-repeat;
     -fx-font-weight: 400;
