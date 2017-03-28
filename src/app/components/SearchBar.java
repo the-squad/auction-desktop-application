@@ -29,10 +29,17 @@ import javafx.scene.control.TextField;
  *
  * @author Muhammad
  */
-public class SearchBar {
+public class SearchBar extends TextField {
+
+    private static SearchBar instance;
+
     private TextField searchbar;
 
-    public TextField render() {
+    private SearchBar() {
+        this.render();
+    }
+
+    private void render() {
         //Searchbar
         searchbar = new TextField();
         searchbar.getStyleClass().add("searchbar");
@@ -52,11 +59,13 @@ public class SearchBar {
         searchbar.textProperty().addListener((observable, oldValue, newValue) -> {
             onTyping(getValue());
         });
+    }
 
+    public TextField getSearchbar() {
         return searchbar;
     }
 
-    private void clear() {
+    public void clear() {
         searchbar.setText("");
     }
 
@@ -70,5 +79,12 @@ public class SearchBar {
 
     private String getValue() {
         return searchbar.getText();
+    }
+
+    public static SearchBar getInstance() {
+        if (instance == null) {
+            instance = new SearchBar();
+        }
+        return instance;
     }
 }

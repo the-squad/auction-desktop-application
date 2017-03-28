@@ -31,20 +31,20 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import javax.swing.*;
-
-
 /**
  *
  * @author Muhammad
  */
-public class Header {
+public class Header extends BorderPane {
+
+    private static Header instance;
 
     private BorderPane headerConatiner;
     private GridPane leftSideContainer;
@@ -59,7 +59,7 @@ public class Header {
     private Rectangle activeTabIndicator;
 
     private GridPane rightSideContainer;
-    private TextField searchbar;
+    private SearchBar searchbar;
 
     private Label notificationsIcon;
     private ContextMenu notificationsCenter;
@@ -67,12 +67,16 @@ public class Header {
     private Rectangle profilePicture;
     private ContextMenu appMenuPanel;
 
-    public BorderPane render() {
+    private Header() {
+        this.render();
+    }
+
+    private void render() {
         //App Logo
         logo = new ImageView(new Image(getClass().getResourceAsStream("/assets/logo.png")));
         logo.setTranslateY(2);
 
-        //CategoriesPanel
+        //Tabs
         exploreTab = new Label("Explore");
         exploreTab.getStyleClass().add("tab");
         exploreTab.getStyleClass().add("tab--active");
@@ -125,8 +129,8 @@ public class Header {
         leftSideContainer.getChildren().addAll(logo, navigationTabsConatiner);
 
         //Search bar
-        searchbar = new SearchBar().render();
-        searchbar.setTranslateY(12.5);
+        searchbar = SearchBar.getInstance();
+        searchbar.getSearchbar().setTranslateY(12);
 
         //Notifications icon
         notificationsIcon = new Label();
@@ -140,7 +144,13 @@ public class Header {
         //TODO
 
         //Profile picture
-        profilePicture = new Rectangle(30, 30, new ImagePattern((new Image(getClass().getResourceAsStream("/assets/picture.jpg"), 30, 30, true, true))));
+        profilePicture = new Rectangle(30, 30,
+                new ImagePattern((
+                        new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
+                                30,
+                                30,
+                                false,
+                                true))));
         profilePicture.getStyleClass().add("picture");
         profilePicture.setArcHeight(50);
         profilePicture.setArcWidth(50);
@@ -153,15 +163,15 @@ public class Header {
 
         //Right part container
         rightSideContainer = new GridPane();
-        rightSideContainer.setConstraints(searchbar,0,0);
-        rightSideContainer.setMargin(searchbar, new Insets(0, 50, 0, 0));
+        rightSideContainer.setConstraints(searchbar.getSearchbar(),0,0);
+        rightSideContainer.setMargin(searchbar.getSearchbar(), new Insets(0, 50, 0, 0));
 
         rightSideContainer.setConstraints(notificationsIcon, 1, 0);
         rightSideContainer.setMargin(notificationsIcon, new Insets(0, 30, 0,0 ));
 
         rightSideContainer.setConstraints(profilePicture, 2, 0);
 
-        rightSideContainer.getChildren().addAll(searchbar, notificationsIcon, profilePicture);
+        rightSideContainer.getChildren().addAll(searchbar.getSearchbar(), notificationsIcon, profilePicture);
 
 
         //Header container
@@ -170,7 +180,9 @@ public class Header {
         headerConatiner.setPadding(new Insets(0, 50, 0, 50));
         headerConatiner.setLeft(leftSideContainer);
         headerConatiner.setRight(rightSideContainer);
+    }
 
+    public BorderPane getHeader() {
         return headerConatiner;
     }
 
@@ -201,5 +213,16 @@ public class Header {
         Label activeLabel = (Label) headerConatiner.lookup(".tab--active");
         activeLabel.getStyleClass().remove("tab--active");
         label.getStyleClass().add("tab--active");
+    }
+
+    public void setUserPhoto() {
+        //TODO change the photo placeholder
+    }
+
+    public static Header getInstance() {
+        if (instance == null) {
+            instance = new Header();
+        }
+        return instance;
     }
 }
