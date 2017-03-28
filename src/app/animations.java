@@ -36,6 +36,7 @@ import javafx.util.Duration;
  */
 public class animations {
 
+    public static void fade(BorderPane parent, Pane fromChild, Pane toChild) {
         Timeline fadeAnimation = new Timeline();
 
         //Opacity values
