@@ -23,10 +23,35 @@
  */
 package app.pages;
 
+import javafx.scene.layout.FlowPane;
+
 /**
  *
  * @author Muhammad
  */
 public class InventoryPage {
+
+    private static InventoryPage instance;
+
+    private FlowPane inventoryPageContainer;
+
+    private InventoryPage() {
+        this.render();
+    }
+
+    private void render() {
+        //TODO
+    }
+
+    public FlowPane getFeedPage() {
+        return inventoryPageContainer;
+    }
+
+    public static InventoryPage getInstance() {
+        if (instance == null) {
+            instance = new InventoryPage();
+        }
+        return instance;
+    }
     
 }
