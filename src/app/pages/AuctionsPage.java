@@ -23,10 +23,35 @@
  */
 package app.pages;
 
+import javafx.scene.layout.FlowPane;
+
 /**
  *
  * @author Muhammad
  */
 public class AuctionsPage {
+
+    private static AuctionsPage instance;
+
+    private FlowPane auctionsPageContainer;
+
+    private AuctionsPage() {
+        this.render();
+    }
+
+    private void render() {
+        //TODO
+    }
+
+    public FlowPane getFeedPage() {
+        return auctionsPageContainer;
+    }
+
+    public static AuctionsPage getInstance() {
+        if (instance == null) {
+            instance = new AuctionsPage();
+        }
+        return instance;
+    }
     
 }
