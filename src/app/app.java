@@ -30,8 +30,10 @@ public class app extends Application {
         app.setCenter(landingPage.getLandingPage());
 
         //App Scene
-        Scene scene = new Scene(app, 1100, 600);
+        Scene scene = new Scene(app, 1200, 600);
         primaryStage.setTitle("Auction System!");
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(600);
         
         //Importing CSS Files
         importComponentsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
