@@ -23,26 +23,70 @@
  */
 package app.pages;
 
+import app.components.AuctionCard;
 import app.components.Header;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 
 /**
  *
  * @author Muhammad
  */
-public class HomePage {
+public class HomePage extends BorderPane {
+
+    private static HomePage instance;
 
     private BorderPane homePageContainer;
-    private BorderPane header;
+    private Header header;
 
-    public BorderPane render() {
+    private ExplorePage explore;
+    private FeedPage feed;
+    private InventoryPage inventory;
+    private AuctionsPage auctions;
+
+    private HomePage() {
+        this.render();
+    }
+
+    private void render() {
         //Importing the header component
-        header = new Header().render();
+        header = Header.getInstance();
+
+        //Creating the explore tab
+        explore = ExplorePage.getInstance();
+        explore.loadExploreCards(7);
+
+        //Creating the feed tab
+        feed = FeedPage.getInstance();
+
+        //Creating the inventory page
+        inventory = InventoryPage.getInstance();
+
+        //Creating the auctions page
+        auctions = AuctionsPage.getInstance();
 
         //Home page container
         homePageContainer = new BorderPane();
-        homePageContainer.setTop(header);
+        homePageContainer.setTop(header.getHeader());
+        homePageContainer.setCenter(explore.getExploreTab());
+    }
 
+    public void setUserPhoto() {
+        // TODO header.setUserPhoto();
+    }
+
+    private void switchPages() {
+        // TODO
+    }
+
+    public BorderPane getHomePage() {
         return homePageContainer;
+    }
+
+    public static HomePage getInstance() {
+        if (instance == null) {
+            instance = new HomePage();
+        }
+        return instance;
     }
 }
