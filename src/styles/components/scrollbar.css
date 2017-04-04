@@ -33,7 +33,7 @@
 }
 
 .scroll-bar:vertical .track-background {
-    -fx-background-color: #fff;
+    -fx-background-color: #e8e7eb;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
@@ -42,7 +42,7 @@
     -fx-background-color: rgba(41,47,51, 0.5);
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;
-    -fx-padding: 0.25em 0.5em  ;
+    -fx-padding: 0.25em 0.1em  ;
     -fx-cursor: hand;
 }
 
