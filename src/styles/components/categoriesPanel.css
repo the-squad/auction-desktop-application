@@ -21,20 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-.tabs-container {
-    -fx-background-color: #fff;
-    -fx-background-radius: 2px;
-    -fx-border: 0;
-    -fx-min-width: 150px;
-    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
-}
-
 .headline--category {
     -fx-font-size: 14px;
     -fx-text-fill: -fx-dark-gray-color;
     -fx-padding: 3px 8px;
-    -fx-min-width: 134px;
     -fx-font-weight: 700;
 }
 
@@ -43,7 +33,7 @@
     -fx-text-fill: -fx-dark-gray-color;
     -fx-cursor: hand;
     -fx-padding: 3px 8px;
-    -fx-min-width: 134px;
+    -fx-opacity: 0.5;
 }
 
 .tab--category-active,
@@ -51,6 +41,7 @@
 .tab--category:hover {
     -fx-text-fill: #fff;
     -fx-background-radius: 4px;
+    -fx-opacity: 1;
 }
 
 .tab--category:hover {

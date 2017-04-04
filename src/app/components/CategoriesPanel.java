@@ -24,7 +24,9 @@
 package app.components;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -33,19 +35,25 @@ import javafx.scene.layout.GridPane;
  */
 public class CategoriesPanel {
 
+    final private String categories[];
+
     private GridPane tabsContainer;
     private Label headline;
     private Label tabs[];
 
-    public GridPane render(String ...categories) {
+    public CategoriesPanel(String ...categories) {
+        this.categories = categories.clone();
+        this.render();
+    }
+
+    public void render() {
         //Headline label
         headline = new Label("Categories");
         headline.getStyleClass().add("headline--category");
 
         //CategoriesPanel Containers
         tabsContainer = new GridPane();
-        tabsContainer.setPadding(new Insets(10, 8, 10, 8));
-        tabsContainer.setVgap(3);
+        tabsContainer.setHgap(5);
         tabsContainer.getStyleClass().add("tabs-container");
 
         //Generating tabs
@@ -60,16 +68,17 @@ public class CategoriesPanel {
             tabs[counter].setOnMouseClicked(e -> switchTab(currentTab));
 
             if (counter == 0) tabs[counter].getStyleClass().add("tab--category-active");
-            tabsContainer.setConstraints(tabs[counter], 0, counter + 1);
+            tabsContainer.setConstraints(tabs[counter], counter + 1, 0);
             tabsContainer.getChildren().add(tabs[counter]);
             counter++;
         }
 
-        tabsContainer.setMaxHeight(25 + ((categories.length + 1) * 20));
+        tabsContainer.setAlignment(Pos.CENTER);
         tabsContainer.setConstraints(headline, 0, 0);
-        tabsContainer.setMargin(headline, new Insets(0, 0, 5, 0));
         tabsContainer.getChildren().add(headline);
+    }
 
+    public GridPane getCategoriesTabs() {
         return tabsContainer;
     }
 
