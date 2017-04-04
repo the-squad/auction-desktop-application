@@ -21,3 +21,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+.card {
+    -fx-background-color: #fff;
+    -fx-background-radius: 5px;
+    -fx-border: 0;
+    -fx-min-width: 250px;
+    -fx-max-width: 250px;
+    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
+    -fx-max-height: 200px;
+}
+
+.item-image {
+    -fx-min-height: 175px;
+    -fx-max-height: 175px;
+    -fx-min-width: 250px;
+    -fx-max-height: 250px;
+    -fx-background-image: url("../../assets/image-placeholder.jpg");
+    -fx-background-position: center;
+    -fx-background-size: cover;
+    -fx-border-color:transparent transparent white transparent;
+}
+
+.item-name {
+    -fx-text-fill: -fx-darker-gray-color;
+    -fx-font-weight: 700;
+    -fx-wrap-text: true;
+    -fx-max-width: 180;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+}
+
+.item-name:hover {
+    -fx-underline: true;
+}
+
+.item-bid {
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+}
+
+.auction-status {
+    -fx-text-fill: -fx-medium-gray-color;
+    -fx-font-size: 10px;
+}
+
+.user-container {
+    -fx-cursor: hand;
+}
+
+.user-container:hover {
+    -fx-background-color: -fx-light-gray-color;
+}
+
+.user-name {
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+}
