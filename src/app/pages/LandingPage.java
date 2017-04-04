@@ -209,6 +209,9 @@ public class LandingPage extends GridPane {
         landingPageContainer.setConstraints(formParentContainer, 1, 0);
 
         landingPageContainer.getChildren().addAll(landingBackground, formParentContainer);
+
+        //FOR FASTER DEVELOPMENT
+        goToHomePage();
     }
 
     public GridPane getLandingPage() {
