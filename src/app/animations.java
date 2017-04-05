@@ -31,10 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-/**
- * Created by Muhammad on 28-Mar-17.
- */
-public class animations {
+public class Animations {
 
     public static void fade(BorderPane parent, Pane fromChild, Pane toChild) {
         Timeline fadeAnimation = new Timeline();
@@ -48,17 +45,29 @@ public class animations {
 
         //Keyframes
         KeyFrame startFadeOut = new KeyFrame(Duration.ZERO, fromChildOpacityStart);
-        KeyFrame finishFadeOut = new KeyFrame(Duration.millis(250), fromChildOpacityEnd);
+        KeyFrame finishFadeOut = new KeyFrame(Duration.millis(150), fromChildOpacityEnd);
 
-        KeyFrame startFadeIn = new KeyFrame(Duration.millis(250), toChildOpacityStart);
-        KeyFrame addingToCenter = new KeyFrame(Duration.millis(251), e -> {
+        KeyFrame startFadeIn = new KeyFrame(Duration.millis(150), toChildOpacityStart);
+        KeyFrame addingToCenter = new KeyFrame(Duration.millis(151), e -> {
             parent.setCenter(null);
             parent.setCenter(toChild);
         });
-        KeyFrame finishFadeIn = new KeyFrame(Duration.millis(500), toChildOpacityEnd);
+        KeyFrame finishFadeIn = new KeyFrame(Duration.millis(300), toChildOpacityEnd);
 
         //Gathering down key frames
         fadeAnimation.getKeyFrames().addAll(startFadeIn, finishFadeIn, startFadeOut, addingToCenter, finishFadeOut);
         fadeAnimation.play();
+    }
+
+    public static void fadeOutThenSlideUp(BorderPane parent, Pane popup) {
+        // TODO
+    }
+
+    public static void slideDonwThenFadeIn(BorderPane parent, Pane requestedPage) {
+        // TODO
+    }
+
+    public static void slideDownThenSlideDown(BorderPane parent, Pane fromChild, Pane toChild) {
+        // TODO
     }
 }

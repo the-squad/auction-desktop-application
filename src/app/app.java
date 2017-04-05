@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Muhammad
  */
-public class app extends Application {
+public class App extends Application {
 
     private LandingPage landingPage;
     public static BorderPane app;
@@ -59,6 +59,7 @@ public class app extends Application {
         cssFiles.add("searchBar");
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
+        cssFiles.add("loading");
         
         return cssFiles;
     }

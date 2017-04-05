@@ -27,7 +27,7 @@ package app;
 /**
  * Created by Muhammad on 27-Mar-17.
  */
-public class partials {
+public class Partials {
 
     public static int TEXT = 0;
     public static int EMAIL = 1;
