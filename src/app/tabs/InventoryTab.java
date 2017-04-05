@@ -21,12 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.tabs;
+
+import javafx.scene.layout.FlowPane;
 
 /**
  *
  * @author Muhammad
  */
-public class ProfileViewPage {
+public class InventoryTab {
+
+    private static InventoryTab instance;
+
+    private FlowPane inventoryPageContainer;
+
+    private InventoryTab() {
+        this.render();
+    }
+
+    private void render() {
+        //TODO
+    }
+
+    public FlowPane getFeedPage() {
+        return inventoryPageContainer;
+    }
+
+    public static InventoryTab getInstance() {
+        if (instance == null) {
+            instance = new InventoryTab();
+        }
+        return instance;
+    }
     
 }

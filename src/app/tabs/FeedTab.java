@@ -21,21 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+
+package app.tabs;
 
 import javafx.scene.layout.FlowPane;
 
 /**
- *
- * @author Muhammad
+ * Created by Muhammad on 28-Mar-17.
  */
-public class AuctionsPage {
+public class FeedTab {
 
-    private static AuctionsPage instance;
+    private static FeedTab instance;
 
-    private FlowPane auctionsPageContainer;
+    private FlowPane feedPageContainer;
 
-    private AuctionsPage() {
+    private FeedTab() {
         this.render();
     }
 
@@ -44,14 +44,13 @@ public class AuctionsPage {
     }
 
     public FlowPane getFeedPage() {
-        return auctionsPageContainer;
+        return feedPageContainer;
     }
 
-    public static AuctionsPage getInstance() {
+    public static FeedTab getInstance() {
         if (instance == null) {
-            instance = new AuctionsPage();
+            instance = new FeedTab();
         }
         return instance;
     }
-    
 }

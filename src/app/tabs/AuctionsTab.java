@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.tabs;
 
 import javafx.scene.layout.FlowPane;
 
@@ -29,13 +29,13 @@ import javafx.scene.layout.FlowPane;
  *
  * @author Muhammad
  */
-public class InventoryPage {
+public class AuctionsTab {
 
-    private static InventoryPage instance;
+    private static AuctionsTab instance;
 
-    private FlowPane inventoryPageContainer;
+    private FlowPane auctionsPageContainer;
 
-    private InventoryPage() {
+    private AuctionsTab() {
         this.render();
     }
 
@@ -44,12 +44,12 @@ public class InventoryPage {
     }
 
     public FlowPane getFeedPage() {
-        return inventoryPageContainer;
+        return auctionsPageContainer;
     }
 
-    public static InventoryPage getInstance() {
+    public static AuctionsTab getInstance() {
         if (instance == null) {
-            instance = new InventoryPage();
+            instance = new AuctionsTab();
         }
         return instance;
     }

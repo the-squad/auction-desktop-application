@@ -21,36 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package app.pages;
-
-import javafx.scene.layout.FlowPane;
+package app.controllers;
 
 /**
- * Created by Muhammad on 28-Mar-17.
+ *
+ * @author Muhammad
  */
-public class FeedPage {
-
-    private static FeedPage instance;
-
-    private FlowPane feedPageContainer;
-
-    private FeedPage() {
-        this.render();
-    }
-
-    private void render() {
-        //TODO
-    }
-
-    public FlowPane getFeedPage() {
-        return feedPageContainer;
-    }
-
-    public static FeedPage getInstance() {
-        if (instance == null) {
-            instance = new FeedPage();
-        }
-        return instance;
-    }
+public class ItemDetails {
+    
 }

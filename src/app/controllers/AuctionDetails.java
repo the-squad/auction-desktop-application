@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.components;
+package app.controllers;
 
 /**
  *
  * @author Muhammad
  */
-public class DropdownMenu {
+public class AuctionDetails {
     
 }

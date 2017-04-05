@@ -27,6 +27,6 @@ package app.pages;
  *
  * @author Muhammad
  */
-public class AuctionControlPage {
+public class ProfilePage {
     
 }

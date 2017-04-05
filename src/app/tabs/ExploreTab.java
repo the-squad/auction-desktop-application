@@ -21,31 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.tabs;
 
 import app.components.AuctionCard;
 import app.components.CategoriesPanel;
-import com.sun.jndi.cosnaming.CNCtx;
+import app.components.LoadingIndicator;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 /**
  *
  * @author Muhammad
  */
-public class ExplorePage {
+public class ExploreTab {
 
-    private static ExplorePage instance;
+    private static ExploreTab instance;
 
     private BorderPane exploreTabContainer;
     private ScrollPane exploreTabScrollbar;
@@ -53,8 +47,9 @@ public class ExplorePage {
 
     private GridPane cardsContainer;
     private AuctionCard auctionCard[];
+    private LoadingIndicator loadingIndicator;
 
-    private ExplorePage() {
+    private ExploreTab() {
         this.render();
     }
 
@@ -67,20 +62,24 @@ public class ExplorePage {
         cardsContainer.setHgap(35);
         cardsContainer.setVgap(20);
 
+        //Loading bar
+        loadingIndicator = new LoadingIndicator();
+
         //Explore tab container
         exploreTabContainer = new BorderPane();
         Platform.runLater( () -> exploreTabContainer.requestFocus() );
         exploreTabContainer.setPadding(new Insets(20, 0, 0, 0));
 
-        exploreTabContainer.setTop(tabs.getCategoriesTabs());
-        exploreTabContainer.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 25, 0));
+        //exploreTabContainer.setTop(tabs.getCategoriesTabs());
+        //exploreTabContainer.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 25, 0));
 
-        exploreTabContainer.setCenter(cardsContainer);
-        exploreTabContainer.setAlignment(cardsContainer, Pos.CENTER);
+        exploreTabContainer.setCenter(loadingIndicator.getLoadingState()); //CHANGE LATER
+        exploreTabContainer.setAlignment(loadingIndicator.getLoadingState(), Pos.CENTER);
 
         //Scroll bar container
         exploreTabScrollbar = new ScrollPane(exploreTabContainer);
         exploreTabScrollbar.setFitToWidth(true);
+        exploreTabScrollbar.setFitToHeight(true);
         exploreTabScrollbar.getStyleClass().add("scrollbar");
         exploreTabScrollbar.toBack();
 
@@ -104,9 +103,9 @@ public class ExplorePage {
 
         int counter = 0;
         for (int rowCounter = 0; rowCounter < (cardsNumber / 4) + 1; rowCounter++) {
-            for (int coloumnCounter = 0; coloumnCounter < 4; coloumnCounter++) {
+            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
                 if (counter >= cardsNumber) break;
-                cardsContainer.setConstraints(auctionCard[counter].getAuctionCard(), coloumnCounter, rowCounter);
+                cardsContainer.setConstraints(auctionCard[counter].getAuctionCard(), columnCounter, rowCounter);
                 cardsContainer.getChildren().add(auctionCard[counter].getAuctionCard());
                 counter++;
             }
@@ -117,9 +116,9 @@ public class ExplorePage {
         return exploreTabScrollbar;
     }
 
-    public static ExplorePage getInstance() {
+    public static ExploreTab getInstance() {
         if (instance == null) {
-            instance = new ExplorePage();
+            instance = new ExploreTab();
         }
         return instance;
     }

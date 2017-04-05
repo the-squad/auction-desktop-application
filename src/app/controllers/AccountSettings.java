@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.controllers;
 
 /**
  *
  * @author Muhammad
  */
-public class ItemControlPage {
+public class AccountSettings {
     
 }

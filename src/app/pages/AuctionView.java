@@ -22,83 +22,10 @@
  * THE SOFTWARE.
  */
 
-/*
-    Font weights
-*/
-.light {
-    -fx-font-weight: 400;
-}
+package app.pages;
 
-.medium {
-    -fx-font-weight: 500;
-}
-
-.semi-bold {
-    -fx-font-weight: 600;
-}
-
-.bold {
-    -fx-font-weight: 700;
-}
-
-/*
-    Fonts sizes
-*/
-.section-title,
-.heading,
-.body,
-.default,
-.small-body {
-  -fx-color: -fx-darker-gray-color;
-}
-
-.section-title,
-.headingy,
-.body,
-.default,
-.small-body,
-.input-field .label,
-.dropdown-field .label,
-.input-field .input,
-.combo-box,
-.combo-box-popup .list-view .list-cell,
-.searchbar,
-.tab,
-.input-field .error-message,
-.btn-primary,
-.headline--category,
-.tab--category,
-.item-name,
-.item-bid,
-.auction-states,
-.user-name,
-.welcome-text,
-.form-headline,
-.headline {
-  -fx-font-family: Lato;
-}
-
-.section-title {
-    -fx-font-size: 30px;
-    -fx-font-weight: 500;
-}
-
-.heading {
-    -fx-font-size: 25px;
-    -fx-font-weight: 600;
-}
-
-.body {
-    -fx-font-size: 20px;
-    -fx-font-weight: 300;
-}
-
-.default {
-    -fx-font-size: 16px;
-    -fx-font-weight: 300;
-}
-
-.small-body {
-    -fx-font-size: 14px;
-    -fx-font-weight: 300;
+/**
+ * Created by Muhammad on 04-Apr-17.
+ */
+public class AuctionView {
 }

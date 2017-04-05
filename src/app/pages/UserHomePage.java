@@ -23,28 +23,30 @@
  */
 package app.pages;
 
-import app.components.AuctionCard;
 import app.components.Header;
-import javafx.scene.layout.Border;
+import app.tabs.AuctionsTab;
+import app.tabs.ExploreTab;
+import app.tabs.FeedTab;
+import app.tabs.InventoryTab;
 import javafx.scene.layout.BorderPane;
 
 /**
  *
  * @author Muhammad
  */
-public class HomePage extends BorderPane {
+public class UserHomePage extends BorderPane {
 
-    private static HomePage instance;
+    private static UserHomePage instance;
 
     private BorderPane homePageContainer;
     private Header header;
 
-    private ExplorePage explore;
-    private FeedPage feed;
-    private InventoryPage inventory;
-    private AuctionsPage auctions;
+    private ExploreTab explore;
+    private FeedTab feed;
+    private InventoryTab inventory;
+    private AuctionsTab auctions;
 
-    private HomePage() {
+    private UserHomePage() {
         this.render();
     }
 
@@ -53,17 +55,17 @@ public class HomePage extends BorderPane {
         header = Header.getInstance();
 
         //Creating the explore tab
-        explore = ExplorePage.getInstance();
+        explore = ExploreTab.getInstance();
         explore.loadExploreCards(7);
 
         //Creating the feed tab
-        feed = FeedPage.getInstance();
+        feed = FeedTab.getInstance();
 
         //Creating the inventory page
-        inventory = InventoryPage.getInstance();
+        inventory = InventoryTab.getInstance();
 
         //Creating the auctions page
-        auctions = AuctionsPage.getInstance();
+        auctions = AuctionsTab.getInstance();
 
         //Home page container
         homePageContainer = new BorderPane();
@@ -83,9 +85,9 @@ public class HomePage extends BorderPane {
         return homePageContainer;
     }
 
-    public static HomePage getInstance() {
+    public static UserHomePage getInstance() {
         if (instance == null) {
-            instance = new HomePage();
+            instance = new UserHomePage();
         }
         return instance;
     }

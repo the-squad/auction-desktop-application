@@ -23,7 +23,11 @@
  */
 package app.pages;
 
+import app.Animations;
 import app.components.InputField;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,10 +37,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
-import static app.partials.*;
-import static app.animations.fade;
-import static app.app.getMainContainer;
+import static app.Partials.*;
+import static app.App.getMainContainer;
 
 /**
  *
@@ -65,10 +69,14 @@ public class LandingPage extends GridPane {
     private Button callToActionButton;
     private Button switchFormButton;
 
-    private HomePage homePage;
+    private UserHomePage userHomePage;
     private BorderPane appContainer;
 
-    private LandingPage() { this.render(); }
+    private Timeline fadeAnimation;
+
+    private LandingPage() {
+        this.render();
+    }
 
     private void render() {
 
@@ -79,7 +87,7 @@ public class LandingPage extends GridPane {
 
         //Welcome Text
         appName = new Label("Welcome to Ohio");
-        appName.getStyleClass().add("app-name");
+        appName.getStyleClass().add("App-name");
 
         //Welcome Text
         welcomeText = new Label("A place where you can sell and buy anything");
@@ -219,23 +227,39 @@ public class LandingPage extends GridPane {
     }
 
     private void switchForm(int formType) {
-        if (formType == LOGIN) {
-            formsContainer.getChildren().remove(nameField.getInputField());
-            formsContainer.getChildren().remove(repeatPassword.getInputField());
-        } else {
-            formsContainer.getChildren().addAll(nameField.getInputField(), repeatPassword.getInputField());
-            formsContainer.setConstraints(nameField.getInputField(), 0, 1);
-            formsContainer.setConstraints(emailField.getInputField(), 0, 2);
-            formsContainer.setConstraints(passwordField.getInputField(), 0, 3);
-            formsContainer.setConstraints(repeatPassword.getInputField(), 0, 4);
-            formsContainer.setConstraints(callToActionButton, 0, 5);
-            formsContainer.setConstraints(switchFormButton, 0, 6);
-        }
+        fadeAnimation = new Timeline();
 
+        //Opacity values
+        KeyValue showForm = new KeyValue(formsContainer.opacityProperty(), 1);
+        KeyValue hideForm = new KeyValue(formsContainer.opacityProperty(), 0);
 
-        formDetails.setText((formType == LOGIN) ? "Log into your account" : "Create a new account");
-        callToActionButton.setText((formType == LOGIN) ? "Login" : "Sign up");
-        switchFormButton.setText((formType == LOGIN) ? "Have an account?" : "Don't have an account?");
+        //Animation frames
+        KeyFrame startHide = new KeyFrame(Duration.ZERO, showForm);
+        KeyFrame finishHide = new KeyFrame(Duration.millis(100), hideForm);
+
+        KeyFrame updateContent = new KeyFrame(Duration.millis(100), e -> {
+            if (formType == LOGIN) {
+                formsContainer.getChildren().remove(nameField.getInputField());
+                formsContainer.getChildren().remove(repeatPassword.getInputField());
+            } else {
+                formsContainer.getChildren().addAll(nameField.getInputField(), repeatPassword.getInputField());
+                formsContainer.setConstraints(nameField.getInputField(), 0, 1);
+                formsContainer.setConstraints(emailField.getInputField(), 0, 2);
+                formsContainer.setConstraints(passwordField.getInputField(), 0, 3);
+                formsContainer.setConstraints(repeatPassword.getInputField(), 0, 4);
+                formsContainer.setConstraints(callToActionButton, 0, 5);
+                formsContainer.setConstraints(switchFormButton, 0, 6);
+            }
+
+            formDetails.setText((formType == LOGIN) ? "Log into your account" : "Create a new account");
+            callToActionButton.setText((formType == LOGIN) ? "Login" : "Sign up");
+            switchFormButton.setText((formType == LOGIN) ? "Have an account?" : "Don't have an account?");
+        });
+
+        KeyFrame startShow = new KeyFrame(Duration.millis(200), showForm);
+
+        fadeAnimation.getKeyFrames().addAll(startHide, finishHide, updateContent, startShow);
+        fadeAnimation.play();
     }
 
     private void login() {
@@ -270,14 +294,14 @@ public class LandingPage extends GridPane {
     }
 
     private void goToHomePage() {
-        //Getting the homePage container and main app container
-        homePage = HomePage.getInstance();
+        //Getting the userHomePage container and main App container
+        userHomePage = UserHomePage.getInstance();
         appContainer = getMainContainer();
 
         // TODO sent the user picture to the home page
 
         //Switching to the home page
-        fade(appContainer, landingPageContainer, homePage.getHomePage());
+        Animations.fade(appContainer, landingPageContainer, userHomePage.getHomePage());
     }
 
     public static LandingPage getInstance() {
