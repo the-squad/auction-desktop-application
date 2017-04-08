@@ -24,15 +24,15 @@
 
 package app.pages;
 
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.ScrollPane;
 
-public class AuctionView {
+public class NotificationsPage {
 
-    private static AuctionView instance;
+    private static NotificationsPage instance;
 
-    private BorderPane auctionViewContainer;
+    private ScrollPane notificationsPageContainer;
 
-    private AuctionView() {
+    private NotificationsPage() {
         this.render();
     }
 
@@ -40,21 +40,21 @@ public class AuctionView {
         // TODO
     }
 
-    public void fillAuctionData() {
+    public void fillNotifications() {
         // TODO
     }
 
-    private void clearAuctionData() {
+    private void clearNotifications() {
         // TODO
     }
 
-    public BorderPane getAuctionView() {
-        return auctionViewContainer;
+    public ScrollPane getNotificationsPage() {
+        return notificationsPageContainer;
     }
 
-    public static AuctionView getInstance() {
+    public static NotificationsPage getInstance() {
         if (instance == null) {
-            instance = new AuctionView();
+            instance = new NotificationsPage();
         }
         return instance;
     }

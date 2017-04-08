@@ -23,10 +23,45 @@
  */
 package app.pages;
 
+import app.components.AuctionCard;
+import javafx.scene.control.ScrollPane;
+
 /**
  *
  * @author Muhammad
  */
 public class SearchPage {
-    
+
+    private static SearchPage instance;
+
+    private ScrollPane searchPageContainer;
+
+    private AuctionCard auctionResults[];
+
+    private SearchPage() {
+        this.render();
+    }
+
+    private void render() {
+        // TODO
+    }
+
+    public void currentSearchWord(String word) {
+        // TODO
+    }
+
+    public void search(String word) {
+        // TODO
+    }
+
+    public ScrollPane getSearchPage() {
+        return searchPageContainer;
+    }
+
+    public static SearchPage getInstance() {
+        if (instance == null) {
+            instance = new SearchPage();
+        }
+        return instance;
+    }
 }
