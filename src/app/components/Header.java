@@ -171,8 +171,8 @@ public class Header extends BorderPane {
                                 false,
                                 true))));
         profilePicture.getStyleClass().add("picture");
-        profilePicture.setArcHeight(50);
-        profilePicture.setArcWidth(50);
+        profilePicture.setArcHeight(8);
+        profilePicture.setArcWidth(8);
         profilePicture.setTranslateY((userType == BUYER) ? 13 : 16);
 
         profilePicture.setOnMouseClicked(e -> {
