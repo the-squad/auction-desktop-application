@@ -72,7 +72,7 @@
 }
 
 .user-container:hover {
-    -fx-background-color: -fx-light-gray-color;
+    -fx-background-color: rgba(232,231,235, 0.7);
 }
 
 .user-name {
