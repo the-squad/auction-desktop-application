@@ -23,11 +23,14 @@
  */
 package app.pages;
 
-import app.Animations;
+import app.Navigator;
 import app.components.InputField;
+import app.components.LoadingIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,12 +43,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import static app.Partials.*;
-import static app.App.getMainContainer;
 
-/**
- *
- * @author Muhammad
- */
 public class LandingPage extends GridPane {
 
     private static LandingPage instance;
@@ -69,8 +67,8 @@ public class LandingPage extends GridPane {
     private Button callToActionButton;
     private Button switchFormButton;
 
-    private UserHomePage userHomePage;
-    private BorderPane appContainer;
+    private HomePage homePage;
+    private LoadingIndicator loadingIndicator;
 
     private Timeline fadeAnimation;
 
@@ -79,7 +77,6 @@ public class LandingPage extends GridPane {
     }
 
     private void render() {
-
         //App Logo
         appLogo = new ImageView(new Image(getClass().getResourceAsStream("/assets/app-logo.png")));
         appLogo.setFitHeight(100);
@@ -87,7 +84,7 @@ public class LandingPage extends GridPane {
 
         //Welcome Text
         appName = new Label("Welcome to Ohio");
-        appName.getStyleClass().add("App-name");
+        appName.getStyleClass().add("app-name");
 
         //Welcome Text
         welcomeText = new Label("A place where you can sell and buy anything");
@@ -152,13 +149,21 @@ public class LandingPage extends GridPane {
         callToActionButton = new Button("Login");
         callToActionButton.getStyleClass().add("btn-primary");
 
-        callToActionButton.setOnAction(e -> {goToHomePage();});
+        callToActionButton.setOnAction(e -> {
+            if (callToActionButton.getText() == "Login") {
+                this.login();
+            } else {
+                this.signUp();
+            }
+        });
 
         //Form switcher
         switchFormButton = new Button("Don't have an account?");
         switchFormButton.getStyleClass().add("btn-secondary");
 
-        switchFormButton.setOnAction(e -> {switchForm((callToActionButton.getText() == "Login") ? SIGNUP : LOGIN);});
+        switchFormButton.setOnAction(e -> {
+            switchForm((callToActionButton.getText() == "Login") ? SIGNUP : LOGIN);
+        });
 
         //Forms container
         formsContainer = new GridPane();
@@ -218,8 +223,8 @@ public class LandingPage extends GridPane {
 
         landingPageContainer.getChildren().addAll(landingBackground, formParentContainer);
 
-        //FOR FASTER DEVELOPMENT
-        goToHomePage();
+        //Creating loading indicator
+        loadingIndicator = new LoadingIndicator();
     }
 
     public GridPane getLandingPage() {
@@ -242,7 +247,13 @@ public class LandingPage extends GridPane {
                 formsContainer.getChildren().remove(nameField.getInputField());
                 formsContainer.getChildren().remove(repeatPassword.getInputField());
             } else {
-                formsContainer.getChildren().addAll(nameField.getInputField(), repeatPassword.getInputField());
+                formsContainer.getChildren().removeAll(emailField.getInputField(),
+                                                       passwordField.getInputField());
+                formsContainer.getChildren().addAll(nameField.getInputField(),
+                                                    emailField.getInputField(),
+                                                    passwordField.getInputField(),
+                                                    repeatPassword.getInputField());
+
                 formsContainer.setConstraints(nameField.getInputField(), 0, 1);
                 formsContainer.setConstraints(emailField.getInputField(), 0, 2);
                 formsContainer.setConstraints(passwordField.getInputField(), 0, 3);
@@ -267,21 +278,28 @@ public class LandingPage extends GridPane {
         emailField.getValue();
         passwordField.getValue();
 
+        loadingIndicator.setLoadingMessage("Logging in");
+        this.goToHomePage();
+
         /*
          TODO
          - Call the login method
          - Check if the data is correct, then call goToHomePage and get user photo
          - If the data are incorrect show an error message to the field
          - If the email doesn't exist switch to sign up form and fill the email automatically
+         - Set the user type
          */
     }
 
-    private void signup() {
+    private void signUp() {
         //Getting values
         nameField.getValue();
         emailField.getValue();
         passwordField.getValue();
         repeatPassword.getValue();
+
+        loadingIndicator.setLoadingMessage("Signing up");
+        this.goToHomePage();
 
         /*
          TODO
@@ -289,19 +307,36 @@ public class LandingPage extends GridPane {
          - Call the sign up method
          - Check if the data is correct, then call goToHomePage
          - If the email is already exist switch to the login form and fill the email automatically
+         - Set the user type
          */
 
     }
 
     private void goToHomePage() {
-        //Getting the userHomePage container and main App container
-        userHomePage = UserHomePage.getInstance();
-        appContainer = getMainContainer();
+        //Showing the loading indicator
+        userType = BUYER;
+        formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
-        // TODO sent the user picture to the home page
+        //Loading the home page
+        Task<String> initializingHomePage = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                homePage = HomePage.getInstance();
+                homePage.setUserPhoto();
+                return null;
+            }
+        };
 
-        //Switching to the home page
-        Animations.fade(appContainer, landingPageContainer, userHomePage.getHomePage());
+        //Creating a thread that triggered when the home page is rendered
+        Thread switchToHomePage = new Thread(initializingHomePage);
+        switchToHomePage.setDaemon(true);
+        switchToHomePage.start();
+
+        initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
+            //Switching to the home page
+            Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
+            homePage.gainFocus();
+        });
     }
 
     public static LandingPage getInstance() {

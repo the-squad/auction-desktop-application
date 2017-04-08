@@ -10,10 +10,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Muhammad
- */
 public class App extends Application {
 
     private LandingPage landingPage;

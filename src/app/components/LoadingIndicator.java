@@ -87,7 +87,7 @@ public class LoadingIndicator {
         rotatingAnimation.play();
     }
 
-    public GridPane getLoadingState() {
+    public GridPane getLoadingIndicator() {
         return loadingIndicatorContainer;
     }
 
