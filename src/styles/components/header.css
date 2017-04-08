@@ -38,7 +38,7 @@
 }
 
 .page-title {
-    -fx-padding: 17px 5px 17px 5px;
+    -fx-padding: 17px 5px 17px 0px;
     -fx-font-size: 20px;
     -fx-text-fill: -fx-darker-gray-color;
 }

@@ -106,9 +106,9 @@ public class Header extends BorderPane {
             inventoryTab.setOnMouseClicked(e -> switchTab(inventoryTab, INVENTORY_TAB));
 
 
-            tabsContainer.setConstraints(exploreTab, 0, 0);
-            tabsContainer.setConstraints(feedTab, 1, 0);
-            tabsContainer.setConstraints(inventoryTab, 2, 0);
+            GridPane.setConstraints(exploreTab, 0, 0);
+            GridPane.setConstraints(feedTab, 1, 0);
+            GridPane.setConstraints(inventoryTab, 2, 0);
             tabsContainer.getChildren().addAll(exploreTab, feedTab, inventoryTab);
         } else if (userType == SELLER) {
             //Inventory tab
@@ -124,8 +124,8 @@ public class Header extends BorderPane {
 
             auctionsTab.setOnMouseClicked(e -> switchTab(auctionsTab, AUCTIONS_TAB));
 
-            tabsContainer.setConstraints(inventoryTab, 0, 0);
-            tabsContainer.setConstraints(auctionsTab, 1, 0);
+            GridPane.setConstraints(inventoryTab, 0, 0);
+            GridPane.setConstraints(auctionsTab, 1, 0);
             tabsContainer.getChildren().addAll(inventoryTab, auctionsTab);
         } else if (userType == ADMIN) {
             pageTitle.setText("Admin Console");
@@ -142,10 +142,10 @@ public class Header extends BorderPane {
 
         //Left part container
         leftSideContainer = new GridPane();
-        leftSideContainer.setConstraints(logo, 0, 0);
-        leftSideContainer.setMargin(logo, new Insets(0, 35, 0, 0));
+        GridPane.setConstraints(logo, 0, 0);
+        GridPane.setMargin(logo, new Insets(0, 35, 0, 0));
 
-        leftSideContainer.setConstraints(navigationTabsContainer, 1, 0);
+        GridPane.setConstraints(navigationTabsContainer, 1, 0);
 
         leftSideContainer.getChildren().addAll(logo, navigationTabsContainer);
 
@@ -175,23 +175,28 @@ public class Header extends BorderPane {
         profilePicture.setArcWidth(50);
         profilePicture.setTranslateY((userType == BUYER) ? 13 : 16);
 
-        profilePicture.setOnMouseClicked(e -> { /*TODO*/});
+        profilePicture.setOnMouseClicked(e -> {
+            if (userType == SELLER) {
+                // TODO go to profile page
+            } else {
+                Navigator.viewPage(ACCOUNT_SETTINGS, "Account Settings");
+            }
+        });
 
         //Right part container
         rightSideContainer = new GridPane();
         if (userType == BUYER) {
-            rightSideContainer.setConstraints(searchbar.getSearchbar(),0,0);
-            rightSideContainer.setMargin(searchbar.getSearchbar(), new Insets(0, 50, 0, 0));
+            GridPane.setConstraints(searchbar.getSearchbar(),0,0);
+            GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 50, 0, 0));
             rightSideContainer.getChildren().add(searchbar.getSearchbar());
         }
 
-        rightSideContainer.setConstraints(notificationsIcon, 1, 0);
-        rightSideContainer.setMargin(notificationsIcon, new Insets(0, 30, 0,0 ));
+        GridPane.setConstraints(notificationsIcon, 1, 0);
+        GridPane.setMargin(notificationsIcon, new Insets(0, 30, 0,0 ));
 
-        rightSideContainer.setConstraints(profilePicture, 2, 0);
+        GridPane.setConstraints(profilePicture, 2, 0);
 
         rightSideContainer.getChildren().addAll(notificationsIcon, profilePicture);
-
 
         //Header container
         headerContainer = new BorderPane();
