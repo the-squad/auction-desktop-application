@@ -75,7 +75,8 @@
 .welcome-text,
 .form-headline,
 .headline,
-.page-title {
+.page-title,
+.text-notifier {
   -fx-font-family: Lato;
 }
 
