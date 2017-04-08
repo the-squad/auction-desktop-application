@@ -30,25 +30,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
 
-public class DropdownField extends GridPane{
+public class DropdownField extends Input {
 
-    private final String inputName;
     private String []items;
-
-    private GridPane dropdownFieldContainer;
-    private Label dropdownLabel;
     private ComboBox input;
 
     public DropdownField(String inputName, String ...items) {
-        this.inputName = inputName;
+        super(inputName);
         this.items = items.clone();
     }
 
     public GridPane render() {
-        //Dropdown label
-        dropdownLabel = new Label(inputName);
-        dropdownLabel.getStyleClass().add("label");
-
         //Dropdown field
         input = new ComboBox();
         input.setVisibleRowCount(6);
@@ -84,35 +76,24 @@ public class DropdownField extends GridPane{
         input.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> markAsNormal());
 
         //Dropdown field container
-        dropdownFieldContainer = new GridPane();
-        dropdownFieldContainer.getStyleClass().add("dropdown-field");
+        inputFieldContainer = new GridPane();
+        inputFieldContainer.getStyleClass().add("dropdown-field");
 
-        dropdownFieldContainer.setConstraints(dropdownLabel, 0, 0);
-        dropdownFieldContainer.setMargin(dropdownLabel, new Insets(0, 0, 3, 0));
+        GridPane.setConstraints(input, 0, 1);
 
-        dropdownFieldContainer.setConstraints(input, 0, 1);
+        inputFieldContainer.getChildren().addAll(input);
 
-        dropdownFieldContainer.getChildren().addAll(dropdownLabel, input);
-
-        return dropdownFieldContainer;
+        return inputFieldContainer;
     }
 
 
     private void onBlur() {
         String selectedItem = getValue();
         if (selectedItem == null) {
-            markAsDanger();
+            markAsDanger("Please select an item");
         } else {
             markAsNormal();
         }
-    }
-
-    private void markAsDanger() {
-        dropdownFieldContainer.getStyleClass().add("dropdown-field--danger");
-    }
-
-    private void markAsNormal() {
-        dropdownFieldContainer.getStyleClass().remove("dropdown-field--danger");
     }
 
     private String getValue() {
