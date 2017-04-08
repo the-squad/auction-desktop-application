@@ -23,19 +23,19 @@
  */
 package app.tabs;
 
-import javafx.scene.layout.FlowPane;
+import app.components.AuctionCard;
+import app.components.ItemCard;
+import javafx.scene.control .ScrollPane;
+import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author Muhammad
- */
-public class InventoryTab {
+public class InventoryTab extends GridView {
 
     private static InventoryTab instance;
 
-    private FlowPane inventoryPageContainer;
+    private ScrollPane inventoryPageContainer;
 
     private InventoryTab() {
+        super();
         this.render();
     }
 
@@ -43,7 +43,19 @@ public class InventoryTab {
         //TODO
     }
 
-    public FlowPane getFeedPage() {
+    public void loadCards(ItemCard cards[]) {
+        int counter = 0;
+        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
+            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
+                if (counter >= cards.length) break;
+                cardsContainer.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
+                cardsContainer.getChildren().add(cards[counter].getItemCard());
+                counter++;
+            }
+        }
+    }
+
+    public ScrollPane getInventoryTab() {
         return inventoryPageContainer;
     }
 

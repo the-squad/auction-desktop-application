@@ -24,26 +24,30 @@
 
 package app.tabs;
 
-import javafx.scene.layout.FlowPane;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 
-/**
- * Created by Muhammad on 28-Mar-17.
- */
-public class FeedTab {
+public class FeedTab extends  GridView {
 
     private static FeedTab instance;
 
-    private FlowPane feedPageContainer;
+    private BorderPane feedPageContainer;
 
     private FeedTab() {
+        super();
         this.render();
     }
 
     private void render() {
-        //TODO
+        //Explore tab container
+        feedPageContainer = new BorderPane();
+        feedPageContainer.setTop(tabScrollbar);
+        feedPageContainer.setMargin(tabScrollbar, new Insets(20,0,20,0));
     }
 
-    public FlowPane getFeedPage() {
+    public BorderPane getFeedTab() {
         return feedPageContainer;
     }
 

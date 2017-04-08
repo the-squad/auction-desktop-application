@@ -23,17 +23,13 @@
  */
 package app.tabs;
 
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.BorderPane;
 
-/**
- *
- * @author Muhammad
- */
-public class AuctionsTab {
+public class AuctionsTab extends GridView{
 
     private static AuctionsTab instance;
 
-    private FlowPane auctionsPageContainer;
+    private BorderPane auctionsPageContainer;
 
     private AuctionsTab() {
         this.render();
@@ -43,7 +39,7 @@ public class AuctionsTab {
         //TODO
     }
 
-    public FlowPane getFeedPage() {
+    public BorderPane getAuctionsTab() {
         return auctionsPageContainer;
     }
 

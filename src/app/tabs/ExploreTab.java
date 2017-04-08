@@ -25,31 +25,21 @@ package app.tabs;
 
 import app.components.AuctionCard;
 import app.components.CategoriesPanel;
-import app.components.LoadingIndicator;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author Muhammad
- */
-public class ExploreTab {
+public class ExploreTab extends GridView {
 
     private static ExploreTab instance;
 
+    private AuctionCard auctionCards[];
+
     private BorderPane exploreTabContainer;
-    private ScrollPane exploreTabScrollbar;
     private CategoriesPanel tabs;
 
-    private GridPane cardsContainer;
-    private AuctionCard auctionCard[];
-    private LoadingIndicator loadingIndicator;
-
     private ExploreTab() {
+        super();
         this.render();
     }
 
@@ -57,63 +47,19 @@ public class ExploreTab {
         //Categories tabs
         tabs = new CategoriesPanel("All", "Tech", "Music", "Cars", "Boards", "Buildings", "Planes", "Boats", "T.Vs");
 
-        //Auctions cards view
-        cardsContainer = new GridPane();
-        cardsContainer.setHgap(35);
-        cardsContainer.setVgap(20);
-
-        //Loading bar
-        loadingIndicator = new LoadingIndicator();
-
         //Explore tab container
         exploreTabContainer = new BorderPane();
-        Platform.runLater( () -> exploreTabContainer.requestFocus() );
-        exploreTabContainer.setPadding(new Insets(20, 0, 0, 0));
+        exploreTabContainer.setPadding(new Insets(15, 0, 0, 0));
 
-        //exploreTabContainer.setTop(tabs.getCategoriesTabs());
-        //exploreTabContainer.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 25, 0));
+        exploreTabContainer.setTop(tabs.getCategoriesTabs());
+        exploreTabContainer.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
 
-        exploreTabContainer.setCenter(loadingIndicator.getLoadingState()); //CHANGE LATER
-        exploreTabContainer.setAlignment(loadingIndicator.getLoadingState(), Pos.CENTER);
-
-        //Scroll bar container
-        exploreTabScrollbar = new ScrollPane(exploreTabContainer);
-        exploreTabScrollbar.setFitToWidth(true);
-        exploreTabScrollbar.setFitToHeight(true);
-        exploreTabScrollbar.getStyleClass().add("scrollbar");
-        exploreTabScrollbar.toBack();
-
-        //Making the scrollbar faster
-        exploreTabContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * 3;
-            double width = exploreTabScrollbar.getContent().getBoundsInLocal().getWidth();
-            double value = exploreTabScrollbar.getVvalue();
-            exploreTabScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        exploreTabContainer.setCenter(tabScrollbar);
+        exploreTabContainer.setMargin(tabScrollbar, new Insets(0,0,15,0));
     }
 
-    public void loadExploreCards(int cardsNumber) {
-        cardsContainer.setMaxWidth(exploreTabContainer.getWidth());
-        //Auction card
-        auctionCard = new AuctionCard[cardsNumber];
-
-        for (int counter = 0; counter < cardsNumber; counter++) {
-            auctionCard[counter] = new AuctionCard();
-        }
-
-        int counter = 0;
-        for (int rowCounter = 0; rowCounter < (cardsNumber / 4) + 1; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
-                if (counter >= cardsNumber) break;
-                cardsContainer.setConstraints(auctionCard[counter].getAuctionCard(), columnCounter, rowCounter);
-                cardsContainer.getChildren().add(auctionCard[counter].getAuctionCard());
-                counter++;
-            }
-        }
-    }
-
-    public ScrollPane getExploreTab() {
-        return exploreTabScrollbar;
+    public BorderPane getExploreTab() {
+        return exploreTabContainer;
     }
 
     public static ExploreTab getInstance() {
