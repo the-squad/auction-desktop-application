@@ -24,19 +24,26 @@
 
 package app;
 
+import app.components.Header;
+import app.controllers.AccountSettings;
 import app.pages.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
+import static app.Partials.ACCOUNT_SETTINGS;
+
 public class Navigator {
 
     private static Region currentPage;
     private static Region requestedPage;
+    private static Region previousTab;
     private static Region currentTab;
     private static Region requestedTab;
 
     private static BorderPane appContainer;
+    private static HomePage homePage;
+    private static Header header;
 
     private static Region selectTabOrPage(int tabOrPage) {
         switch (tabOrPage) {
@@ -60,6 +67,8 @@ public class Navigator {
                 return FeedTab.getInstance().getFeedTab();
             case 9:
                 return InventoryTab.getInstance().getInventoryTab();
+            case 10:
+                return AccountSettings.getInstance().getAccountSettingsPage();
         }
         return null;
     }
@@ -79,17 +88,32 @@ public class Navigator {
     public static void switchTab(int requestTabId) {
         requestedTab = selectTabOrPage(requestTabId);
 
-        HomePage homePage = HomePage.getInstance();
+        homePage = HomePage.getInstance();
         Animations.slideDownThenSlideUp(homePage.getHomePage(), currentTab, requestedTab);
         setCurrentTab(requestTabId);
     }
 
-    public static void viewPage(int requestedPageId) {
+    public static void viewPage(int requestedPageId, String pageTitle) {
         requestedPage = selectTabOrPage(requestedPageId);
-        // TODO
+        homePage = HomePage.getInstance();
+
+        Animations.fadeOutThenSlideUp(homePage.getHomePage(), currentTab, requestedPage);
+        previousTab = currentTab;
+        setCurrentTab(requestedPageId);
+
+        header = Header.getInstance();
+        header.setPageTitle(pageTitle);
+        header.showPageTitle();
     }
 
-    public static void hidePage(int currentPageId) {
-        // TODO
+    public static void hidePage() {
+        homePage = HomePage.getInstance();
+
+        Animations.slideDownThenFadeIn(homePage.getHomePage(), currentTab, previousTab);
+        currentTab = previousTab;
+        previousTab = null;
+
+        header = Header.getInstance();
+        header.hidePageTitle();
     }
 }
