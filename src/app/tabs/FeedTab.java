@@ -44,7 +44,7 @@ public class FeedTab extends  GridView {
         //Explore tab container
         feedPageContainer = new BorderPane();
         feedPageContainer.setTop(tabScrollbar);
-        feedPageContainer.setMargin(tabScrollbar, new Insets(20,0,20,0));
+        BorderPane.setMargin(tabScrollbar, new Insets(20,0,20,0));
     }
 
     public BorderPane getFeedTab() {

@@ -23,10 +23,8 @@
  */
 package app.components;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -68,13 +66,13 @@ public class CategoriesPanel {
             tabs[counter].setOnMouseClicked(e -> switchTab(currentTab));
 
             if (counter == 0) tabs[counter].getStyleClass().add("tab--category-active");
-            tabsContainer.setConstraints(tabs[counter], counter + 1, 0);
+            GridPane.setConstraints(tabs[counter], counter + 1, 0);
             tabsContainer.getChildren().add(tabs[counter]);
             counter++;
         }
 
         tabsContainer.setAlignment(Pos.CENTER);
-        tabsContainer.setConstraints(headline, 0, 0);
+        GridPane.setConstraints(headline, 0, 0);
         tabsContainer.getChildren().add(headline);
     }
 

@@ -23,10 +23,6 @@
  */
 package app.components;
 
-/**
- *
- * @author Muhammad
- */
 public class Photos {
     
 }

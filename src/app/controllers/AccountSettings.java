@@ -23,10 +23,6 @@
  */
 package app.controllers;
 
-/**
- *
- * @author Muhammad
- */
 public class AccountSettings {
     
 }

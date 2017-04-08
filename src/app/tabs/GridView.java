@@ -78,7 +78,7 @@ public class GridView {
         for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
             for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
                 if (counter >= cards.length) break;
-                cardsContainer.setConstraints(cards[counter].getAuctionCard(), columnCounter, rowCounter);
+                GridPane.setConstraints(cards[counter].getAuctionCard(), columnCounter, rowCounter);
                 cardsContainer.getChildren().add(cards[counter].getAuctionCard());
                 counter++;
             }

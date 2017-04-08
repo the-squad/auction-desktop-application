@@ -32,10 +32,6 @@ import javafx.scene.layout.GridPane;
 
 import static app.Partials.*;
 
-/**
- *
- * @author Muhammad
- */
 public class InputField extends GridPane {
 
     private final String inputName;

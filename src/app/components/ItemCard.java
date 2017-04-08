@@ -25,10 +25,6 @@ package app.components;
 
 import javafx.scene.layout.BorderPane;
 
-/**
- *
- * @author Muhammad
- */
 public class ItemCard extends Card {
 
     public ItemCard() {

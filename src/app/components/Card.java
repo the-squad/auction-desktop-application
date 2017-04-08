@@ -31,13 +31,13 @@ import javafx.scene.shape.Rectangle;
 
 public class Card {
 
-    protected BorderPane cardContainer;
-    protected Label pictureView;
-    protected Rectangle pictureClipper;
+    BorderPane cardContainer;
+    private Label pictureView;
+    private Rectangle pictureClipper;
 
-    protected GridPane cardDetails;
+    GridPane cardDetails;
 
-    public Card() {
+    Card() {
         this.render();
     }
 

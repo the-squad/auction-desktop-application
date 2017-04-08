@@ -33,10 +33,6 @@ import javafx.scene.shape.Rectangle;
 
 import static app.Partials.BUYER;
 
-/**
- *
- * @author Muhammad
- */
 public class AuctionCard extends Card {
 
     private final int viewType;
@@ -92,10 +88,10 @@ public class AuctionCard extends Card {
             userDetailsContainer.setMinWidth(250);
             userDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
 
-            userDetailsContainer.setConstraints(userPicture, 0, 0);
-            userDetailsContainer.setMargin(userPicture, new Insets(0, 14, 0, 0));
+            GridPane.setConstraints(userPicture, 0, 0);
+            GridPane.setMargin(userPicture, new Insets(0, 14, 0, 0));
 
-            userDetailsContainer.setConstraints(username, 1, 0);
+            GridPane.setConstraints(username, 1, 0);
 
             userDetailsContainer.getChildren().addAll(userPicture, username);
         }
@@ -104,19 +100,19 @@ public class AuctionCard extends Card {
         cardDetails = new GridPane();
         cardDetails.setPadding(new Insets(10, 0, 0, 0));
 
-        cardDetails.setConstraints(itemName, 0, 0);
-        cardDetails.setMargin(itemName, new Insets(0, 15, 2, 15));
+        GridPane.setConstraints(itemName, 0, 0);
+        GridPane.setMargin(itemName, new Insets(0, 15, 2, 15));
 
-        cardDetails.setConstraints(currentBid, 0, 1);
-        cardDetails.setMargin(currentBid, new Insets(1, 15, 4, 15));
+        GridPane.setConstraints(currentBid, 0, 1);
+        GridPane.setMargin(currentBid, new Insets(1, 15, 4, 15));
 
-        cardDetails.setConstraints(auctionStatus, 0, 2);
-        cardDetails.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 2 : 10), 15));
+        GridPane.setConstraints(auctionStatus, 0, 2);
+        GridPane.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 2 : 10), 15));
 
         cardDetails.getChildren().addAll(itemName, currentBid, auctionStatus);
 
         if (viewType == BUYER) {
-            cardDetails.setConstraints(userDetailsContainer, 0, 3);
+            GridPane.setConstraints(userDetailsContainer, 0, 3);
             cardDetails.getChildren().add(userDetailsContainer);
         }
 

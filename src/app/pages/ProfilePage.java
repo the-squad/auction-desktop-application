@@ -26,10 +26,6 @@ package app.pages;
 import app.components.AuctionCard;
 import javafx.scene.control.ScrollPane;
 
-/**
- *
- * @author Muhammad
- */
 public class ProfilePage {
 
     private static ProfilePage instance;

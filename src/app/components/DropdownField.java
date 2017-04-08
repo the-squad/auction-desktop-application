@@ -30,11 +30,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
 
-
-/**
- *
- * @author Muhammad
- */
 public class DropdownField extends GridPane{
 
     private final String inputName;

@@ -25,10 +25,6 @@ package app.components;
 
 import javafx.scene.control.TextField;
 
-/**
- *
- * @author Muhammad
- */
 public class SearchBar extends TextField {
 
     private static SearchBar instance;

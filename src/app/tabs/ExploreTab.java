@@ -52,10 +52,10 @@ public class ExploreTab extends GridView {
         exploreTabContainer.setPadding(new Insets(15, 0, 0, 0));
 
         exploreTabContainer.setTop(tabs.getCategoriesTabs());
-        exploreTabContainer.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
+        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
 
         exploreTabContainer.setCenter(tabScrollbar);
-        exploreTabContainer.setMargin(tabScrollbar, new Insets(0,0,15,0));
+        BorderPane.setMargin(tabScrollbar, new Insets(0,0,15,0));
     }
 
     public BorderPane getExploreTab() {

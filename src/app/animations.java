@@ -34,7 +34,7 @@ import javafx.util.Duration;
 
 public class Animations {
 
-    public static void fade(BorderPane parent, Region fromChild, Region toChild) {
+    static void fade(BorderPane parent, Region fromChild, Region toChild) {
         Timeline fadeAnimation = new Timeline();
 
         //Opacity values
@@ -68,7 +68,7 @@ public class Animations {
         // TODO
     }
 
-    public static void slideDownThenSlideUp(BorderPane parent, Region fromChild, Region toChild) {
+    static void slideDownThenSlideUp(BorderPane parent, Region fromChild, Region toChild) {
         Timeline translateAnimation = new Timeline();
 
         //Creating all key values for the animation
