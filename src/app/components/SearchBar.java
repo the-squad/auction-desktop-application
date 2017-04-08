@@ -23,10 +23,64 @@
  */
 package app.components;
 
-/**
- *
- * @author Muhammad
- */
-public class SearchBar {
-    
+import javafx.scene.control.TextField;
+
+public class SearchBar extends TextField {
+
+    private static SearchBar instance;
+
+    private TextField searchbar;
+
+    private SearchBar() {
+        this.render();
+    }
+
+    private void render() {
+        //Searchbar
+        searchbar = new TextField();
+        searchbar.getStyleClass().add("searchbar");
+        searchbar.setPromptText("Search");
+
+        //Making a search query when pressing enter
+        searchbar.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER:
+                    onSearch(); //Making the search
+                    clear(); //Clearing the field
+                    break;
+            }
+        });
+
+        //When typing a search
+        searchbar.textProperty().addListener((observable, oldValue, newValue) -> {
+            onTyping(getValue());
+        });
+    }
+
+    public TextField getSearchbar() {
+        return searchbar;
+    }
+
+    public void clear() {
+        searchbar.setText("");
+    }
+
+    private void onSearch() {
+        //TODO
+    }
+
+    private void onTyping(String currentSearch) {
+        //TODO
+    }
+
+    private String getValue() {
+        return searchbar.getText();
+    }
+
+    public static SearchBar getInstance() {
+        if (instance == null) {
+            instance = new SearchBar();
+        }
+        return instance;
+    }
 }

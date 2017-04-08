@@ -21,3 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package app.tabs;
+
+import javafx.scene.layout.BorderPane;
+
+public class AuctionsTab extends GridView{
+
+    private static AuctionsTab instance;
+
+    private BorderPane auctionsPageContainer;
+
+    private AuctionsTab() {
+        this.render();
+    }
+
+    private void render() {
+        //TODO
+    }
+
+    public BorderPane getAuctionsTab() {
+        return auctionsPageContainer;
+    }
+
+    public static AuctionsTab getInstance() {
+        if (instance == null) {
+            instance = new AuctionsTab();
+        }
+        return instance;
+    }
+    
+}

@@ -23,10 +23,88 @@
  */
 package app.pages;
 
-/**
- *
- * @author Muhammad
- */
-public class HomePage {
-    
+import app.Navigator;
+import app.components.Header;
+import app.tabs.AuctionsTab;
+import app.tabs.ExploreTab;
+import app.tabs.FeedTab;
+import app.tabs.InventoryTab;
+import javafx.application.Platform;
+import javafx.scene.layout.BorderPane;
+import static app.Partials.*;
+
+public class HomePage extends BorderPane {
+
+    private static HomePage instance;
+
+    private BorderPane homePageContainer;
+    private Header header;
+
+    private ExploreTab explore;
+    private FeedTab feed;
+    private InventoryTab inventory;
+    private AuctionsTab auctions;
+
+    private HomePage() {
+        this.render();
+    }
+
+    private void render() {
+        //Importing the header component
+        header = Header.getInstance();
+
+        if (userType == BUYER) {
+            //Creating the explore tab
+            explore = ExploreTab.getInstance();
+            explore.loadCards(7);
+
+            //Creating the feed tab
+            feed = FeedTab.getInstance();
+            feed.loadCards(4);
+
+            //Creating the inventory page
+            inventory = InventoryTab.getInstance();
+        } if (userType == SELLER) {
+            //Creating the inventory page
+            inventory = InventoryTab.getInstance();
+
+            //Creating the auctions page
+            auctions = AuctionsTab.getInstance();
+        } else if (userType == ADMIN) {
+            // TODO
+        }
+
+        //Home page container
+        homePageContainer = new BorderPane();
+        homePageContainer.setTop(header.getHeader());
+        if (userType == BUYER) {
+            homePageContainer.setCenter(explore.getExploreTab());
+            Navigator.setCurrentTab(EXPLORE_TAB);
+        } else if (userType == SELLER) {
+            homePageContainer.setCenter(inventory.getInventoryTab());
+            Navigator.setCurrentTab(INVENTORY_TAB);
+        } else if (userType == ADMIN) {
+            // TODO
+        }
+
+    }
+
+    public void setUserPhoto() {
+        header.setUserPhoto();
+    }
+
+    public void gainFocus() {
+        Platform.runLater( () -> explore.getExploreTab().requestFocus() );
+    }
+
+    public BorderPane getHomePage() {
+        return homePageContainer;
+    }
+
+    public static HomePage getInstance() {
+        if (instance == null) {
+            instance = new HomePage();
+        }
+        return instance;
+    }
 }

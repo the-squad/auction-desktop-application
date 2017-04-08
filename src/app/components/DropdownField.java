@@ -23,10 +23,103 @@
  */
 package app.components;
 
-/**
- *
- * @author Muhammad
- */
-public class DropdownField {
-    
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.layout.GridPane;
+
+public class DropdownField extends GridPane{
+
+    private final String inputName;
+    private String []items;
+
+    private GridPane dropdownFieldContainer;
+    private Label dropdownLabel;
+    private ComboBox input;
+
+    public DropdownField(String inputName, String ...items) {
+        this.inputName = inputName;
+        this.items = items.clone();
+    }
+
+    public GridPane render() {
+        //Dropdown label
+        dropdownLabel = new Label(inputName);
+        dropdownLabel.getStyleClass().add("label");
+
+        //Dropdown field
+        input = new ComboBox();
+        input.setVisibleRowCount(6);
+
+        //Placeholder styling
+        input.setPromptText("Select");
+        input.setButtonCell(new ListCell() {
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    // styled like -fx-prompt-text-fill:
+                    setStyle("-fx-text-fill: -fx-medium-gray-color");
+                } else {
+                    setStyle("-fx-text-fill: #18181C");
+                    setText(item.toString());
+                }
+            }
+        });
+
+        //Loading dropdown menu items
+        for (String item : items) {
+            input.getItems().add(item);
+        }
+
+        //Checking if the user selecting an item or not
+        this.input.focusedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (!newValue)
+                        onBlur();
+                });
+
+        input.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> markAsNormal());
+
+        //Dropdown field container
+        dropdownFieldContainer = new GridPane();
+        dropdownFieldContainer.getStyleClass().add("dropdown-field");
+
+        dropdownFieldContainer.setConstraints(dropdownLabel, 0, 0);
+        dropdownFieldContainer.setMargin(dropdownLabel, new Insets(0, 0, 3, 0));
+
+        dropdownFieldContainer.setConstraints(input, 0, 1);
+
+        dropdownFieldContainer.getChildren().addAll(dropdownLabel, input);
+
+        return dropdownFieldContainer;
+    }
+
+
+    private void onBlur() {
+        String selectedItem = getValue();
+        if (selectedItem == null) {
+            markAsDanger();
+        } else {
+            markAsNormal();
+        }
+    }
+
+    private void markAsDanger() {
+        dropdownFieldContainer.getStyleClass().add("dropdown-field--danger");
+    }
+
+    private void markAsNormal() {
+        dropdownFieldContainer.getStyleClass().remove("dropdown-field--danger");
+    }
+
+    private String getValue() {
+        return (String) input.getValue();
+    }
+
+    public void clearItems() {
+        input.getItems().clear();
+    }
 }

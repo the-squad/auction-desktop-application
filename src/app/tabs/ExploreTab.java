@@ -21,42 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.tabs;
 
 import app.components.AuctionCard;
-import javafx.scene.control.ScrollPane;
+import app.components.CategoriesPanel;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
 
-public class SearchPage {
+public class ExploreTab extends GridView {
 
-    private static SearchPage instance;
+    private static ExploreTab instance;
 
-    private ScrollPane searchPageContainer;
+    private AuctionCard auctionCards[];
 
-    private AuctionCard auctionResults[];
+    private BorderPane exploreTabContainer;
+    private CategoriesPanel tabs;
 
-    private SearchPage() {
+    private ExploreTab() {
+        super();
         this.render();
     }
 
     private void render() {
-        // TODO
+        //Categories tabs
+        tabs = new CategoriesPanel("All", "Tech", "Music", "Cars", "Boards", "Buildings", "Planes", "Boats", "T.Vs");
+
+        //Explore tab container
+        exploreTabContainer = new BorderPane();
+        exploreTabContainer.setPadding(new Insets(15, 0, 0, 0));
+
+        exploreTabContainer.setTop(tabs.getCategoriesTabs());
+        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
+
+        exploreTabContainer.setCenter(tabScrollbar);
+        BorderPane.setMargin(tabScrollbar, new Insets(0,0,15,0));
     }
 
-    public void currentSearchWord(String word) {
-        // TODO
+    public BorderPane getExploreTab() {
+        return exploreTabContainer;
     }
 
-    public void search(String word) {
-        // TODO
-    }
-
-    public ScrollPane getSearchPage() {
-        return searchPageContainer;
-    }
-
-    public static SearchPage getInstance() {
+    public static ExploreTab getInstance() {
         if (instance == null) {
-            instance = new SearchPage();
+            instance = new ExploreTab();
         }
         return instance;
     }

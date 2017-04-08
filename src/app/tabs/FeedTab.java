@@ -21,3 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+package app.tabs;
+
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
+
+public class FeedTab extends  GridView {
+
+    private static FeedTab instance;
+
+    private BorderPane feedPageContainer;
+
+    private FeedTab() {
+        super();
+        this.render();
+    }
+
+    private void render() {
+        //Explore tab container
+        feedPageContainer = new BorderPane();
+        feedPageContainer.setTop(tabScrollbar);
+        BorderPane.setMargin(tabScrollbar, new Insets(20,0,20,0));
+    }
+
+    public BorderPane getFeedTab() {
+        return feedPageContainer;
+    }
+
+    public static FeedTab getInstance() {
+        if (instance == null) {
+            instance = new FeedTab();
+        }
+        return instance;
+    }
+}

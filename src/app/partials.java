@@ -21,12 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
 
-/**
- *
- * @author Muhammad
- */
-public class AuctionControlPage {
-    
+package app;
+
+public class Partials {
+
+    public static int TEXT = 0;
+    public static int EMAIL = 1;
+    public static int PASSWORD = 2;
+    public static int DATE = 3;
+    public static int TIME = 4;
+
+    public static int BUYER = 0;
+    public static int SELLER = 1;
+    public static int ADMIN = 2;
+
+    public static int userType;
+
+    //Pages and tabs
+    public static int LANDING_PAGE = 0;
+    public static int HOME_PAGE = 1;
+    public static int PROFILE_PAGE = 2;
+    public static int NOTIFICATIONS_PAGE = 3;
+    public static int SEARCH_PAGE = 4;
+    public static int AUCTION_VIEW = 5;
+    public static int EXPLORE_TAB = 6;
+    public static int AUCTIONS_TAB = 7;
+    public static int FEED_TAB = 8;
+    public static int INVENTORY_TAB = 9;
+
+    public static int AUCTION_CARD = 0;
+    public static int ITEM_CARD = 1;
 }

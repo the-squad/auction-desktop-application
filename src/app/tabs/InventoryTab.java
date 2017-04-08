@@ -21,43 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.tabs;
 
 import app.components.AuctionCard;
-import javafx.scene.control.ScrollPane;
+import app.components.ItemCard;
+import javafx.scene.control .ScrollPane;
+import javafx.scene.layout.GridPane;
 
-public class SearchPage {
+public class InventoryTab extends GridView {
 
-    private static SearchPage instance;
+    private static InventoryTab instance;
 
-    private ScrollPane searchPageContainer;
+    private ScrollPane inventoryPageContainer;
 
-    private AuctionCard auctionResults[];
-
-    private SearchPage() {
+    private InventoryTab() {
+        super();
         this.render();
     }
 
     private void render() {
-        // TODO
+        //TODO
     }
 
-    public void currentSearchWord(String word) {
-        // TODO
+    public void loadCards(ItemCard cards[]) {
+        int counter = 0;
+        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
+            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
+                if (counter >= cards.length) break;
+                GridPane.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
+                cardsContainer.getChildren().add(cards[counter].getItemCard());
+                counter++;
+            }
+        }
     }
 
-    public void search(String word) {
-        // TODO
+    public ScrollPane getInventoryTab() {
+        return inventoryPageContainer;
     }
 
-    public ScrollPane getSearchPage() {
-        return searchPageContainer;
-    }
-
-    public static SearchPage getInstance() {
+    public static InventoryTab getInstance() {
         if (instance == null) {
-            instance = new SearchPage();
+            instance = new InventoryTab();
         }
         return instance;
     }
+    
 }

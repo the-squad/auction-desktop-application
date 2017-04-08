@@ -21,12 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.components;
+.headline--category {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-padding: 3px 8px;
+    -fx-font-weight: 700;
+}
 
-/**
- *
- * @author Muhammad
- */
-public class DropdownMenu {
-    
+.tab--category {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-cursor: hand;
+    -fx-padding: 3px 8px;
+    -fx-opacity: 0.5;
+}
+
+.tab--category-active,
+.tab--category-active:hover ,
+.tab--category:hover {
+    -fx-text-fill: #fff;
+    -fx-background-radius: 4px;
+    -fx-opacity: 1;
+}
+
+.tab--category:hover {
+    -fx-background-color: rgba(77,137,251, 0.5);
+}
+
+.tab--category-active,
+.tab--category-active:hover {
+    -fx-background-color: -fx-primary-color;
 }

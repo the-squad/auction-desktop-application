@@ -21,3 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package app.pages;
+
+import app.components.AuctionCard;
+import javafx.scene.control.ScrollPane;
+
+public class ProfilePage {
+
+    private static ProfilePage instance;
+
+    private ScrollPane profilePageContainer;
+
+    private AuctionCard userAuctions[];
+
+    private ProfilePage() {
+        this.render();
+    }
+
+    private void render() {
+        // TODO
+    }
+
+    public void fillUserData() {
+        // TODO
+    }
+
+    private void clearUserData() {
+        // TODO
+    }
+
+    public ScrollPane getProfilePage() {
+        return profilePageContainer;
+    }
+
+    public static ProfilePage getInstance() {
+        if (instance == null) {
+            instance = new ProfilePage();
+        }
+        return instance;
+    }
+}

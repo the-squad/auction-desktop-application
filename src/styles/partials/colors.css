@@ -21,12 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
 
-/**
- *
- * @author Muhammad
- */
-public class ProfileViewPage {
-    
+* {
+    -fx-primary-color: #4d89fb;
+    -fx-primary-color-dark: #457be1;
+    -fx-secondary-color: #FCDF49;
+
+    -fx-darker-gray-color: #18181C; /*Headings, body, backgrounds*/
+    -fx-dark-gray-color: #464649; /*Borders, strokes, dividers*/
+    -fx-medium-gray-color: #9092A5; /*Sub headings, body, disabled buttons*/
+    -fx-light-gray-color: #eee; /*Background*/
+
+    -fx-success-color: #30c670;
+    -fx-danger-color: #f94e4e;
 }

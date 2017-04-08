@@ -26,84 +26,112 @@ package app.components;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author Muhammad
- */
-public class InputField {
+import static app.Partials.*;
+
+public class InputField extends GridPane {
 
     private final String inputName;
-    private final String inputType;
+    private final int inputType;
     private final String placeholder;
     
     private GridPane inputFieldContainer;
     private Label inputLabel;
     private TextField input;
     private Label errorMessage;
-    
-    public InputField(String inputName, String inputType, String placeholder) {
+
+    public InputField(String inputName, int inputType, String placeholder) {
         this.inputName = inputName;
         this.inputType = inputType;
         this.placeholder = placeholder;
+
+        this.render();
     }
-    
-    public GridPane render() {
+
+    private void render() {
         //Input label
-        this.inputLabel = new Label(inputName);
-        this.inputLabel.getStyleClass().add("label");
+        inputLabel = new Label(inputName);
+        inputLabel.getStyleClass().add("label");
 
         //Input field
-        this.input = new TextField("Muhammad TArek");
-        this.input.setPromptText(placeholder);
-        this.input.getStyleClass().add("input");
-        
-        this.input.focusedProperty().addListener(
-            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (!newValue)
-                onBlur();
-        });
+        input = (inputType == TEXT) ? new TextField() : new PasswordField();
+        input.setPromptText(placeholder);
+        input.getStyleClass().add("input");
+
+        input.focusedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (!newValue)
+                        onBlur();
+                });
 
         //Error message
-        this.errorMessage = new Label("Please enter a valid mail");
-        this.errorMessage.getStyleClass().add("error-message");
-        this.errorMessage.setWrapText(true);
-        this.errorMessage.setVisible(false);
+        errorMessage = new Label("Please enter a valid mail");
+        errorMessage.getStyleClass().add("error-message");
+        errorMessage.setWrapText(true);
+        errorMessage.setVisible(false);
 
         //Adding to the grid pane
-        this.inputFieldContainer = new GridPane();
-        this.inputFieldContainer.getStyleClass().add("input-field");
-        
-        this.inputFieldContainer.setConstraints(inputLabel, 0, 0);
-        this.inputFieldContainer.setMargin(inputLabel, new Insets(0, 0, 3, 0));
-        
-        this.inputFieldContainer.setConstraints(input, 0, 1);
-        this.inputFieldContainer.setMargin(input, new Insets(0, 0, 3, 0));
-        
-        this.inputFieldContainer.setConstraints(errorMessage, 0, 2);
-        this.inputFieldContainer.getChildren().addAll(inputLabel, input, errorMessage);
-        
-        return this.inputFieldContainer;
+        inputFieldContainer = new GridPane();
+        inputFieldContainer.getStyleClass().add("input-field");
+
+        inputFieldContainer.setConstraints(inputLabel, 0, 0);
+        inputFieldContainer.setMargin(inputLabel, new Insets(0, 0, 3, 0));
+
+        inputFieldContainer.setConstraints(input, 0, 1);
+        inputFieldContainer.setMargin(input, new Insets(0, 0, 3, 0));
+
+        inputFieldContainer.setConstraints(errorMessage, 0, 2);
+        inputFieldContainer.getChildren().addAll(inputLabel, input, errorMessage);
     }
-    
+
+    public GridPane getInputField() {
+        return inputFieldContainer;
+    }
+
+    /*
+     Returns the input's value
+     */
     public String getValue() {
-        return this.input.getText();
+        return input.getText();
     }
-    
-    private void markAsDanger(String error) {
-        this.inputFieldContainer.getStyleClass().add("input-field--danger");
-        this.errorMessage.setText(error);
-        this.errorMessage.setVisible(true);
+
+    /*
+     Change's input field to danger and shows an error message
+     */
+    public void markAsDanger(String error) {
+        inputFieldContainer.getStyleClass().add("input-field--danger");
+        errorMessage.setText(error);
+        errorMessage.setVisible(true);
     }
-    
+
+    /*
+     Removes the danger class and hide the error message
+     */
     private void markAsNormal() {
-        this.inputFieldContainer.getStyleClass().remove("input-field--danger");
-        this.errorMessage.setVisible(false);
+        inputFieldContainer.getStyleClass().remove("input-field--danger");
+        errorMessage.setVisible(false);
     }
-    
+
+    /*
+     When the user lose focus on an input it will validate the value
+     */
     private void onBlur() {
         //TODO
+
+        String message; //Call the validation message validate(getValue(), text)
+
+        /*
+         If there is an error message the input field will be highlighted
+         else it will set it to normal
+         */
+        /*
+        if (message != "true") {
+            markAsDanger(message);
+        } else {
+            markAsNormal();
+        }*/
     }
 }

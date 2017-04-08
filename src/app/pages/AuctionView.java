@@ -21,12 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.pages;
 
-/**
- *
- * @author Muhammad
- */
-public class ExplorePage {
-    
+import javafx.scene.layout.BorderPane;
+
+public class AuctionView {
+
+    private static AuctionView instance;
+
+    private BorderPane auctionViewContainer;
+
+    private AuctionView() {
+        this.render();
+    }
+
+    private void render() {
+        // TODO
+    }
+
+    public void fillAuctionData() {
+        // TODO
+    }
+
+    private void clearAuctionData() {
+        // TODO
+    }
+
+    public BorderPane getAuctionView() {
+        return auctionViewContainer;
+    }
+
+    public static AuctionView getInstance() {
+        if (instance == null) {
+            instance = new AuctionView();
+        }
+        return instance;
+    }
 }

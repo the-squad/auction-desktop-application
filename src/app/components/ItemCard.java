@@ -23,10 +23,20 @@
  */
 package app.components;
 
-/**
- *
- * @author Muhammad
- */
-public class ItemCard {
-    
+import javafx.scene.layout.BorderPane;
+
+public class ItemCard extends Card {
+
+    public ItemCard() {
+        super();
+        this.render();
+    }
+
+    private void render() {
+
+    }
+
+    public BorderPane getItemCard() {
+        return cardContainer;
+    }
 }
