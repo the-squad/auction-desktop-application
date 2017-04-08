@@ -65,3 +65,17 @@
 .btn-primary:disabled {
     -fx-text-fill: -fx-medium-gray-color;
 }
+
+.btn-outline-gray {
+    -fx-cursor: hand;
+    -fx-border-radius: 4px;
+    -fx-focus-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-color: -fx-medium-gray-color;
+    -fx-background-color: transparent;
+}
+
+.btn-outline-gray:hover {
+    -fx-background-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color;
+}

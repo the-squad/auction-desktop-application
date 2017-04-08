@@ -36,7 +36,7 @@
     -fx-min-height: 175px;
     -fx-max-height: 175px;
     -fx-min-width: 250px;
-    -fx-max-height: 250px;
+    -fx-max-width: 250px;
     -fx-background-image: url("../../assets/image-placeholder.jpg");
     -fx-background-position: center;
     -fx-background-size: cover;
@@ -46,14 +46,29 @@
 .item-name {
     -fx-text-fill: -fx-darker-gray-color;
     -fx-font-weight: 700;
-    -fx-wrap-text: true;
-    -fx-max-width: 180;
     -fx-font-size: 20px;
     -fx-cursor: hand;
 }
 
 .item-name:hover {
     -fx-underline: true;
+}
+
+.subscribe-btn {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-min-height: 26px;
+    -fx-min-width: 26px;
+    -fx-background-image: url("../../assets/subscribe.png");
+    -fx-background-size: 20px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.subscribe-btn:hover,
+.subscribe-btn--active {
+    -fx-background-image: url("../../assets/subscribe-active.png");
 }
 
 .item-bid {

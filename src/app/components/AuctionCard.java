@@ -23,10 +23,13 @@
  */
 package app.components;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -37,13 +40,17 @@ public class AuctionCard extends Card {
 
     private final int viewType;
 
+    private GridPane itemNameAndButtonContainer;
     private Label itemName;
+    private Button subscribeButton;
     private Label currentBid;
     private Label auctionStatus;
 
     private GridPane userDetailsContainer;
     private Rectangle userPicture;
     private Label username;
+
+    private Boolean userSubscribed;
 
     public AuctionCard(int viewType) {
         super();
@@ -55,6 +62,42 @@ public class AuctionCard extends Card {
         //Item name
         itemName = new Label("Google Pixel");
         itemName.getStyleClass().add("item-name");
+
+        // TODO action to go to Auction View
+
+        //Subscribe button
+        subscribeButton = new Button();
+        subscribeButton.getStyleClass().add("subscribe-btn");
+        // TODO change to subscribe-btn--active if the user is already subscribed
+        userSubscribed = false;
+
+        subscribeButton.setOnAction(e -> {
+            if (userSubscribed) {
+                subscribeButton.getStyleClass().remove("subscribe-btn--active");
+                userSubscribed = false;
+            } else {
+                subscribeButton.getStyleClass().add("subscribe-btn--active");
+                userSubscribed = true;
+            }
+        });
+
+        //Item and button container
+        itemNameAndButtonContainer = new GridPane();
+        itemNameAndButtonContainer.setMaxWidth(220);
+
+        ColumnConstraints itemColumn = new ColumnConstraints();
+        itemColumn.setPercentWidth(85);
+
+        ColumnConstraints buttonColumn = new ColumnConstraints();
+        buttonColumn.setPercentWidth(15);
+        buttonColumn.setHalignment(HPos.RIGHT);
+
+        itemNameAndButtonContainer.getColumnConstraints().addAll(itemColumn, buttonColumn);
+
+        GridPane.setConstraints(itemName, 0, 0);
+        GridPane.setConstraints(subscribeButton, 1, 0);
+
+        itemNameAndButtonContainer.getChildren().addAll(itemName, subscribeButton);
 
         //Current bid
         currentBid = new Label("$650");
@@ -100,8 +143,10 @@ public class AuctionCard extends Card {
         cardDetails = new GridPane();
         cardDetails.setPadding(new Insets(10, 0, 0, 0));
 
-        GridPane.setConstraints(itemName, 0, 0);
-        GridPane.setMargin(itemName, new Insets(0, 15, 2, 15));
+        // TODO add action to go seller profile
+
+        GridPane.setConstraints(itemNameAndButtonContainer, 0, 0);
+        GridPane.setMargin(itemNameAndButtonContainer, new Insets(0, 15, 2, 15));
 
         GridPane.setConstraints(currentBid, 0, 1);
         GridPane.setMargin(currentBid, new Insets(1, 15, 4, 15));
@@ -109,7 +154,7 @@ public class AuctionCard extends Card {
         GridPane.setConstraints(auctionStatus, 0, 2);
         GridPane.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 2 : 10), 15));
 
-        cardDetails.getChildren().addAll(itemName, currentBid, auctionStatus);
+        cardDetails.getChildren().addAll(itemNameAndButtonContainer, currentBid, auctionStatus);
 
         if (viewType == BUYER) {
             GridPane.setConstraints(userDetailsContainer, 0, 3);
