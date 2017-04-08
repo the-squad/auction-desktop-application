@@ -66,20 +66,23 @@ public class AuctionCard extends Card {
         // TODO action to go to Auction View
 
         //Subscribe button
-        subscribeButton = new Button();
-        subscribeButton.getStyleClass().add("subscribe-btn");
-        // TODO change to subscribe-btn--active if the user is already subscribed
-        userSubscribed = false;
+        if (viewType == BUYER) {
+            subscribeButton = new Button();
+            subscribeButton.getStyleClass().add("subscribe-btn");
+            // TODO change to subscribe-btn--active if the user is already subscribed
+            userSubscribed = false;
 
-        subscribeButton.setOnAction(e -> {
-            if (userSubscribed) {
-                subscribeButton.getStyleClass().remove("subscribe-btn--active");
-                userSubscribed = false;
-            } else {
-                subscribeButton.getStyleClass().add("subscribe-btn--active");
-                userSubscribed = true;
-            }
-        });
+            subscribeButton.setOnAction(e -> {
+                if (userSubscribed) {
+                    subscribeButton.getStyleClass().remove("subscribe-btn--active");
+                    userSubscribed = false;
+                } else {
+                    subscribeButton.getStyleClass().add("subscribe-btn--active");
+                    userSubscribed = true;
+                }
+            });
+        }
+
 
         //Item and button container
         itemNameAndButtonContainer = new GridPane();
@@ -95,9 +98,12 @@ public class AuctionCard extends Card {
         itemNameAndButtonContainer.getColumnConstraints().addAll(itemColumn, buttonColumn);
 
         GridPane.setConstraints(itemName, 0, 0);
-        GridPane.setConstraints(subscribeButton, 1, 0);
+        itemNameAndButtonContainer.getChildren().add(itemName);
 
-        itemNameAndButtonContainer.getChildren().addAll(itemName, subscribeButton);
+        if (viewType == BUYER) {
+            GridPane.setConstraints(subscribeButton, 1, 0);
+            itemNameAndButtonContainer.getChildren().add(subscribeButton);
+        }
 
         //Current bid
         currentBid = new Label("$650");

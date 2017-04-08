@@ -14,7 +14,7 @@ public class App extends Application {
 
     private LandingPage landingPage;
     public static BorderPane app;
-    
+
     @Override
     public void start(Stage primaryStage) {
         //App container
@@ -30,20 +30,20 @@ public class App extends Application {
         primaryStage.setTitle("Auction System!");
         primaryStage.setMinWidth(1200);
         primaryStage.setMinHeight(600);
-        
+
         //Importing CSS Files
         importComponentsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
         importPartialsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/partials/" + cssFile + ".css"));
         importPagesCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/pages/" + cssFile + ".css"));
-        
+
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("/assets/app-logo.png"));
         primaryStage.show();
     }
-    
+
     private ArrayList<String> importComponentsCSS() {
         ArrayList<String> cssFiles = new ArrayList<>();
-        
+
         //Components CSS
         cssFiles.add("buttons");
         cssFiles.add("cards");
@@ -56,7 +56,7 @@ public class App extends Application {
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
         cssFiles.add("loading");
-        
+
         return cssFiles;
     }
 
@@ -75,7 +75,7 @@ public class App extends Application {
 
         //Partials CSS
         cssFiles.add("landingPage");
-        cssFiles.add("homePage");
+        cssFiles.add("accountSettings");
 
         return cssFiles;
     }
@@ -90,5 +90,5 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

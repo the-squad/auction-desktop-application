@@ -25,6 +25,7 @@ package app.pages;
 
 import app.Navigator;
 import app.components.Header;
+import app.controllers.AccountSettings;
 import app.tabs.AuctionsTab;
 import app.tabs.ExploreTab;
 import app.tabs.FeedTab;
@@ -77,16 +78,16 @@ public class HomePage extends BorderPane {
         //Home page container
         homePageContainer = new BorderPane();
         homePageContainer.setTop(header.getHeader());
+
         if (userType == BUYER) {
             homePageContainer.setCenter(explore.getExploreTab());
             Navigator.setCurrentTab(EXPLORE_TAB);
         } else if (userType == SELLER) {
             homePageContainer.setCenter(inventory.getInventoryTab());
             Navigator.setCurrentTab(INVENTORY_TAB);
-        } else if (userType == ADMIN) {
+        } else {
             // TODO
         }
-
     }
 
     public void setUserPhoto() {

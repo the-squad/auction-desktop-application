@@ -42,6 +42,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 import static app.Partials.*;
 
 public class LandingPage extends GridPane {
@@ -97,17 +99,17 @@ public class LandingPage extends GridPane {
         appInfoContainer.getStyleClass().add("auto-height");
         appInfoContainer.setMaxWidth(350);
 
-        appInfoContainer.setConstraints(appLogo, 0, 0);
-        appInfoContainer.setHalignment(appLogo, HPos.CENTER);
-        appInfoContainer.setMargin(appLogo, new Insets(0, 0, 20, 0));
+        setConstraints(appLogo, 0, 0);
+        setHalignment(appLogo, HPos.CENTER);
+        setMargin(appLogo, new Insets(0, 0, 20, 0));
 
-        appInfoContainer.setConstraints(appName, 0, 1);
-        appInfoContainer.setHalignment(appName, HPos.CENTER);
-        appInfoContainer.setMargin(appName, new Insets(0, 0, 1, 0));
+        setConstraints(appName, 0, 1);
+        setHalignment(appName, HPos.CENTER);
+        setMargin(appName, new Insets(0, 0, 1, 0));
 
-        appInfoContainer.setConstraints(welcomeText, 0, 2);
-        appInfoContainer.setHalignment(welcomeText, HPos.CENTER);
-        appInfoContainer.setMargin(welcomeText, new Insets(0, 0, 0, 0));
+        setConstraints(welcomeText, 0, 2);
+        setHalignment(welcomeText, HPos.CENTER);
+        setMargin(welcomeText, new Insets(0, 0, 0, 0));
 
         appInfoContainer.getChildren().addAll(appLogo, appName, welcomeText);
 
@@ -123,9 +125,9 @@ public class LandingPage extends GridPane {
         landingBackground.getRowConstraints().add(centerInfoV);
         landingBackground.getColumnConstraints().add(centerInfoH);
 
-        landingBackground.setConstraints(appInfoContainer, 0, 0);
-        landingBackground.setHalignment(appInfoContainer, HPos.CENTER);
-        landingBackground.setValignment(appInfoContainer, VPos.CENTER);
+        setConstraints(appInfoContainer, 0, 0);
+        setHalignment(appInfoContainer, HPos.CENTER);
+        setValignment(appInfoContainer, VPos.CENTER);
         landingBackground.getChildren().add(appInfoContainer);
 
         //Form headline text
@@ -134,23 +136,17 @@ public class LandingPage extends GridPane {
         formDetails.getStyleClass().add("form-headline");
 
         //User name field
-        nameField = new InputField("Full Name", TEXT, "");
-
-        //Email field
-        emailField = new InputField("Email", TEXT, "");
-
-        //Password field
-        passwordField = new InputField("Password", PASSWORD, "");
-
-        //Repeat your password
-        repeatPassword = new InputField("Re-enter your password", PASSWORD, "");
+        nameField = new InputField("Full Name", TEXT);
+        emailField = new InputField("Email", EMAIL);
+        passwordField = new InputField("Password", PASSWORD);
+        repeatPassword = new InputField("Re-enter your password", PASSWORD);
 
         //Call to action button
         callToActionButton = new Button("Login");
         callToActionButton.getStyleClass().add("btn-primary");
 
         callToActionButton.setOnAction(e -> {
-            if (callToActionButton.getText() == "Login") {
+            if (Objects.equals(callToActionButton.getText(), "Login")) {
                 this.login();
             } else {
                 this.signUp();
@@ -162,7 +158,7 @@ public class LandingPage extends GridPane {
         switchFormButton.getStyleClass().add("btn-secondary");
 
         switchFormButton.setOnAction(e -> {
-            switchForm((callToActionButton.getText() == "Login") ? SIGNUP : LOGIN);
+            switchForm((Objects.equals(callToActionButton.getText(), "Login")) ? SIGNUP : LOGIN);
         });
 
         //Forms container
@@ -171,22 +167,22 @@ public class LandingPage extends GridPane {
         formsContainer.setVgap(5);
         formsContainer.setMaxWidth(300);
 
-        formsContainer.setConstraints(formDetails, 0, 0);
-        formsContainer.setMargin(formDetails, new Insets(0, 0, 25, 0));
-        formsContainer.setHalignment(formDetails, HPos.CENTER);
+        setConstraints(formDetails, 0, 0);
+        setMargin(formDetails, new Insets(0, 0, 25, 0));
+        setHalignment(formDetails, HPos.CENTER);
 
-        formsContainer.setConstraints(nameField.getInputField(), 0, 1);
-        formsContainer.setConstraints(emailField.getInputField(), 0, 2);
-        formsContainer.setConstraints(passwordField.getInputField(), 0, 3);
-        formsContainer.setConstraints(repeatPassword.getInputField(), 0, 4);
-        formsContainer.setMargin(repeatPassword, new Insets(0, 0, 15, 0));
+        setConstraints(nameField.getInputField(), 0, 1);
+        setConstraints(emailField.getInputField(), 0, 2);
+        setConstraints(passwordField.getInputField(), 0, 3);
+        setConstraints(repeatPassword.getInputField(), 0, 4);
+        setMargin(repeatPassword.getInputField(), new Insets(0, 0, 15, 0));
 
-        formsContainer.setConstraints(callToActionButton, 0, 5);
-        formsContainer.setHalignment(callToActionButton, HPos.CENTER);
-        formsContainer.setMargin(callToActionButton, new Insets(0, 0, 10, 0));
+        setConstraints(callToActionButton, 0, 5);
+        setHalignment(callToActionButton, HPos.CENTER);
+        setMargin(callToActionButton, new Insets(0, 0, 10, 0));
 
-        formsContainer.setConstraints(switchFormButton, 0, 6);
-        formsContainer.setHalignment(switchFormButton, HPos.CENTER);
+        setConstraints(switchFormButton, 0, 6);
+        setHalignment(switchFormButton, HPos.CENTER);
 
         formsContainer.getChildren().addAll(formDetails,
                                             emailField.getInputField(),
@@ -197,7 +193,7 @@ public class LandingPage extends GridPane {
         //Form parent container
         formParentContainer = new BorderPane();
         formParentContainer.setCenter(formsContainer);
-        formParentContainer.setAlignment(formsContainer, Pos.CENTER);
+        BorderPane.setAlignment(formsContainer, Pos.CENTER);
 
         //Landing page container
         landingPageContainer = new GridPane();
@@ -218,8 +214,8 @@ public class LandingPage extends GridPane {
         landingPageContainer.getColumnConstraints().addAll(appInfoColumn, formColumn);
         landingPageContainer.getRowConstraints().add(fullHeightRow);
 
-        landingPageContainer.setConstraints(landingBackground, 0, 0);
-        landingPageContainer.setConstraints(formParentContainer, 1, 0);
+        setConstraints(landingBackground, 0, 0);
+        setConstraints(formParentContainer, 1, 0);
 
         landingPageContainer.getChildren().addAll(landingBackground, formParentContainer);
 
@@ -254,12 +250,12 @@ public class LandingPage extends GridPane {
                                                     passwordField.getInputField(),
                                                     repeatPassword.getInputField());
 
-                formsContainer.setConstraints(nameField.getInputField(), 0, 1);
-                formsContainer.setConstraints(emailField.getInputField(), 0, 2);
-                formsContainer.setConstraints(passwordField.getInputField(), 0, 3);
-                formsContainer.setConstraints(repeatPassword.getInputField(), 0, 4);
-                formsContainer.setConstraints(callToActionButton, 0, 5);
-                formsContainer.setConstraints(switchFormButton, 0, 6);
+                setConstraints(nameField.getInputField(), 0, 1);
+                setConstraints(emailField.getInputField(), 0, 2);
+                setConstraints(passwordField.getInputField(), 0, 3);
+                setConstraints(repeatPassword.getInputField(), 0, 4);
+                setConstraints(callToActionButton, 0, 5);
+                setConstraints(switchFormButton, 0, 6);
             }
 
             formDetails.setText((formType == LOGIN) ? "Log into your account" : "Create a new account");
