@@ -65,10 +65,10 @@ public class LoadingIndicator {
         loadingIndicatorContainer.getStyleClass().add("loading");
         loadingIndicatorContainer.setMaxHeight(130);
 
-        loadingIndicatorContainer.setConstraints(loadingMessage, 0, 0);
-        loadingIndicatorContainer.setMargin(loadingMessage, new Insets(0, 0, 25, 0));
+        GridPane.setConstraints(loadingMessage, 0, 0);
+        GridPane.setMargin(loadingMessage, new Insets(0, 0, 25, 0));
 
-        loadingIndicatorContainer.setConstraints(loadingIndicator, 0, 1);
+        GridPane.setConstraints(loadingIndicator, 0, 1);
 
         loadingIndicatorContainer.getChildren().addAll(loadingMessage, loadingIndicator);
 
