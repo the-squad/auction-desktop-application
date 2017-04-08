@@ -31,17 +31,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import static app.Partials.BUYER;
+
 /**
  *
  * @author Muhammad
  */
-public class AuctionCard {
+public class AuctionCard extends Card {
 
-    private BorderPane auctionCardContainer;
-    private Label auctionPictureView;
-    private Rectangle imageClipper;
+    private final int viewType;
 
-    private GridPane auctionDetailsContainer;
     private Label itemName;
     private Label currentBid;
     private Label auctionStatus;
@@ -50,20 +49,13 @@ public class AuctionCard {
     private Rectangle userPicture;
     private Label username;
 
-    public AuctionCard() {
+    public AuctionCard(int viewType) {
+        super();
+        this.viewType = viewType;
         this.render();
     }
 
     private void render() {
-        //Item picture
-        imageClipper = new Rectangle(250, 175);
-        imageClipper.setArcWidth(5);
-        imageClipper.setArcHeight(5);
-
-        auctionPictureView = new Label();
-        auctionPictureView.getStyleClass().add("item-image");
-        auctionPictureView.setClip(imageClipper);
-
         //Item name
         itemName = new Label("Google Pixel");
         itemName.getStyleClass().add("item-name");
@@ -76,62 +68,64 @@ public class AuctionCard {
         auctionStatus = new Label("1 hour to start".toUpperCase());
         auctionStatus.getStyleClass().add("auction-status");
 
+        //If is the card for the buyer show seller info
+        if (viewType == BUYER) {
+            //User picture
+            userPicture = new Rectangle(30, 30,
+                    new ImagePattern((
+                            new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
+                                    30,
+                                    30,
+                                    true,
+                                    true))));
+            userPicture.setArcHeight(50);
+            userPicture.setArcWidth(50);
+            userPicture.getStyleClass().add("user-picture");
 
-        //User picture
-        userPicture = new Rectangle(30, 30,
-                new ImagePattern((
-                        new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
-                                30,
-                                30,
-                                true,
-                                true))));
-        userPicture.setArcHeight(50);
-        userPicture.setArcWidth(50);
-        userPicture.getStyleClass().add("user-picture");
+            //User name
+            username = new Label("Muhammad Tarek");
+            username.getStyleClass().add("user-name");
 
-        //User name
-        username = new Label("Muhammad Tarek");
-        username.getStyleClass().add("user-name");
+            //User details container
+            userDetailsContainer = new GridPane();
+            userDetailsContainer.getStyleClass().add("user-container");
+            userDetailsContainer.setMinWidth(250);
+            userDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
 
-        //User details container
-        userDetailsContainer = new GridPane();
-        userDetailsContainer.getStyleClass().add("user-container");
-        userDetailsContainer.setMinWidth(250);
-        userDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
+            userDetailsContainer.setConstraints(userPicture, 0, 0);
+            userDetailsContainer.setMargin(userPicture, new Insets(0, 14, 0, 0));
 
-        userDetailsContainer.setConstraints(userPicture, 0, 0);
-        userDetailsContainer.setMargin(userPicture, new Insets(0, 14, 0, 0));
+            userDetailsContainer.setConstraints(username, 1, 0);
 
-        userDetailsContainer.setConstraints(username, 1, 0);
-
-        userDetailsContainer.getChildren().addAll(userPicture, username);
+            userDetailsContainer.getChildren().addAll(userPicture, username);
+        }
 
         //Auction details container
-        auctionDetailsContainer = new GridPane();
-        auctionDetailsContainer.setPadding(new Insets(10, 0, 0, 0));
+        cardDetails = new GridPane();
+        cardDetails.setPadding(new Insets(10, 0, 0, 0));
 
-        auctionDetailsContainer.setConstraints(itemName, 0, 0);
-        auctionDetailsContainer.setMargin(itemName, new Insets(0, 15, 2, 15));
+        cardDetails.setConstraints(itemName, 0, 0);
+        cardDetails.setMargin(itemName, new Insets(0, 15, 2, 15));
 
-        auctionDetailsContainer.setConstraints(currentBid, 0, 1);
-        auctionDetailsContainer.setMargin(currentBid, new Insets(1, 15, 4, 15));
+        cardDetails.setConstraints(currentBid, 0, 1);
+        cardDetails.setMargin(currentBid, new Insets(1, 15, 4, 15));
 
-        auctionDetailsContainer.setConstraints(auctionStatus, 0, 2);
-        auctionDetailsContainer.setMargin(auctionStatus, new Insets(1, 15, 2, 15));
+        cardDetails.setConstraints(auctionStatus, 0, 2);
+        cardDetails.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 2 : 10), 15));
 
-        auctionDetailsContainer.setConstraints(userDetailsContainer, 0, 3);
+        cardDetails.getChildren().addAll(itemName, currentBid, auctionStatus);
 
-        auctionDetailsContainer.getChildren().addAll(itemName, currentBid, auctionStatus, userDetailsContainer);
+        if (viewType == BUYER) {
+            cardDetails.setConstraints(userDetailsContainer, 0, 3);
+            cardDetails.getChildren().add(userDetailsContainer);
+        }
 
         //Auction card container
-        auctionCardContainer = new BorderPane();
-        auctionCardContainer.getStyleClass().add("card");
-        auctionCardContainer.setTop(auctionPictureView);
-        auctionCardContainer.setBottom(auctionDetailsContainer);
+        cardContainer.setBottom(cardDetails);
     }
 
     public BorderPane getAuctionCard() {
-        return auctionCardContainer;
+        return cardContainer;
     }
 
     public void setDetails() {

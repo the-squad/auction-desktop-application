@@ -21,26 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author Muhammad
- */
-public class ItemCard extends Card {
+public class Card {
 
-    public ItemCard() {
-        super();
+    protected BorderPane cardContainer;
+    protected Label pictureView;
+    protected Rectangle pictureClipper;
+
+    protected GridPane cardDetails;
+
+    public Card() {
         this.render();
     }
 
     private void render() {
+        //Item picture
+        pictureClipper = new Rectangle(250, 175);
+        pictureClipper.setArcWidth(5);
+        pictureClipper.setArcHeight(5);
 
+        pictureView = new Label();
+        pictureView.getStyleClass().add("item-image");
+        pictureView.setClip(pictureClipper);
+
+        //Card container
+        cardContainer = new BorderPane();
+        cardContainer.getStyleClass().add("card");
+        cardContainer.setTop(pictureView);
     }
 
-    public BorderPane getItemCard() {
-        return cardContainer;
+    protected void setPictureView() {
+        // TODO
     }
 }
