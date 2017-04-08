@@ -31,6 +31,7 @@ public class Partials {
     public static int PASSWORD = 2;
     public static int DATE = 3;
     public static int TIME = 4;
+    public static int ADDRESS = 5;
 
     public static int BUYER = 0;
     public static int SELLER = 1;
@@ -49,7 +50,12 @@ public class Partials {
     public static int AUCTIONS_TAB = 7;
     public static int FEED_TAB = 8;
     public static int INVENTORY_TAB = 9;
+    public static int ACCOUNT_SETTINGS = 10;
 
     public static int AUCTION_CARD = 0;
     public static int ITEM_CARD = 1;
+
+    //Background color
+    public static int GRAY = 0;
+    public static int WHITE = 1;
 }
