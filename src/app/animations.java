@@ -29,11 +29,12 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
 public class Animations {
 
-    public static void fade(BorderPane parent, Pane fromChild, Pane toChild) {
+    public static void fade(BorderPane parent, Region fromChild, Region toChild) {
         Timeline fadeAnimation = new Timeline();
 
         //Opacity values
@@ -59,15 +60,50 @@ public class Animations {
         fadeAnimation.play();
     }
 
-    public static void fadeOutThenSlideUp(BorderPane parent, Pane popup) {
+    public static void fadeOutThenSlideUp(BorderPane parent, Region popup) {
         // TODO
     }
 
-    public static void slideDonwThenFadeIn(BorderPane parent, Pane requestedPage) {
+    public static void slideDonwThenFadeIn(BorderPane parent, Region requestedPage) {
         // TODO
     }
 
-    public static void slideDownThenSlideDown(BorderPane parent, Pane fromChild, Pane toChild) {
-        // TODO
+    public static void slideDownThenSlideUp(BorderPane parent, Region fromChild, Region toChild) {
+        Timeline translateAnimation = new Timeline();
+
+        //Creating all key values for the animation
+        KeyValue fromChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 1);
+        KeyValue fromChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 0);
+
+        KeyValue toChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 0);
+        KeyValue toChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 1);
+
+        KeyValue fromChildTranslateStart = new KeyValue(fromChild.translateYProperty(), 0);
+        KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20);
+
+        KeyValue toChildTranslateStart = new KeyValue(toChild.translateYProperty(), 20);
+        KeyValue toChildTranslateEnd = new KeyValue(toChild.translateYProperty(), 0);
+
+        //Creating the timeline keyframes
+        //Hiding and moving fromChild
+        KeyFrame startMoveOut = new KeyFrame(Duration.ZERO, fromChildTranslateStart);
+        KeyFrame startFadeOut = new KeyFrame(Duration.ZERO, fromChildOpacityStart);
+        KeyFrame finishFadeOut = new KeyFrame(Duration.millis(125), fromChildOpacityEnd);
+        KeyFrame finishMoveOut = new KeyFrame(Duration.millis(150), fromChildTranslateEnd);
+
+        //Clearing the setCenter
+        KeyFrame clear = new KeyFrame(Duration.millis(151), e -> {
+            parent.setCenter(null);
+            parent.setCenter(toChild);
+        });
+
+        //Showing and moving toChild
+        KeyFrame startFadeIn = new KeyFrame(Duration.millis(151), toChildOpacityStart);
+        KeyFrame startMoveIn = new KeyFrame(Duration.millis(151), toChildTranslateStart);
+        KeyFrame finishFadeIn = new KeyFrame(Duration.millis(276), toChildOpacityEnd);
+        KeyFrame finishMoveIn = new KeyFrame(Duration.millis(301), toChildTranslateEnd);
+
+        translateAnimation.getKeyFrames().addAll(startFadeOut, startMoveOut, finishFadeOut, finishMoveOut, clear, startFadeIn, startMoveIn, finishFadeIn, finishMoveIn);
+        translateAnimation.play();
     }
 }
