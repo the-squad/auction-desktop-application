@@ -47,7 +47,7 @@ public class InputField extends Input {
 
     private void render() {
         //Input field
-        input = (inputType == TEXT) ? new TextField() : new PasswordField();
+        input = (inputType == PASSWORD) ? new PasswordField() : new TextField();
         input.getStyleClass().add("input");
 
         input.focusedProperty().addListener(
