@@ -61,14 +61,18 @@
     -fx-min-height: 26px;
     -fx-min-width: 26px;
     -fx-background-image: url("../../assets/subscribe.png");
-    -fx-background-size: 20px;
+    -fx-background-size: 24px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
 }
 
-.subscribe-btn:hover,
-.subscribe-btn--active {
+.subscribe-btn--active
+,.subscribe-btn:hover {
     -fx-background-image: url("../../assets/subscribe-active.png");
+}
+
+.subscribe-btn--active:hover {
+    -fx-background-image: url("../../assets/subscribe.png");
 }
 
 .item-bid {
