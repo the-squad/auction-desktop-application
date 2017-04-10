@@ -311,7 +311,7 @@ public class LandingPage extends GridPane {
 
     private void goToHomePage() {
         //Showing the loading indicator
-        userType = BUYER;
+        userType = SELLER;
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
         //Loading the home page
@@ -332,7 +332,6 @@ public class LandingPage extends GridPane {
         initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
             //Switching to the home page
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
-            homePage.gainFocus();
         });
     }
 

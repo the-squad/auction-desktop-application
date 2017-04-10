@@ -105,7 +105,6 @@ public class Header extends BorderPane {
 
             inventoryTab.setOnMouseClicked(e -> switchTab(inventoryTab, INVENTORY_TAB));
 
-
             GridPane.setConstraints(exploreTab, 0, 0);
             GridPane.setConstraints(feedTab, 1, 0);
             GridPane.setConstraints(inventoryTab, 2, 0);
@@ -145,13 +144,11 @@ public class Header extends BorderPane {
         //Search bar
         if (userType == BUYER) {
             searchbar = SearchBar.getInstance();
-            searchbar.getSearchbar().setTranslateY(12);
         }
 
         //Notifications icon
         notificationsIcon = new Label();
         notificationsIcon.getStyleClass().add("notification-icon");
-        notificationsIcon.setTranslateY((userType == BUYER) ? 13 : 16);
 
         notificationsIcon.setOnMouseClicked(e ->  { /*TODO*/ });
 
@@ -166,7 +163,6 @@ public class Header extends BorderPane {
         profilePicture.getStyleClass().add("picture");
         profilePicture.setArcHeight(8);
         profilePicture.setArcWidth(8);
-        profilePicture.setTranslateY((userType == BUYER) ? 13 : 16);
 
         profilePicture.setOnMouseClicked(e -> {
             if (userType == SELLER) {
@@ -179,6 +175,7 @@ public class Header extends BorderPane {
         //Right part container
         rightSideContainer = new GridPane();
         rightSideContainer.setMinWidth(350);
+        rightSideContainer.setAlignment(Pos.CENTER_RIGHT);
         if (userType == BUYER) {
             GridPane.setConstraints(searchbar.getSearchbar(),0,0);
             GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 25, 0, 0));

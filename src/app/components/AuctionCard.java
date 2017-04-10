@@ -60,7 +60,7 @@ public class AuctionCard extends Card {
 
     private void render() {
         //Item name
-        itemName = new Label("Google Pixel");
+        itemName = new Label("Moto 360");
         itemName.getStyleClass().add("item-name");
 
         // TODO action to go to Auction View
@@ -106,7 +106,7 @@ public class AuctionCard extends Card {
         }
 
         //Current bid
-        currentBid = new Label("$650");
+        currentBid = new Label("250$");
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status

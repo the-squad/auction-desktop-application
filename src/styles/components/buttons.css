@@ -38,6 +38,10 @@
     -fx-font-weight: 700;
 }
 
+.btn-secondary {
+    -fx-padding: 2px;
+}
+
 .btn-primary:hover,
 .btn-primary:pressed {
     -fx-background-color: -fx-primary-color-dark;
