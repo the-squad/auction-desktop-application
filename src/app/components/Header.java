@@ -29,6 +29,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,7 +45,6 @@ public class Header extends BorderPane {
     private static Header instance;
 
     private BorderPane headerContainer;
-    private GridPane leftSideContainer;
     private ImageView logo;
 
     private BorderPane navigationTabsContainer;
@@ -133,21 +133,14 @@ public class Header extends BorderPane {
 
         //CategoriesPanel container big parent
         navigationTabsContainer = new BorderPane();
+        navigationTabsContainer.setMinWidth(350);
         if (userType == BUYER || userType == SELLER) {
             navigationTabsContainer.setTop(tabsContainer);
             navigationTabsContainer.setBottom(activeTabIndicator);
         } else {
             navigationTabsContainer.setCenter(pageTitle);
+            BorderPane.setAlignment(pageTitle, Pos.CENTER_LEFT);
         }
-
-        //Left part container
-        leftSideContainer = new GridPane();
-        GridPane.setConstraints(logo, 0, 0);
-        GridPane.setMargin(logo, new Insets(0, 35, 0, 0));
-
-        GridPane.setConstraints(navigationTabsContainer, 1, 0);
-
-        leftSideContainer.getChildren().addAll(logo, navigationTabsContainer);
 
         //Search bar
         if (userType == BUYER) {
@@ -185,14 +178,15 @@ public class Header extends BorderPane {
 
         //Right part container
         rightSideContainer = new GridPane();
+        rightSideContainer.setMinWidth(350);
         if (userType == BUYER) {
             GridPane.setConstraints(searchbar.getSearchbar(),0,0);
-            GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 50, 0, 0));
+            GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 25, 0, 0));
             rightSideContainer.getChildren().add(searchbar.getSearchbar());
         }
 
         GridPane.setConstraints(notificationsIcon, 1, 0);
-        GridPane.setMargin(notificationsIcon, new Insets(0, 30, 0,0 ));
+        GridPane.setMargin(notificationsIcon, new Insets(0, 25, 0,0 ));
 
         GridPane.setConstraints(profilePicture, 2, 0);
 
@@ -202,7 +196,8 @@ public class Header extends BorderPane {
         headerContainer = new BorderPane();
         headerContainer.getStyleClass().add("header");
         headerContainer.setPadding(new Insets(0, 50, 0, 50));
-        headerContainer.setLeft(leftSideContainer);
+        headerContainer.setLeft(navigationTabsContainer);
+        headerContainer.setCenter(logo);
         headerContainer.setRight(rightSideContainer);
     }
 
