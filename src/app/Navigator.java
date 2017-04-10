@@ -87,6 +87,7 @@ public class Navigator {
 
     public static void switchTab(int requestTabId) {
         requestedTab = selectTabOrPage(requestTabId);
+        if (requestedTab == currentTab) return;
 
         homePage = HomePage.getInstance();
         Animations.slideDownThenSlideUp(homePage.getHomePage(), currentTab, requestedTab);
@@ -95,6 +96,7 @@ public class Navigator {
 
     public static void viewPage(int requestedPageId, String pageTitle) {
         requestedPage = selectTabOrPage(requestedPageId);
+        if (requestedPage == currentTab) return;
         homePage = HomePage.getInstance();
 
         Animations.fadeOutThenSlideUp(homePage.getHomePage(), currentTab, requestedPage);
