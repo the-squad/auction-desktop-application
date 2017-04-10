@@ -25,7 +25,6 @@ package app.pages;
 
 import app.Navigator;
 import app.components.Header;
-import app.controllers.AccountSettings;
 import app.tabs.AuctionsTab;
 import app.tabs.ExploreTab;
 import app.tabs.FeedTab;
@@ -57,21 +56,24 @@ public class HomePage extends BorderPane {
         if (userType == BUYER) {
             //Creating the explore tab
             explore = ExploreTab.getInstance();
-            explore.loadCards(7);
+            explore.loadAuctionCards(7);
 
             //Creating the feed tab
             feed = FeedTab.getInstance();
-            feed.loadCards(4);
+            feed.loadAuctionCards(4);
 
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
+            inventory.loadItemCards(6);
         } if (userType == SELLER) {
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
+            inventory.loadItemCards(20);
 
             //Creating the auctions page
             auctions = AuctionsTab.getInstance();
-        } else if (userType == ADMIN) {
+            auctions.loadAuctionCards(12);
+        } if (userType == ADMIN) {
             // TODO
         }
 
@@ -92,10 +94,6 @@ public class HomePage extends BorderPane {
 
     public void setUserPhoto() {
         header.setUserPhoto();
-    }
-
-    public void gainFocus() {
-        Platform.runLater( () -> explore.getExploreTab().requestFocus() );
     }
 
     public BorderPane getHomePage() {
