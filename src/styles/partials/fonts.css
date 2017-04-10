@@ -77,7 +77,7 @@
 .headline,
 .page-title,
 .text-notifier {
-  -fx-font-family: Lato;
+  -fx-font-family: NotoSans;
 }
 
 .section-title {
