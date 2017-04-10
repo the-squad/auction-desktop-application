@@ -32,7 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
-class Animations {
+public class Animations {
 
     static void fade(BorderPane parent, Region fromChild, Region toChild) {
         Timeline fadeAnimation = new Timeline();
@@ -135,8 +135,8 @@ class Animations {
         KeyValue fromChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 1);
         KeyValue fromChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 0);
 
-        KeyValue toChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 0);
-        KeyValue toChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 1);
+        KeyValue toChildOpacityStart = new KeyValue(toChild.opacityProperty(), 0);
+        KeyValue toChildOpacityEnd = new KeyValue(toChild.opacityProperty(), 1);
 
         KeyValue fromChildTranslateStart = new KeyValue(fromChild.translateYProperty(), 0);
         KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20);
