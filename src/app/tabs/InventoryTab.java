@@ -23,16 +23,14 @@
  */
 package app.tabs;
 
-import app.components.AuctionCard;
-import app.components.ItemCard;
-import javafx.scene.control .ScrollPane;
-import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
 
 public class InventoryTab extends GridView {
 
     private static InventoryTab instance;
 
-    private ScrollPane inventoryPageContainer;
+    private BorderPane inventoryPageContainer;
 
     private InventoryTab() {
         super();
@@ -40,22 +38,13 @@ public class InventoryTab extends GridView {
     }
 
     private void render() {
-        //TODO
+        //Inventory tab container
+        inventoryPageContainer = new BorderPane();
+        cardsContainer.setTranslateY(20);
+        inventoryPageContainer.setCenter(tabScrollbar);
     }
 
-    public void loadCards(ItemCard cards[]) {
-        int counter = 0;
-        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
-                if (counter >= cards.length) break;
-                GridPane.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
-                cardsContainer.getChildren().add(cards[counter].getItemCard());
-                counter++;
-            }
-        }
-    }
-
-    public ScrollPane getInventoryTab() {
+    public BorderPane getInventoryTab() {
         return inventoryPageContainer;
     }
 

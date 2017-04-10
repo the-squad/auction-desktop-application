@@ -24,12 +24,9 @@
 
 package app.tabs;
 
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 
-public class FeedTab extends  GridView {
+public class FeedTab extends GridView {
 
     private static FeedTab instance;
 
@@ -41,10 +38,10 @@ public class FeedTab extends  GridView {
     }
 
     private void render() {
-        //Explore tab container
+        //Feed tab container
         feedPageContainer = new BorderPane();
+        cardsContainer.setTranslateY(20);
         feedPageContainer.setTop(tabScrollbar);
-        BorderPane.setMargin(tabScrollbar, new Insets(20,0,20,0));
     }
 
     public BorderPane getFeedTab() {

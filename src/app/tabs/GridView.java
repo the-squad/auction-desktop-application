@@ -25,18 +25,20 @@
 package app.tabs;
 
 import app.components.AuctionCard;
+import app.components.ItemCard;
 import app.components.LoadingIndicator;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import static app.Partials.userType;
+import static app.Partials.*;
 
 public class GridView {
 
-    protected ScrollPane tabScrollbar;
-    protected GridPane cardsContainer;
-    protected LoadingIndicator loadingIndicator;
+    ScrollPane tabScrollbar;
+    GridPane cardsContainer;
+    Label extraSpace;
+    private LoadingIndicator loadingIndicator;
 
     public GridView() {
         this.render();
@@ -47,7 +49,11 @@ public class GridView {
         cardsContainer = new GridPane();
         cardsContainer.setVgap(20);
         cardsContainer.setHgap(20);
-        cardsContainer.setAlignment(Pos.CENTER);
+        cardsContainer.setAlignment(Pos.TOP_CENTER);
+
+        //To give extra space at the bottom of the scrollbar
+        extraSpace = new Label("");
+        extraSpace.setMinHeight(1);
 
         //Loading bar
         loadingIndicator = new LoadingIndicator();
@@ -68,7 +74,7 @@ public class GridView {
         });
     }
 
-    public void loadCards(int cardsNumber) {
+    public void loadAuctionCards(int cardsNumber) {
         AuctionCard cards[] = new AuctionCard[cardsNumber];
 
         for (int counter = 0; counter < cardsNumber; counter++)
@@ -83,6 +89,29 @@ public class GridView {
                 counter++;
             }
         }
+
+        GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
+        cardsContainer.getChildren().add(extraSpace);
+    }
+
+    public void loadItemCards(int cardsNumber) {
+        ItemCard cards[] = new ItemCard[cardsNumber];
+
+        for (int counter = 0; counter < cardsNumber; counter++)
+            cards[counter] = new ItemCard();
+
+        int counter = 0;
+        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
+            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
+                if (counter >= cards.length) break;
+                GridPane.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
+                cardsContainer.getChildren().add(cards[counter].getItemCard());
+                counter++;
+            }
+        }
+
+        GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
+        cardsContainer.getChildren().add(extraSpace);
     }
 
     public void clearCards() {

@@ -23,17 +23,13 @@
  */
 package app.tabs;
 
-import app.components.AuctionCard;
 import app.components.CategoriesPanel;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 
 public class ExploreTab extends GridView {
 
     private static ExploreTab instance;
-
-    private AuctionCard auctionCards[];
 
     private BorderPane exploreTabContainer;
     private CategoriesPanel tabs;
@@ -49,13 +45,11 @@ public class ExploreTab extends GridView {
 
         //Explore tab container
         exploreTabContainer = new BorderPane();
-        exploreTabContainer.setPadding(new Insets(15, 0, 0, 0));
 
         exploreTabContainer.setTop(tabs.getCategoriesTabs());
-        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
+        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(20, 0, 20, 0));
 
         exploreTabContainer.setCenter(tabScrollbar);
-        BorderPane.setMargin(tabScrollbar, new Insets(0,0,15,0));
     }
 
     public BorderPane getExploreTab() {
