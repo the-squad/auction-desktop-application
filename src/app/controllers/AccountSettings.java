@@ -151,7 +151,9 @@ public class AccountSettings {
 
         //Account settings page container
         accountSettingsPageContainer = new BorderPane();
+        accountSettingsPageContainer.setTranslateY(40);
         accountSettingsPageContainer.setPadding(new Insets(20,75,0,50));
+        accountSettingsPageContainer.getStyleClass().add("account-settings");
 
         accountSettingsPageContainer.setLeft(photoContainer);
 

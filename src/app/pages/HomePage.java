@@ -80,6 +80,7 @@ public class HomePage extends BorderPane {
         //Home page container
         homePageContainer = new BorderPane();
         homePageContainer.setTop(header.getHeader());
+        homePageContainer.getStyleClass().add("home-page");
 
         if (userType == BUYER) {
             homePageContainer.setCenter(explore.getExploreTab());

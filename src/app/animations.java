@@ -81,7 +81,6 @@ public class Animations {
         KeyFrame clear = new KeyFrame(Duration.millis(151), e -> {
             parent.setCenter(null);
             parent.setCenter(page);
-            parent.setStyle("-fx-background-color: #fff;");
         });
 
         //Showing and moving toChild
@@ -117,7 +116,6 @@ public class Animations {
         KeyFrame clear = new KeyFrame(Duration.millis(151), e -> {
             parent.setCenter(null);
             parent.setCenter(tab);
-            parent.setStyle("-fx-background-color: -fx-light-gray-color;");
         });
 
         //Showing and moving toChild
