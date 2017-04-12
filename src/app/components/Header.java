@@ -24,6 +24,7 @@
 package app.components;
 
 import app.Navigator;
+import app.pages.SearchPage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -43,6 +44,7 @@ import static app.Partials.*;
 public class Header extends BorderPane {
 
     private static Header instance;
+    private SearchPage searchPage;
 
     private BorderPane headerContainer;
     private ImageView logo;
@@ -58,10 +60,10 @@ public class Header extends BorderPane {
     private Label pageTitle;
 
     private GridPane rightSideContainer;
-    private SearchBar searchbar;
-
-    private Label notificationsIcon;
+    private Button searchButton;
+    private Button notificationsButton;
     private Rectangle profilePicture;
+    private Button createButton;
 
     private Header() {
         this.render();
@@ -141,16 +143,27 @@ public class Header extends BorderPane {
             BorderPane.setAlignment(pageTitle, Pos.CENTER_LEFT);
         }
 
-        //Search bar
-        if (userType == BUYER) {
-            searchbar = SearchBar.getInstance();
+        //Create button
+        if (userType == SELLER) {
+            createButton = new Button();
+            createButton.getStyleClass().addAll("icon-button", "add-icon");
         }
 
-        //Notifications icon
-        notificationsIcon = new Label();
-        notificationsIcon.getStyleClass().add("notification-icon");
+        //Search button
+        if (userType != ADMIN) {
+            searchButton = new Button();
+            searchButton.getStyleClass().addAll("icon-button", "search-icon");
 
-        notificationsIcon.setOnMouseClicked(e ->  { /*TODO*/ });
+            searchButton.setOnAction(e -> {
+                Navigator.viewPage(SEARCH_PAGE, "");
+            });
+        }
+
+        //Notifications button
+        notificationsButton = new Button();
+        notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
+
+        // TODO notification action
 
         //Profile picture
         profilePicture = new Rectangle(30, 30,
@@ -176,18 +189,25 @@ public class Header extends BorderPane {
         rightSideContainer = new GridPane();
         rightSideContainer.setMinWidth(350);
         rightSideContainer.setAlignment(Pos.CENTER_RIGHT);
-        if (userType == BUYER) {
-            GridPane.setConstraints(searchbar.getSearchbar(),0,0);
-            GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 25, 0, 0));
-            rightSideContainer.getChildren().add(searchbar.getSearchbar());
+        rightSideContainer.setHgap(15);
+
+        if (userType == SELLER) {
+            GridPane.setConstraints(createButton,0,0);
+            rightSideContainer.getChildren().add(createButton);
         }
 
-        GridPane.setConstraints(notificationsIcon, 1, 0);
-        GridPane.setMargin(notificationsIcon, new Insets(0, 25, 0,0 ));
+        if (userType != ADMIN) {
+            GridPane.setConstraints(searchButton,1,0);
+            rightSideContainer.getChildren().add(searchButton);
+        }
 
-        GridPane.setConstraints(profilePicture, 2, 0);
 
-        rightSideContainer.getChildren().addAll(notificationsIcon, profilePicture);
+
+        GridPane.setConstraints(notificationsButton, 2, 0);
+        GridPane.setConstraints(profilePicture, 3, 0);
+        GridPane.setMargin(profilePicture, new Insets(0, 0,0 ,10));
+
+        rightSideContainer.getChildren().addAll(notificationsButton, profilePicture);
 
         //Header container
         headerContainer = new BorderPane();
