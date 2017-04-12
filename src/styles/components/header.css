@@ -59,10 +59,9 @@
     -fx-smooth: true;
 }
 
-.notification-icon {
+.icon-button {
     -fx-opacity: 0.5;
     -fx-cursor: hand;
-    -fx-background-image: url("../../assets/notification.png");
     -fx-min-height: 30px;
     -fx-max-height: 30px;
     -fx-min-width: 30px;
@@ -70,11 +69,24 @@
     -fx-background-size: 20px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
 }
 
-.notification-icon:hover,
-.notification-icon:focused {
+.icon-button:hover  {
     -fx-opacity: 1;
+}
+
+.add-icon {
+    -fx-background-size: 16px;
+    -fx-background-image: url("../../assets/add.png");
+}
+
+.notification-icon {
+    -fx-background-image: url("../../assets/notification.png");
+}
+
+.search-icon {
+    -fx-background-image: url("../../assets/search-icon.png");
 }
 
 .picture {
