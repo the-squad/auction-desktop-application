@@ -23,34 +23,136 @@
  */
 package app.pages;
 
-import app.components.AuctionCard;
-import javafx.scene.control.ScrollPane;
+import app.Navigator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class SearchPage {
 
     private static SearchPage instance;
 
-    private ScrollPane searchPageContainer;
+    private GridPane searchPageContainer;
 
-    private AuctionCard auctionResults[];
+    private TextField searchField;
+    private Button searchButton;
+    private TextFlow helpText;
+    private Text firstPart;
+    private Text enterKeyword;
+    private Text secondPart;
+    private Text escKeyword;
+    private Text lastPart;
+    private Button closeButton;
 
     private SearchPage() {
         this.render();
     }
 
     private void render() {
-        // TODO
+        //Search field
+        searchField = new TextField();
+        searchField.setPromptText("What's in your mind");
+        searchField.getStyleClass().add("search-field");
+
+        searchField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> {
+            if (newPropertyValue) {
+                helpText.setVisible(true);
+            } else {
+                helpText.setVisible(false);
+            }
+        });
+
+        //Search button
+        searchButton = new Button("Search");
+        searchButton.getStyleClass().add("btn-primary");
+
+        //Help text
+        firstPart = new Text("Press");
+        secondPart = new Text(" to make search\nPress");
+        lastPart = new Text(" to cancel");
+
+        enterKeyword = new Text(" Enter");
+        enterKeyword.setStyle("-fx-font-weight: 700");
+
+        escKeyword = new Text(" ESC");
+        escKeyword.setStyle("-fx-font-weight: 700");
+
+        firstPart.getStyleClass().add("text-color");
+        secondPart.getStyleClass().add("text-color");
+        lastPart.getStyleClass().add("text-color");
+        enterKeyword.getStyleClass().add("text-color");
+        escKeyword.getStyleClass().add("text-color");
+
+        helpText = new TextFlow(firstPart, enterKeyword, secondPart, escKeyword, lastPart);
+        helpText.getStyleClass().add("help-text");
+        helpText.setVisible(false);
+
+        //Close button
+        closeButton = new Button();
+        closeButton.getStyleClass().addAll("btn-outline-gray", "btn-close");
+        closeButton.setTranslateY(-100);
+
+        closeButton.setOnAction(e -> {
+            Navigator.hidePage();
+        });
+
+        //Search page container
+        searchPageContainer = new GridPane();
+        searchPageContainer.setPadding(new Insets(30, 30, 0, 100));
+
+        ColumnConstraints leftPart = new ColumnConstraints();
+        leftPart.setPercentWidth(95);
+
+        ColumnConstraints rightPart = new ColumnConstraints();
+        rightPart.setPercentWidth(5);
+        rightPart.setHalignment(HPos.RIGHT);
+
+        searchPageContainer.getColumnConstraints().add(leftPart);
+
+        GridPane.setConstraints(searchField, 0, 0);
+        GridPane.setMargin(searchField, new Insets(70, 0, 90, 0));
+
+        GridPane.setConstraints(closeButton, 1, 0);
+        GridPane.setConstraints(searchButton, 0, 1);
+        GridPane.setMargin(searchButton, new Insets(0, 0, 90, 0));
+        GridPane.setConstraints(helpText, 0, 2);
+
+        searchPageContainer.getChildren().addAll(searchField, closeButton, searchButton, helpText);
+
+        //Keyboard shortcuts
+        searchPageContainer.setOnKeyPressed(
+                (final KeyEvent keyEvent) -> {
+                    if (null != keyEvent.getCode()) {
+                        switch (keyEvent.getCode()) {
+                            case ENTER:
+                                // TODO
+                                System.out.print("Enter button pressed");
+                                //Stop letting it do anything else
+                                keyEvent.consume();
+                                break;
+                            case ESCAPE:
+                                closeButton.fire();
+                                System.out.print("Escape button pressed");
+                                keyEvent.consume();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+        );
     }
 
-    public void currentSearchWord(String word) {
-        // TODO
-    }
-
-    public void search(String word) {
-        // TODO
-    }
-
-    public ScrollPane getSearchPage() {
+    public GridPane getSearchPage() {
         return searchPageContainer;
     }
 
