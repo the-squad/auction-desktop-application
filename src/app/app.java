@@ -52,7 +52,6 @@ public class App extends Application {
         cssFiles.add("inputField");
         cssFiles.add("photos");
         cssFiles.add("radioButtons");
-        cssFiles.add("searchBar");
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
         cssFiles.add("loading");
@@ -76,6 +75,8 @@ public class App extends Application {
         //Partials CSS
         cssFiles.add("landingPage");
         cssFiles.add("accountSettings");
+        cssFiles.add("pagesBackground");
+        cssFiles.add("searchPage");
 
         return cssFiles;
     }
