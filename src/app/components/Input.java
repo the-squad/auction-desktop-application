@@ -27,10 +27,12 @@ package app.components;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import static app.Partials.SHOW_ERROR_MESSAGE;
 
 class Input {
 
     private final String inputName;
+    private Boolean hideErrorMessage = SHOW_ERROR_MESSAGE;
 
     GridPane inputFieldContainer;
     private Label inputLabel;
@@ -39,6 +41,12 @@ class Input {
 
     Input(String inputName) {
         this.inputName = inputName;
+        this.render();
+    }
+
+    Input(String inputName, Boolean hideErrorMessage) {
+        this.inputName = inputName;
+        this.hideErrorMessage = hideErrorMessage;
         this.render();
     }
 
@@ -61,7 +69,8 @@ class Input {
         GridPane.setMargin(inputLabel, new Insets(0, 0, 3, 0));
 
         GridPane.setConstraints(errorMessage, 0, 2);
-        inputFieldContainer.getChildren().addAll(inputLabel, errorMessage);
+        inputFieldContainer.getChildren().add(inputLabel);
+        if (!hideErrorMessage) inputFieldContainer.getChildren().add(errorMessage);
     }
 
     /*

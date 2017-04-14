@@ -24,11 +24,13 @@
 package app.components;
 
 import app.Navigator;
+import app.pages.SearchPage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,7 +46,6 @@ public class Header extends BorderPane {
     private static Header instance;
 
     private BorderPane headerContainer;
-    private GridPane leftSideContainer;
     private ImageView logo;
 
     private BorderPane navigationTabsContainer;
@@ -56,12 +57,13 @@ public class Header extends BorderPane {
     private Rectangle activeTabIndicator;
 
     private Label pageTitle;
+    private Button backButton;
 
     private GridPane rightSideContainer;
-    private SearchBar searchbar;
-
-    private Label notificationsIcon;
+    private Button searchButton;
+    private Button notificationsButton;
     private Rectangle profilePicture;
+    private Button createButton;
 
     private Header() {
         this.render();
@@ -84,6 +86,14 @@ public class Header extends BorderPane {
         //Tabs and page title
         pageTitle = new Label();
         pageTitle.getStyleClass().add("page-title");
+        BorderPane.setAlignment(pageTitle, Pos.CENTER_LEFT);
+
+        backButton = new Button();
+        backButton.getStyleClass().addAll("icon-button", "back-icon");
+        BorderPane.setAlignment(backButton, Pos.CENTER_LEFT);
+        BorderPane.setMargin(backButton, new Insets(0, 3, 0, 0));
+
+        backButton.setOnAction(e -> Navigator.hidePage());
 
         if (userType == BUYER) {
             //Explore tab
@@ -104,7 +114,6 @@ public class Header extends BorderPane {
             inventoryTab.getStyleClass().add("tab");
 
             inventoryTab.setOnMouseClicked(e -> switchTab(inventoryTab, INVENTORY_TAB));
-
 
             GridPane.setConstraints(exploreTab, 0, 0);
             GridPane.setConstraints(feedTab, 1, 0);
@@ -133,6 +142,7 @@ public class Header extends BorderPane {
 
         //CategoriesPanel container big parent
         navigationTabsContainer = new BorderPane();
+        navigationTabsContainer.setMinWidth(350);
         if (userType == BUYER || userType == SELLER) {
             navigationTabsContainer.setTop(tabsContainer);
             navigationTabsContainer.setBottom(activeTabIndicator);
@@ -140,27 +150,27 @@ public class Header extends BorderPane {
             navigationTabsContainer.setCenter(pageTitle);
         }
 
-        //Left part container
-        leftSideContainer = new GridPane();
-        GridPane.setConstraints(logo, 0, 0);
-        GridPane.setMargin(logo, new Insets(0, 35, 0, 0));
-
-        GridPane.setConstraints(navigationTabsContainer, 1, 0);
-
-        leftSideContainer.getChildren().addAll(logo, navigationTabsContainer);
-
-        //Search bar
-        if (userType == BUYER) {
-            searchbar = SearchBar.getInstance();
-            searchbar.getSearchbar().setTranslateY(12);
+        //Create button
+        if (userType == SELLER) {
+            createButton = new Button();
+            createButton.getStyleClass().addAll("icon-button", "add-icon");
         }
 
-        //Notifications icon
-        notificationsIcon = new Label();
-        notificationsIcon.getStyleClass().add("notification-icon");
-        notificationsIcon.setTranslateY((userType == BUYER) ? 13 : 16);
+        //Search button
+        if (userType != ADMIN) {
+            searchButton = new Button();
+            searchButton.getStyleClass().addAll("icon-button", "search-icon");
 
-        notificationsIcon.setOnMouseClicked(e ->  { /*TODO*/ });
+            searchButton.setOnAction(e -> {
+                Navigator.viewPage(SEARCH_PAGE, "");
+            });
+        }
+
+        //Notifications button
+        notificationsButton = new Button();
+        notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
+
+        // TODO notification action
 
         //Profile picture
         profilePicture = new Rectangle(30, 30,
@@ -173,11 +183,10 @@ public class Header extends BorderPane {
         profilePicture.getStyleClass().add("picture");
         profilePicture.setArcHeight(8);
         profilePicture.setArcWidth(8);
-        profilePicture.setTranslateY((userType == BUYER) ? 13 : 16);
 
         profilePicture.setOnMouseClicked(e -> {
             if (userType == SELLER) {
-                // TODO go to profile page
+                Navigator.viewPage(PROFILE_PAGE, "Muhammad Tarek");
             } else {
                 Navigator.viewPage(ACCOUNT_SETTINGS, "Account Settings");
             }
@@ -185,24 +194,34 @@ public class Header extends BorderPane {
 
         //Right part container
         rightSideContainer = new GridPane();
-        if (userType == BUYER) {
-            GridPane.setConstraints(searchbar.getSearchbar(),0,0);
-            GridPane.setMargin(searchbar.getSearchbar(), new Insets(0, 50, 0, 0));
-            rightSideContainer.getChildren().add(searchbar.getSearchbar());
+        rightSideContainer.setMinWidth(350);
+        rightSideContainer.setAlignment(Pos.CENTER_RIGHT);
+        rightSideContainer.setHgap(15);
+
+        if (userType == SELLER) {
+            GridPane.setConstraints(createButton,0,0);
+            rightSideContainer.getChildren().add(createButton);
         }
 
-        GridPane.setConstraints(notificationsIcon, 1, 0);
-        GridPane.setMargin(notificationsIcon, new Insets(0, 30, 0,0 ));
+        if (userType != ADMIN) {
+            GridPane.setConstraints(searchButton,1,0);
+            rightSideContainer.getChildren().add(searchButton);
+        }
 
-        GridPane.setConstraints(profilePicture, 2, 0);
 
-        rightSideContainer.getChildren().addAll(notificationsIcon, profilePicture);
+
+        GridPane.setConstraints(notificationsButton, 2, 0);
+        GridPane.setConstraints(profilePicture, 3, 0);
+        GridPane.setMargin(profilePicture, new Insets(0, 0,0 ,10));
+
+        rightSideContainer.getChildren().addAll(notificationsButton, profilePicture);
 
         //Header container
         headerContainer = new BorderPane();
         headerContainer.getStyleClass().add("header");
         headerContainer.setPadding(new Insets(0, 50, 0, 50));
-        headerContainer.setLeft(leftSideContainer);
+        headerContainer.setLeft(navigationTabsContainer);
+        headerContainer.setCenter(logo);
         headerContainer.setRight(rightSideContainer);
     }
 
@@ -253,10 +272,12 @@ public class Header extends BorderPane {
     public void showPageTitle() {
         navigationTabsContainer.setTop(null);
         navigationTabsContainer.setBottom(null);
+        navigationTabsContainer.setLeft(backButton);
         navigationTabsContainer.setCenter(pageTitle);
     }
 
     public void hidePageTitle() {
+        navigationTabsContainer.setLeft(null);
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);

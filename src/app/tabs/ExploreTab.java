@@ -23,20 +23,21 @@
  */
 package app.tabs;
 
-import app.components.AuctionCard;
+import app.GridView;
 import app.components.CategoriesPanel;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import static app.Partials.SCROLLING_SPEED;
 
-public class ExploreTab extends GridView {
+public class ExploreTab {
 
     private static ExploreTab instance;
 
-    private AuctionCard auctionCards[];
-
+    private ScrollPane exploreTabScrollbar;
     private BorderPane exploreTabContainer;
     private CategoriesPanel tabs;
+    private GridView gridView;
 
     private ExploreTab() {
         super();
@@ -49,17 +50,35 @@ public class ExploreTab extends GridView {
 
         //Explore tab container
         exploreTabContainer = new BorderPane();
-        exploreTabContainer.setPadding(new Insets(15, 0, 0, 0));
 
         exploreTabContainer.setTop(tabs.getCategoriesTabs());
-        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(0, 0, 15, 0));
+        BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(20, 0, 0, 0));
 
-        exploreTabContainer.setCenter(tabScrollbar);
-        BorderPane.setMargin(tabScrollbar, new Insets(0,0,15,0));
+        gridView = new GridView();
+        exploreTabContainer.setCenter(gridView.getGridView());
+
+        //Scroll pane
+        exploreTabScrollbar = new ScrollPane(exploreTabContainer);
+        exploreTabScrollbar.setFitToWidth(true);
+        exploreTabScrollbar.setFitToHeight(true);
+        exploreTabScrollbar.getStyleClass().add("scrollbar");
+        exploreTabScrollbar.toBack();
+
+        //Making the scrollbar faster
+        exploreTabContainer.setOnScroll(event -> {
+            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+            double width = exploreTabScrollbar.getContent().getBoundsInLocal().getWidth();
+            double value = exploreTabScrollbar.getVvalue();
+            exploreTabScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        });
     }
 
-    public BorderPane getExploreTab() {
-        return exploreTabContainer;
+    public void loadCards() {
+        gridView.loadAuctionCards(10);
+    }
+
+    public ScrollPane getExploreTab() {
+        return exploreTabScrollbar;
     }
 
     public static ExploreTab getInstance() {

@@ -25,7 +25,6 @@ package app.components;
 
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -35,20 +34,36 @@ import static app.Partials.*;
 public class InputField extends Input {
 
     private final int inputType;
+    private int inputSize = NORMAL;
 
     private TextField input;
 
     public InputField(String inputName, int inputType) {
         super(inputName);
         this.inputType = inputType;
+        this.render();
+    }
 
+    public InputField(String inputName, int inputType, int inputSize) {
+        super(inputName);
+        this.inputType = inputType;
+        this.inputSize = inputSize;
+        this.render();
+    }
+
+    public InputField(String inputName, int inputType, int inputSize, Boolean hideErrorMessage) {
+        super(inputName, hideErrorMessage);
+        this.inputType = inputType;
+        this.inputSize = inputSize;
         this.render();
     }
 
     private void render() {
         //Input field
-        input = (inputType == TEXT) ? new TextField() : new PasswordField();
+        input = (inputType == PASSWORD) ? new PasswordField() : new TextField();
         input.getStyleClass().add("input");
+        input.setMinWidth(inputSize);
+        input.setMaxWidth(inputSize);
 
         input.focusedProperty().addListener(
                 (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {

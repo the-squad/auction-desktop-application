@@ -21,8 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.components;
 
-public class RadioButtons {
-    
+.search-field {
+    -fx-padding: 0px;
+    -fx-min-height: 80px;
+    -fx-font-size: 40px;
+    -fx-outline: none;
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-color: -fx-darker-gray-color;
+    -fx-prompt-text-fill: -fx-medium-gray-color;
+    -fx-font-weight: 400;
+}
+
+.help-text {
+    -fx-font-size: 14px;
+    -fx-line-spacing: 6px;
+    -fx-padding: 3px;
+}
+
+.text-color {
+    -fx-fill: -fx-medium-gray-color;
 }

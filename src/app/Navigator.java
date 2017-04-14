@@ -31,15 +31,12 @@ import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
-import static app.Partials.ACCOUNT_SETTINGS;
-
 public class Navigator {
 
-    private static Region currentPage;
-    private static Region requestedPage;
-    private static Region previousTab;
     private static Region currentTab;
     private static Region requestedTab;
+    private static Region previousTab = null;
+    private static Region requestedPage;
 
     private static BorderPane appContainer;
     private static HomePage homePage;
@@ -54,9 +51,9 @@ public class Navigator {
             case 2:
                 return ProfilePage.getInstance().getProfilePage();
             case 3:
-                return SearchPage.getInstance().getSearchPage();
-            case 4:
                 return NotificationsPage.getInstance().getNotificationsPage();
+            case 4:
+                return SearchPage.getInstance().getSearchPage();
             case 5:
                 return AuctionView.getInstance().getAuctionView();
             case 6:
@@ -69,6 +66,8 @@ public class Navigator {
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
+            case 11:
+                return SearchResultsPage.getInstance().getSearchResultsPage();
         }
         return null;
     }
@@ -79,14 +78,12 @@ public class Navigator {
 
     public static void switchPage(int currentPageId, int requestedPageId) {
         appContainer = App.getMainContainer();
-        currentPage = selectTabOrPage(currentPageId);
-        requestedPage = selectTabOrPage(requestedPageId);
-
-        Animations.fade(appContainer, currentPage, requestedPage);
+        Animations.fade(appContainer, selectTabOrPage(currentPageId), selectTabOrPage(requestedPageId));
     }
 
     public static void switchTab(int requestTabId) {
         requestedTab = selectTabOrPage(requestTabId);
+        if (requestedTab == currentTab) return;
 
         homePage = HomePage.getInstance();
         Animations.slideDownThenSlideUp(homePage.getHomePage(), currentTab, requestedTab);
@@ -95,10 +92,13 @@ public class Navigator {
 
     public static void viewPage(int requestedPageId, String pageTitle) {
         requestedPage = selectTabOrPage(requestedPageId);
+        if (requestedPage == currentTab) return;
         homePage = HomePage.getInstance();
 
         Animations.fadeOutThenSlideUp(homePage.getHomePage(), currentTab, requestedPage);
-        previousTab = currentTab;
+
+        if (previousTab == null)
+            previousTab = currentTab;
         setCurrentTab(requestedPageId);
 
         header = Header.getInstance();

@@ -91,24 +91,25 @@ public class LandingPage extends GridPane {
         //Welcome Text
         welcomeText = new Label("A place where you can sell and buy anything");
         welcomeText.getStyleClass().add("welcome-text");
-        welcomeText.setMaxWidth(350);
+        welcomeText.setMinWidth(450);
         welcomeText.setWrapText(true);
 
         //App info container
         appInfoContainer = new GridPane();
         appInfoContainer.getStyleClass().add("auto-height");
         appInfoContainer.setMaxWidth(350);
+        appInfoContainer.setPadding(new Insets(0, 0, 90, 55));
 
         setConstraints(appLogo, 0, 0);
-        setHalignment(appLogo, HPos.CENTER);
-        setMargin(appLogo, new Insets(0, 0, 20, 0));
+        setHalignment(appLogo, HPos.LEFT);
+        setMargin(appLogo, new Insets(0, 0, 10, 0));
 
         setConstraints(appName, 0, 1);
-        setHalignment(appName, HPos.CENTER);
-        setMargin(appName, new Insets(0, 0, 1, 0));
+        setHalignment(appName, HPos.LEFT);
+        setMargin(appName, new Insets(0, 0, 2, 0));
 
         setConstraints(welcomeText, 0, 2);
-        setHalignment(welcomeText, HPos.CENTER);
+        setHalignment(welcomeText, HPos.LEFT);
         setMargin(welcomeText, new Insets(0, 0, 0, 0));
 
         appInfoContainer.getChildren().addAll(appLogo, appName, welcomeText);
@@ -126,7 +127,7 @@ public class LandingPage extends GridPane {
         landingBackground.getColumnConstraints().add(centerInfoH);
 
         setConstraints(appInfoContainer, 0, 0);
-        setHalignment(appInfoContainer, HPos.CENTER);
+        setHalignment(appInfoContainer, HPos.LEFT);
         setValignment(appInfoContainer, VPos.CENTER);
         landingBackground.getChildren().add(appInfoContainer);
 
@@ -331,7 +332,6 @@ public class LandingPage extends GridPane {
         initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
             //Switching to the home page
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
-            homePage.gainFocus();
         });
     }
 

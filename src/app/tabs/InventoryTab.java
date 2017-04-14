@@ -23,16 +23,17 @@
  */
 package app.tabs;
 
-import app.components.AuctionCard;
-import app.components.ItemCard;
-import javafx.scene.control .ScrollPane;
-import javafx.scene.layout.GridPane;
+import app.GridView;
+import javafx.animation.Timeline;
+import javafx.scene.control.ScrollPane;
+import static app.Partials.SCROLLING_SPEED;
 
-public class InventoryTab extends GridView {
+public class InventoryTab {
 
     private static InventoryTab instance;
 
     private ScrollPane inventoryPageContainer;
+    private GridView gridView;
 
     private InventoryTab() {
         super();
@@ -40,19 +41,26 @@ public class InventoryTab extends GridView {
     }
 
     private void render() {
-        //TODO
+        gridView = new GridView();
+
+        //Scroll pane
+        inventoryPageContainer = new ScrollPane(gridView.getGridView());
+        inventoryPageContainer.setFitToWidth(true);
+        inventoryPageContainer.setFitToHeight(true);
+        inventoryPageContainer.getStyleClass().add("scrollbar");
+        inventoryPageContainer.toBack();
+
+        //Making the scrollbar faster
+        gridView.getGridView().setOnScroll(event -> {
+            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+            double width = inventoryPageContainer.getContent().getBoundsInLocal().getWidth();
+            double value = inventoryPageContainer.getVvalue();
+            inventoryPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        });
     }
 
-    public void loadCards(ItemCard cards[]) {
-        int counter = 0;
-        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
-                if (counter >= cards.length) break;
-                GridPane.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
-                cardsContainer.getChildren().add(cards[counter].getItemCard());
-                counter++;
-            }
-        }
+    public void loadCards() {
+        gridView.loadItemCards(8);
     }
 
     public ScrollPane getInventoryTab() {
@@ -65,5 +73,4 @@ public class InventoryTab extends GridView {
         }
         return instance;
     }
-    
 }

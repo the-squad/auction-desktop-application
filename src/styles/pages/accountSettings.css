@@ -27,19 +27,3 @@
     -fx-text-fill: -fx-success-color;
     -fx-font-weight: 700;
 }
-
-.btn-close {
-    -fx-border-color: -fx-medium-gray-color;
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-min-height: 32px;
-    -fx-min-width: 32px;
-    -fx-background-image: url("../../assets/close.png");
-    -fx-background-size: 14px;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-.btn-close:hover {
-    -fx-background-image: url("../../assets/close-hover.png");
-}

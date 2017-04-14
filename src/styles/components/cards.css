@@ -54,6 +54,31 @@
     -fx-underline: true;
 }
 
+.item-description {
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+    -fx-max-height: 45px;
+}
+
+.item-category {
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.item-quantity-headline {
+    -fx-text-fill: -fx-medium-gray-color;
+    -fx-font-size: 12px;
+}
+
+.item-quantity {
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-padding: 0 0 0 10;
+}
+
 .subscribe-btn {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
@@ -61,12 +86,11 @@
     -fx-min-height: 26px;
     -fx-min-width: 26px;
     -fx-background-image: url("../../assets/subscribe.png");
-    -fx-background-size: 20px;
+    -fx-background-size: 24px;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
 }
 
-.subscribe-btn:hover,
 .subscribe-btn--active {
     -fx-background-image: url("../../assets/subscribe-active.png");
 }
@@ -74,7 +98,7 @@
 .item-bid {
     -fx-text-fill: -fx-primary-color;
     -fx-font-weight: 700;
-    -fx-font-size: 16px;
+    -fx-font-size: 19px;
 }
 
 .auction-status {

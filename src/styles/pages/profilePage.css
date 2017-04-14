@@ -21,8 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.components;
 
-public class AdditionCard {
-    
+.cover {
+    -fx-background-image: url("../../assets/profile-bg.jpg");
+    -fx-background-position: top;
+    -fx-background-size: cover;
+}
+
+.user-photo {
+    -fx-background-color: #fff;
+    -fx-background-radius: 4px 4px 0px 0px;
+}
+
+.profile-name {
+    -fx-text-fill: #fff;
+    -fx-font-size: 30px;
+    -fx-font-weight: 700;
+}
+
+.about {
+    -fx-background-color: #fff;
+}
+
+.profile-headline {
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-medium-gray-color;
+}
+
+.profile-number {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-weight: 700;
+}
+
+.btn-profile {
+    -fx-padding: 5px 15px;
 }

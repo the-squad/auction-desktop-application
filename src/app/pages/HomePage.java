@@ -25,12 +25,10 @@ package app.pages;
 
 import app.Navigator;
 import app.components.Header;
-import app.controllers.AccountSettings;
 import app.tabs.AuctionsTab;
 import app.tabs.ExploreTab;
 import app.tabs.FeedTab;
 import app.tabs.InventoryTab;
-import javafx.application.Platform;
 import javafx.scene.layout.BorderPane;
 import static app.Partials.*;
 
@@ -57,27 +55,31 @@ public class HomePage extends BorderPane {
         if (userType == BUYER) {
             //Creating the explore tab
             explore = ExploreTab.getInstance();
-            explore.loadCards(7);
+            explore.loadCards(); // FUTURE TODO
 
             //Creating the feed tab
             feed = FeedTab.getInstance();
-            feed.loadCards(4);
+            feed.loadCards(); // FUTURE TODO
 
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
+            inventory.loadCards(); // FUTURE TODO
         } if (userType == SELLER) {
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
+            inventory.loadCards(); // FUTURE TODO
 
             //Creating the auctions page
             auctions = AuctionsTab.getInstance();
-        } else if (userType == ADMIN) {
+            auctions.loadCards();
+        } if (userType == ADMIN) { // FUTURE TODO
             // TODO
         }
 
         //Home page container
         homePageContainer = new BorderPane();
         homePageContainer.setTop(header.getHeader());
+        homePageContainer.getStyleClass().add("home-page");
 
         if (userType == BUYER) {
             homePageContainer.setCenter(explore.getExploreTab());
@@ -88,14 +90,11 @@ public class HomePage extends BorderPane {
         } else {
             // TODO
         }
+
     }
 
     public void setUserPhoto() {
         header.setUserPhoto();
-    }
-
-    public void gainFocus() {
-        Platform.runLater( () -> explore.getExploreTab().requestFocus() );
     }
 
     public BorderPane getHomePage() {

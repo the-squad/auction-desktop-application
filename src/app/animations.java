@@ -24,6 +24,7 @@
 
 package app;
 
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -32,7 +33,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.util.Duration;
 
-class Animations {
+public class Animations {
 
     static void fade(BorderPane parent, Region fromChild, Region toChild) {
         Timeline fadeAnimation = new Timeline();
@@ -71,7 +72,7 @@ class Animations {
         KeyValue pageOpacityEnd = new KeyValue(page.opacityProperty(), 1);
 
         KeyValue pageTranslateStart = new KeyValue(page.translateYProperty(), 20);
-        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 0);
+        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 0, Interpolator.EASE_BOTH);
 
         //Hiding and moving fromChild
         KeyFrame startFadeOut = new KeyFrame(Duration.ZERO, tabOpacityStart);
@@ -81,7 +82,6 @@ class Animations {
         KeyFrame clear = new KeyFrame(Duration.millis(151), e -> {
             parent.setCenter(null);
             parent.setCenter(page);
-            parent.setStyle("-fx-background-color: #fff;");
         });
 
         //Showing and moving toChild
@@ -102,7 +102,7 @@ class Animations {
         KeyValue pageOpacityEnd = new KeyValue(page.opacityProperty(), 0);
 
         KeyValue pageTranslateStart = new KeyValue(page.translateYProperty(), 0);
-        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 20);
+        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 20, Interpolator.EASE_BOTH);
 
         KeyValue tabOpacityStart = new KeyValue(tab.opacityProperty(), 0);
         KeyValue tabChildOpacityEnd = new KeyValue(tab.opacityProperty(), 1);
@@ -117,7 +117,6 @@ class Animations {
         KeyFrame clear = new KeyFrame(Duration.millis(151), e -> {
             parent.setCenter(null);
             parent.setCenter(tab);
-            parent.setStyle("-fx-background-color: -fx-light-gray-color;");
         });
 
         //Showing and moving toChild
@@ -135,14 +134,14 @@ class Animations {
         KeyValue fromChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 1);
         KeyValue fromChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 0);
 
-        KeyValue toChildOpacityStart = new KeyValue(fromChild.opacityProperty(), 0);
-        KeyValue toChildOpacityEnd = new KeyValue(fromChild.opacityProperty(), 1);
+        KeyValue toChildOpacityStart = new KeyValue(toChild.opacityProperty(), 0);
+        KeyValue toChildOpacityEnd = new KeyValue(toChild.opacityProperty(), 1);
 
         KeyValue fromChildTranslateStart = new KeyValue(fromChild.translateYProperty(), 0);
-        KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20);
+        KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20, Interpolator.EASE_BOTH);
 
         KeyValue toChildTranslateStart = new KeyValue(toChild.translateYProperty(), 20);
-        KeyValue toChildTranslateEnd = new KeyValue(toChild.translateYProperty(), 0);
+        KeyValue toChildTranslateEnd = new KeyValue(toChild.translateYProperty(), 0, Interpolator.EASE_BOTH);
 
         //Creating the timeline keyframes
         //Hiding and moving fromChild

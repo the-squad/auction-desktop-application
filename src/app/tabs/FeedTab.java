@@ -24,16 +24,16 @@
 
 package app.tabs;
 
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
+import app.GridView;
+import javafx.scene.control.ScrollPane;
+import static app.Partials.SCROLLING_SPEED;
 
-public class FeedTab extends  GridView {
+public class FeedTab {
 
     private static FeedTab instance;
 
-    private BorderPane feedPageContainer;
+    private ScrollPane feedPageContainer;
+    private GridView gridView;
 
     private FeedTab() {
         super();
@@ -41,13 +41,29 @@ public class FeedTab extends  GridView {
     }
 
     private void render() {
-        //Explore tab container
-        feedPageContainer = new BorderPane();
-        feedPageContainer.setTop(tabScrollbar);
-        BorderPane.setMargin(tabScrollbar, new Insets(20,0,20,0));
+        gridView = new GridView();
+
+        //Scroll pane
+        feedPageContainer = new ScrollPane(gridView.getGridView());
+        feedPageContainer.setFitToWidth(true);
+        feedPageContainer.setFitToHeight(true);
+        feedPageContainer.getStyleClass().add("scrollbar");
+        feedPageContainer.toBack();
+
+        //Making the scrollbar faster
+        gridView.getGridView().setOnScroll(event -> {
+            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+            double width = feedPageContainer.getContent().getBoundsInLocal().getWidth();
+            double value = feedPageContainer.getVvalue();
+            feedPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        });
     }
 
-    public BorderPane getFeedTab() {
+    public void loadCards() {
+        gridView.loadAuctionCards(10);
+    }
+
+    public ScrollPane getFeedTab() {
         return feedPageContainer;
     }
 

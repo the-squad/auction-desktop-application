@@ -53,11 +53,6 @@
     -fx-effect: dropshadow(three-pass-box, -fx-primary-color, 1, 0, 0, 0);
 }
 
-.input-field .input {
-    -fx-min-width: 300px;
-    -fx-max-width: 300px;
-}
-
 .input-field--danger .input {
     -fx-border-color: -fx-danger-color;
     -fx-background-size: 16px;
@@ -82,8 +77,6 @@
     -fx-background-position: right 14px center;
     -fx-background-image:url('../../assets/down-arrow.png');
     -fx-cursor: hand;
-    -fx-min-width: 200px;
-    -fx-max-width: 200px;
     -fx-text-fill: #18181C;
 }
 
@@ -105,8 +98,8 @@
     -fx-background-radius: 2px;
     -fx-border-radius: 2px;
     -fx-padding: 4px;
-    -fx-min-width: 200px;
-    -fx-max-width: 200px;
+    -fx-min-width: inherit;
+    -fx-max-width: inherit;
     -fx-border-color: -fx-light-gray-color;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0, 0.3), 2, 0, 0, 0);
 }

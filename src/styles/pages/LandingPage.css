@@ -29,7 +29,7 @@ THE SOFTWARE.
 .landing {
     -fx-background-image:url('../../assets/landing-bg.jpg');
     -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-position: bottom;
     -fx-background-size: cover;
     -fx-min-height: 100%;
 }
@@ -38,12 +38,11 @@ THE SOFTWARE.
 .app-name {
     -fx-text-fill: #fff;
     -fx-wrap-text: true;
-    -fx-text-alignment: center;
 }
 
 .app-name {
     -fx-font-weight: 700;
-    -fx-font-size: 30px;
+    -fx-font-size: 35px;
 }
 
 .welcome-text {
@@ -51,7 +50,7 @@ THE SOFTWARE.
 }
 
 .auto-height {
-    -fx-max-height: 250px;
+    -fx-max-height: 340px;
 }
 
 .form-headline {

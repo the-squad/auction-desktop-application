@@ -75,5 +75,4 @@ out/
 build.xml
 manifest.mf
 Project Firefly.iml
-src/assets/Logo.psd
-src/assets/app-logo.psd
+*.psd

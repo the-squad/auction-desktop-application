@@ -22,21 +22,21 @@
  * THE SOFTWARE.
  */
 
-package app.tabs;
+package app;
 
 import app.components.AuctionCard;
+import app.components.ItemCard;
 import app.components.LoadingIndicator;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import static app.Partials.userType;
+import static app.Partials.*;
 
 public class GridView {
 
-    protected ScrollPane tabScrollbar;
-    protected GridPane cardsContainer;
-    protected LoadingIndicator loadingIndicator;
+    GridPane cardsContainer;
+    Label extraSpace;
 
     public GridView() {
         this.render();
@@ -47,28 +47,15 @@ public class GridView {
         cardsContainer = new GridPane();
         cardsContainer.setVgap(20);
         cardsContainer.setHgap(20);
-        cardsContainer.setAlignment(Pos.CENTER);
+        cardsContainer.setAlignment(Pos.TOP_CENTER);
+        cardsContainer.setTranslateY(20);
 
-        //Loading bar
-        loadingIndicator = new LoadingIndicator();
-
-        //Scroll bar container
-        tabScrollbar = new ScrollPane(cardsContainer);
-        tabScrollbar.setFitToWidth(true);
-        tabScrollbar.setFitToHeight(true);
-        tabScrollbar.getStyleClass().add("scrollbar");
-        tabScrollbar.toBack();
-
-        //Making the scrollbar faster
-        cardsContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * 3;
-            double width = tabScrollbar.getContent().getBoundsInLocal().getWidth();
-            double value = tabScrollbar.getVvalue();
-            tabScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        //To give extra space at the bottom of the scrollbar
+        extraSpace = new Label("");
+        extraSpace.setMinHeight(1);
     }
 
-    public void loadCards(int cardsNumber) {
+    public void loadAuctionCards(int cardsNumber) {
         AuctionCard cards[] = new AuctionCard[cardsNumber];
 
         for (int counter = 0; counter < cardsNumber; counter++)
@@ -83,9 +70,36 @@ public class GridView {
                 counter++;
             }
         }
+
+        GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
+        cardsContainer.getChildren().add(extraSpace);
+    }
+
+    public void loadItemCards(int cardsNumber) {
+        ItemCard cards[] = new ItemCard[cardsNumber];
+
+        for (int counter = 0; counter < cardsNumber; counter++)
+            cards[counter] = new ItemCard();
+
+        int counter = 0;
+        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
+            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
+                if (counter >= cards.length) break;
+                GridPane.setConstraints(cards[counter].getItemCard(), columnCounter, rowCounter);
+                cardsContainer.getChildren().add(cards[counter].getItemCard());
+                counter++;
+            }
+        }
+
+        GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
+        cardsContainer.getChildren().add(extraSpace);
     }
 
     public void clearCards() {
         cardsContainer.getChildren().removeAll();
+    }
+
+    public GridPane getGridView() {
+        return cardsContainer;
     }
 }
