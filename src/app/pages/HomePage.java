@@ -29,7 +29,6 @@ import app.tabs.AuctionsTab;
 import app.tabs.ExploreTab;
 import app.tabs.FeedTab;
 import app.tabs.InventoryTab;
-import javafx.application.Platform;
 import javafx.scene.layout.BorderPane;
 import static app.Partials.*;
 
@@ -56,24 +55,24 @@ public class HomePage extends BorderPane {
         if (userType == BUYER) {
             //Creating the explore tab
             explore = ExploreTab.getInstance();
-            explore.loadAuctionCards(7);
+            explore.loadCards(); // FUTURE TODO
 
             //Creating the feed tab
             feed = FeedTab.getInstance();
-            feed.loadAuctionCards(4);
+            feed.loadCards(); // FUTURE TODO
 
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
-            inventory.loadItemCards(6);
+            inventory.loadCards(); // FUTURE TODO
         } if (userType == SELLER) {
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
-            inventory.loadItemCards(20);
+            inventory.loadCards(); // FUTURE TODO
 
             //Creating the auctions page
             auctions = AuctionsTab.getInstance();
-            auctions.loadAuctionCards(12);
-        } if (userType == ADMIN) {
+            auctions.loadCards();
+        } if (userType == ADMIN) { // FUTURE TODO
             // TODO
         }
 
@@ -91,6 +90,7 @@ public class HomePage extends BorderPane {
         } else {
             // TODO
         }
+
     }
 
     public void setUserPhoto() {
