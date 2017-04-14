@@ -24,8 +24,6 @@
 package app.pages;
 
 import app.Navigator;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -33,9 +31,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import static app.Partials.*;
 
 public class SearchPage {
 
@@ -51,7 +49,6 @@ public class SearchPage {
     private Text secondPart;
     private Text escKeyword;
     private Text lastPart;
-    private Button closeButton;
 
     private SearchPage() {
         this.render();
@@ -75,6 +72,8 @@ public class SearchPage {
         searchButton = new Button("Search");
         searchButton.getStyleClass().add("btn-primary");
 
+        searchButton.setOnAction(e -> Navigator.viewPage(SEARCH_RESULTS_PAGE, "Search Results"));
+
         //Help text
         firstPart = new Text("Press");
         secondPart = new Text(" to make search\nPress");
@@ -96,15 +95,6 @@ public class SearchPage {
         helpText.getStyleClass().add("help-text");
         helpText.setVisible(false);
 
-        //Close button
-        closeButton = new Button();
-        closeButton.getStyleClass().addAll("btn-outline-gray", "btn-close");
-        closeButton.setTranslateY(-100);
-
-        closeButton.setOnAction(e -> {
-            Navigator.hidePage();
-        });
-
         //Search page container
         searchPageContainer = new GridPane();
         searchPageContainer.setPadding(new Insets(30, 30, 0, 100));
@@ -121,12 +111,11 @@ public class SearchPage {
         GridPane.setConstraints(searchField, 0, 0);
         GridPane.setMargin(searchField, new Insets(70, 0, 90, 0));
 
-        GridPane.setConstraints(closeButton, 1, 0);
         GridPane.setConstraints(searchButton, 0, 1);
         GridPane.setMargin(searchButton, new Insets(0, 0, 90, 0));
         GridPane.setConstraints(helpText, 0, 2);
 
-        searchPageContainer.getChildren().addAll(searchField, closeButton, searchButton, helpText);
+        searchPageContainer.getChildren().addAll(searchField, searchButton, helpText);
 
         //Keyboard shortcuts
         searchPageContainer.setOnKeyPressed(
@@ -134,14 +123,14 @@ public class SearchPage {
                     if (null != keyEvent.getCode()) {
                         switch (keyEvent.getCode()) {
                             case ENTER:
-                                // TODO
-                                System.out.print("Enter button pressed");
+                                searchButton.fire();
+                                searchField.setText("");
                                 //Stop letting it do anything else
                                 keyEvent.consume();
                                 break;
                             case ESCAPE:
-                                closeButton.fire();
-                                System.out.print("Escape button pressed");
+                                Navigator.hidePage();
+                                searchField.setText("");
                                 keyEvent.consume();
                                 break;
                             default:
