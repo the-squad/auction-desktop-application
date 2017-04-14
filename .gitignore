@@ -76,3 +76,4 @@ build.xml
 manifest.mf
 Project Firefly.iml
 *.psd
+!/src/app/Partials.java

@@ -40,6 +40,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 import java.util.Objects;
@@ -51,6 +52,7 @@ public class LandingPage extends GridPane {
     private static LandingPage instance;
     private static int LOGIN = 0;
     private static int SIGNUP = 1;
+    private static int USER_TYPE = 2;
 
     private GridPane landingPageContainer;
     private GridPane landingBackground;
@@ -60,7 +62,11 @@ public class LandingPage extends GridPane {
     private Label welcomeText;
 
     private BorderPane formParentContainer;
-    private GridPane formsContainer;
+
+    private GridPane logInform;
+    private GridPane signUpForm;
+    private GridPane userTypeForm;
+
     private Label formDetails;
     private InputField nameField;
     private InputField emailField;
@@ -68,6 +74,16 @@ public class LandingPage extends GridPane {
     private InputField repeatPassword;
     private Button callToActionButton;
     private Button switchFormButton;
+
+    private GridPane sellerTypeContainer;
+    private Label sellerHeadline;
+    private Label sellerDescription;
+
+    private GridPane buyerTypeContainer;
+    private Label buyerHeadline;
+    private Label buyerDescription;
+
+    private InputField userTypeField;
 
     private HomePage homePage;
     private LoadingIndicator loadingIndicator;
@@ -91,8 +107,8 @@ public class LandingPage extends GridPane {
         //Welcome Text
         welcomeText = new Label("A place where you can sell and buy anything");
         welcomeText.getStyleClass().add("welcome-text");
-        welcomeText.setMinWidth(450);
         welcomeText.setWrapText(true);
+        welcomeText.setMaxWidth(300);
 
         //App info container
         appInfoContainer = new GridPane();
@@ -142,6 +158,53 @@ public class LandingPage extends GridPane {
         passwordField = new InputField("Password", PASSWORD);
         repeatPassword = new InputField("Re-enter your password", PASSWORD);
 
+        //User types options
+        sellerHeadline = new Label("Seller");
+        sellerHeadline.getStyleClass().add("select-headline");
+
+        sellerDescription = new Label("Save items into inventory, create auctions whenever you want" +
+                " see bidders and earn money");
+        sellerDescription.getStyleClass().add("select-description");
+        sellerDescription.setMaxWidth(300);
+        sellerDescription.setWrapText(true);
+
+        sellerTypeContainer = new GridPane();
+        sellerTypeContainer.setPadding(new Insets(20));
+        sellerTypeContainer.setMinWidth(300);
+        sellerTypeContainer.setMinHeight(130);
+        sellerTypeContainer.setVgap(2);
+        sellerTypeContainer.getStyleClass().add("select-container");
+
+        GridPane.setConstraints(sellerHeadline, 0, 0);
+        GridPane.setConstraints(sellerDescription, 0, 1);
+
+        sellerTypeContainer.getChildren().addAll(sellerHeadline, sellerDescription);
+        sellerTypeContainer.setOnMouseClicked(e -> this.selectUserType(SELLER));
+
+        buyerHeadline = new Label("Buyer");
+        buyerHeadline.getStyleClass().add("select-headline");
+
+        buyerDescription = new Label("Search for current auction, bid for stuff you love" +
+                " and get notified when you win the auction");
+        buyerDescription.getStyleClass().add("select-description");
+        buyerDescription.setMaxWidth(300);
+        buyerDescription.setWrapText(true);
+
+        buyerTypeContainer = new GridPane();
+        buyerTypeContainer.setPadding(new Insets(20));
+        buyerTypeContainer.setMinWidth(300);
+        buyerTypeContainer.setMinHeight(130);
+        buyerTypeContainer.setVgap(2);
+        buyerTypeContainer.getStyleClass().add("select-container");
+
+        userTypeField = new InputField(" ", TEXT);
+
+        GridPane.setConstraints(buyerHeadline, 0, 0);
+        GridPane.setConstraints(buyerDescription, 0, 1);
+
+        buyerTypeContainer.getChildren().addAll(buyerHeadline, buyerDescription);
+        buyerTypeContainer.setOnMouseClicked(e -> this.selectUserType(BUYER));
+
         //Call to action button
         callToActionButton = new Button("Login");
         callToActionButton.getStyleClass().add("btn-primary");
@@ -149,6 +212,8 @@ public class LandingPage extends GridPane {
         callToActionButton.setOnAction(e -> {
             if (Objects.equals(callToActionButton.getText(), "Login")) {
                 this.login();
+            } else if (Objects.equals(callToActionButton.getText(), "Next")) {
+                this.switchForm(USER_TYPE);
             } else {
                 this.signUp();
             }
@@ -159,24 +224,20 @@ public class LandingPage extends GridPane {
         switchFormButton.getStyleClass().add("btn-secondary");
 
         switchFormButton.setOnAction(e -> {
-            switchForm((Objects.equals(callToActionButton.getText(), "Login")) ? SIGNUP : LOGIN);
+            if (Objects.equals(callToActionButton.getText(), "Login")) {
+                this.switchForm(SIGNUP);
+            } else if (Objects.equals(callToActionButton.getText(), "Next")) {
+                this.switchForm(LOGIN);
+            } else {
+                this.switchForm(SIGNUP);
+            }
+
         });
 
-        //Forms container
-        formsContainer = new GridPane();
-        formsContainer.getStyleClass().add("auto-height");
-        formsContainer.setVgap(5);
-        formsContainer.setMaxWidth(300);
-
+        //Shared elements
         setConstraints(formDetails, 0, 0);
         setMargin(formDetails, new Insets(0, 0, 25, 0));
         setHalignment(formDetails, HPos.CENTER);
-
-        setConstraints(nameField.getInputField(), 0, 1);
-        setConstraints(emailField.getInputField(), 0, 2);
-        setConstraints(passwordField.getInputField(), 0, 3);
-        setConstraints(repeatPassword.getInputField(), 0, 4);
-        setMargin(repeatPassword.getInputField(), new Insets(0, 0, 15, 0));
 
         setConstraints(callToActionButton, 0, 5);
         setHalignment(callToActionButton, HPos.CENTER);
@@ -185,16 +246,45 @@ public class LandingPage extends GridPane {
         setConstraints(switchFormButton, 0, 6);
         setHalignment(switchFormButton, HPos.CENTER);
 
-        formsContainer.getChildren().addAll(formDetails,
+        //Log in form
+        logInform = new GridPane();
+        logInform.getStyleClass().add("auto-height");
+        logInform.setVgap(5);
+        logInform.setMaxWidth(300);
+
+        setConstraints(emailField.getInputField(), 0, 1);
+        setConstraints(passwordField.getInputField(), 0, 2);
+
+        logInform.getChildren().addAll(formDetails,
                                             emailField.getInputField(),
                                             passwordField.getInputField(),
                                             callToActionButton,
                                             switchFormButton);
 
+        //Sign up form
+        signUpForm = new GridPane();
+        signUpForm.getStyleClass().add("auto-height");
+        signUpForm.setVgap(5);
+        signUpForm.setMaxWidth(300);
+
+        setConstraints(nameField.getInputField(), 0, 1);
+        setConstraints(emailField.getInputField(), 0, 2);
+        setConstraints(passwordField.getInputField(), 0, 3);
+        setConstraints(repeatPassword.getInputField(), 0, 4);
+
+        //User type form
+        userTypeForm = new GridPane();
+        userTypeForm.getStyleClass().add("auto-height");
+        userTypeForm.setVgap(15);
+        userTypeForm.setMaxWidth(300);
+
+        setConstraints(sellerTypeContainer, 0, 1);
+        setConstraints(buyerTypeContainer, 0, 2);
+
         //Form parent container
         formParentContainer = new BorderPane();
-        formParentContainer.setCenter(formsContainer);
-        BorderPane.setAlignment(formsContainer, Pos.CENTER);
+        formParentContainer.setCenter(logInform);
+        BorderPane.setAlignment(logInform, Pos.CENTER);
 
         //Landing page container
         landingPageContainer = new GridPane();
@@ -232,8 +322,8 @@ public class LandingPage extends GridPane {
         fadeAnimation = new Timeline();
 
         //Opacity values
-        KeyValue showForm = new KeyValue(formsContainer.opacityProperty(), 1);
-        KeyValue hideForm = new KeyValue(formsContainer.opacityProperty(), 0);
+        KeyValue showForm = new KeyValue(formParentContainer.opacityProperty(), 1);
+        KeyValue hideForm = new KeyValue(formParentContainer.opacityProperty(), 0);
 
         //Animation frames
         KeyFrame startHide = new KeyFrame(Duration.ZERO, showForm);
@@ -241,33 +331,78 @@ public class LandingPage extends GridPane {
 
         KeyFrame updateContent = new KeyFrame(Duration.millis(100), e -> {
             if (formType == LOGIN) {
-                formsContainer.getChildren().remove(nameField.getInputField());
-                formsContainer.getChildren().remove(repeatPassword.getInputField());
+                logInform.getChildren().removeAll(formDetails,
+                                                  emailField.getInputField(),
+                                                  passwordField.getInputField(),
+                                                  callToActionButton,
+                                                  switchFormButton);
+                logInform.getChildren().addAll(formDetails,
+                                                emailField.getInputField(),
+                                                passwordField.getInputField(),
+                                                callToActionButton,
+                                                switchFormButton);
+
+                formParentContainer.setCenter(logInform);
+                formDetails.setText("Login to your account");
+                callToActionButton.setText("Login");
+                switchFormButton.setText("Don't have an account?");
+            } else if (formType == SIGNUP) {
+                signUpForm.getChildren().removeAll(formDetails,
+                        nameField.getInputField(),
+                        emailField.getInputField(),
+                        passwordField.getInputField(),
+                        repeatPassword.getInputField(),
+                        callToActionButton,
+                        switchFormButton);
+
+                signUpForm.getChildren().addAll(formDetails,
+                                                nameField.getInputField(),
+                                                emailField.getInputField(),
+                                                passwordField.getInputField(),
+                                                repeatPassword.getInputField(),
+                                                callToActionButton,
+                                                switchFormButton);
+
+                formParentContainer.setCenter(signUpForm);
+                formDetails.setText("Create a new account");
+                callToActionButton.setText("Next");
+                switchFormButton.setText("Have an account?");
             } else {
-                formsContainer.getChildren().removeAll(emailField.getInputField(),
-                                                       passwordField.getInputField());
-                formsContainer.getChildren().addAll(nameField.getInputField(),
-                                                    emailField.getInputField(),
-                                                    passwordField.getInputField(),
-                                                    repeatPassword.getInputField());
+                userTypeForm.getChildren().removeAll(formDetails,
+                                                  sellerTypeContainer,
+                                                  buyerTypeContainer,
+                                                  callToActionButton,
+                                                  switchFormButton);
 
-                setConstraints(nameField.getInputField(), 0, 1);
-                setConstraints(emailField.getInputField(), 0, 2);
-                setConstraints(passwordField.getInputField(), 0, 3);
-                setConstraints(repeatPassword.getInputField(), 0, 4);
-                setConstraints(callToActionButton, 0, 5);
-                setConstraints(switchFormButton, 0, 6);
+                userTypeForm.getChildren().addAll(formDetails,
+                                                  sellerTypeContainer,
+                                                  buyerTypeContainer,
+                                                  callToActionButton,
+                                                  switchFormButton);
+
+                formParentContainer.setCenter(userTypeForm);
+                formDetails.setText("Finish up");
+                callToActionButton.setText("Sign up");
+                switchFormButton.setText("Back");
             }
-
-            formDetails.setText((formType == LOGIN) ? "Log into your account" : "Create a new account");
-            callToActionButton.setText((formType == LOGIN) ? "Login" : "Sign up");
-            switchFormButton.setText((formType == LOGIN) ? "Have an account?" : "Don't have an account?");
         });
 
         KeyFrame startShow = new KeyFrame(Duration.millis(200), showForm);
 
         fadeAnimation.getKeyFrames().addAll(startHide, finishHide, updateContent, startShow);
         fadeAnimation.play();
+    }
+
+    private void selectUserType(int selectedType) {
+        if (selectedType == SELLER) {
+            buyerTypeContainer.getStyleClass().remove("select-container--active");
+            sellerTypeContainer.getStyleClass().add("select-container--active");
+            userTypeField.setValue("Seller");
+        } else {
+            sellerTypeContainer.getStyleClass().remove("select-container--active");
+            buyerTypeContainer.getStyleClass().add("select-container--active");
+            userTypeField.setValue("Buyer");
+        }
     }
 
     private void login() {
@@ -332,6 +467,8 @@ public class LandingPage extends GridPane {
         initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
             //Switching to the home page
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
+            switchForm(LOGIN);
+            formParentContainer.setCenter(logInform);
         });
     }
 
