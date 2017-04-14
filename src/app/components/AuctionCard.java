@@ -23,11 +23,14 @@
  */
 package app.components;
 
+import app.Navigator;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -35,6 +38,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import static app.Partials.BUYER;
+import static app.Partials.PROFILE_PAGE;
 
 public class AuctionCard extends Card {
 
@@ -136,6 +140,8 @@ public class AuctionCard extends Card {
             userDetailsContainer.getStyleClass().add("user-container");
             userDetailsContainer.setMinWidth(250);
             userDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
+
+            userDetailsContainer.setOnMouseClicked(me -> Navigator.viewPage(PROFILE_PAGE, username.getText()));
 
             GridPane.setConstraints(userPicture, 0, 0);
             GridPane.setMargin(userPicture, new Insets(0, 14, 0, 0));

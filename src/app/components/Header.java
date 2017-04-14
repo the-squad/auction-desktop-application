@@ -186,7 +186,7 @@ public class Header extends BorderPane {
 
         profilePicture.setOnMouseClicked(e -> {
             if (userType == SELLER) {
-                // TODO go to profile page
+                Navigator.viewPage(PROFILE_PAGE, "Muhammad Tarek");
             } else {
                 Navigator.viewPage(ACCOUNT_SETTINGS, "Account Settings");
             }
