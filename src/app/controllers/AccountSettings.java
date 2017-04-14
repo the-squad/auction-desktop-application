@@ -59,8 +59,6 @@ public class AccountSettings {
     private Button updateAccountButton;
     private Label updateActionNotifier;
 
-    private Button closeButton;
-
     private AccountSettings() {
         this.render();
     }
@@ -84,11 +82,11 @@ public class AccountSettings {
         changePhotoButton.setMinWidth(250);
 
         //Account data fields
-        nameField = new InputField("Name", TEXT);
-        emailField = new InputField("Email", EMAIL);
-        passwordField = new InputField("Password", PASSWORD);
-        repeatPasswordField = new InputField("Repeat Password", PASSWORD);
-        addressField = new InputField("Address", ADDRESS);
+        nameField = new InputField("Name", TEXT, LONG);
+        emailField = new InputField("Email", EMAIL, LONG);
+        passwordField = new InputField("Password", PASSWORD, LONG);
+        repeatPasswordField = new InputField("Repeat Password", PASSWORD, LONG);
+        addressField = new InputField("Address", ADDRESS, LONG);
 
         updateAccountButton = new Button("Update Account");
         updateAccountButton.getStyleClass().add("btn-primary");
@@ -109,15 +107,6 @@ public class AccountSettings {
         GridPane.setMargin(updateActionNotifier, new Insets(0,0,0,20));
 
         buttonAndNotifierContainer.getChildren().addAll(updateAccountButton, updateActionNotifier);
-
-        //Close button
-        closeButton = new Button();
-        closeButton.getStyleClass().addAll("btn-outline-gray", "btn-close");
-
-        closeButton.setOnAction(e -> {
-            Navigator.hidePage();
-            updateActionNotifier.setVisible(false);
-        });
 
         //Photo container
         photoContainer = new GridPane();
@@ -160,8 +149,6 @@ public class AccountSettings {
         accountSettingsPageContainer.setCenter(formDataContainer);
         BorderPane.setAlignment(formDataContainer, Pos.CENTER_LEFT);
         BorderPane.setMargin(formDataContainer, new Insets(0, 0, 0, 100));
-
-        accountSettingsPageContainer.setRight(closeButton);
     }
 
     public void fillAccountData() {

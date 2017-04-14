@@ -98,7 +98,7 @@ public class LandingPage extends GridPane {
         appInfoContainer = new GridPane();
         appInfoContainer.getStyleClass().add("auto-height");
         appInfoContainer.setMaxWidth(350);
-        appInfoContainer.setPadding(new Insets(0, 0, 100, 55));
+        appInfoContainer.setPadding(new Insets(0, 0, 90, 55));
 
         setConstraints(appLogo, 0, 0);
         setHalignment(appLogo, HPos.LEFT);
@@ -311,7 +311,7 @@ public class LandingPage extends GridPane {
 
     private void goToHomePage() {
         //Showing the loading indicator
-        userType = SELLER;
+        userType = BUYER;
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
         //Loading the home page
