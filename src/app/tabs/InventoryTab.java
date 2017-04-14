@@ -23,14 +23,17 @@
  */
 package app.tabs;
 
-import javafx.geometry.Insets;
-import javafx.scene.layout.BorderPane;
+import app.GridView;
+import javafx.animation.Timeline;
+import javafx.scene.control.ScrollPane;
+import static app.Partials.SCROLLING_SPEED;
 
-public class InventoryTab extends GridView {
+public class InventoryTab {
 
     private static InventoryTab instance;
 
-    private BorderPane inventoryPageContainer;
+    private ScrollPane inventoryPageContainer;
+    private GridView gridView;
 
     private InventoryTab() {
         super();
@@ -38,13 +41,29 @@ public class InventoryTab extends GridView {
     }
 
     private void render() {
-        //Inventory tab container
-        inventoryPageContainer = new BorderPane();
-        cardsContainer.setTranslateY(20);
-        inventoryPageContainer.setCenter(tabScrollbar);
+        gridView = new GridView();
+
+        //Scroll pane
+        inventoryPageContainer = new ScrollPane(gridView.getGridView());
+        inventoryPageContainer.setFitToWidth(true);
+        inventoryPageContainer.setFitToHeight(true);
+        inventoryPageContainer.getStyleClass().add("scrollbar");
+        inventoryPageContainer.toBack();
+
+        //Making the scrollbar faster
+        gridView.getGridView().setOnScroll(event -> {
+            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+            double width = inventoryPageContainer.getContent().getBoundsInLocal().getWidth();
+            double value = inventoryPageContainer.getVvalue();
+            inventoryPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        });
     }
 
-    public BorderPane getInventoryTab() {
+    public void loadCards() {
+        gridView.loadItemCards(8);
+    }
+
+    public ScrollPane getInventoryTab() {
         return inventoryPageContainer;
     }
 
@@ -54,5 +73,4 @@ public class InventoryTab extends GridView {
         }
         return instance;
     }
-    
 }

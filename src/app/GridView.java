@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package app.tabs;
+package app;
 
 import app.components.AuctionCard;
 import app.components.ItemCard;
@@ -35,10 +35,8 @@ import static app.Partials.*;
 
 public class GridView {
 
-    ScrollPane tabScrollbar;
     GridPane cardsContainer;
     Label extraSpace;
-    private LoadingIndicator loadingIndicator;
 
     public GridView() {
         this.render();
@@ -50,28 +48,11 @@ public class GridView {
         cardsContainer.setVgap(20);
         cardsContainer.setHgap(20);
         cardsContainer.setAlignment(Pos.TOP_CENTER);
+        cardsContainer.setTranslateY(20);
 
         //To give extra space at the bottom of the scrollbar
         extraSpace = new Label("");
         extraSpace.setMinHeight(1);
-
-        //Loading bar
-        loadingIndicator = new LoadingIndicator();
-
-        //Scroll bar container
-        tabScrollbar = new ScrollPane(cardsContainer);
-        tabScrollbar.setFitToWidth(true);
-        tabScrollbar.setFitToHeight(true);
-        tabScrollbar.getStyleClass().add("scrollbar");
-        tabScrollbar.toBack();
-
-        //Making the scrollbar faster
-        cardsContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * 3;
-            double width = tabScrollbar.getContent().getBoundsInLocal().getWidth();
-            double value = tabScrollbar.getVvalue();
-            tabScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
     }
 
     public void loadAuctionCards(int cardsNumber) {
@@ -116,5 +97,9 @@ public class GridView {
 
     public void clearCards() {
         cardsContainer.getChildren().removeAll();
+    }
+
+    public GridPane getGridView() {
+        return cardsContainer;
     }
 }
