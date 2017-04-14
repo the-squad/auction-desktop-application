@@ -59,34 +59,37 @@
     -fx-smooth: true;
 }
 
-.icon-button {
-    -fx-opacity: 0.5;
-    -fx-cursor: hand;
-    -fx-min-height: 30px;
-    -fx-max-height: 30px;
-    -fx-min-width: 30px;
-    -fx-max-width: 30px;
-    -fx-background-size: 20px;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-    -fx-background-color: transparent;
-}
-
-.icon-button:hover  {
-    -fx-opacity: 1;
-}
-
 .add-icon {
-    -fx-background-size: 16px;
     -fx-background-image: url("../../assets/add.png");
+}
+
+.add-icon:hover {
+    -fx-background-image: url("../../assets/add-active.png");
 }
 
 .notification-icon {
     -fx-background-image: url("../../assets/notification.png");
 }
 
+.notification-icon:hover {
+    -fx-background-image: url("../../assets/notification-active.png");
+}
+
 .search-icon {
-    -fx-background-image: url("../../assets/search-icon.png");
+    -fx-background-image: url("../../assets/search.png");
+}
+
+.search-icon:hover {
+    -fx-background-image: url("../../assets/search-active.png");
+}
+
+.back-icon {
+    -fx-background-size: 16px;
+    -fx-background-image: url("../../assets/back.png");
+}
+
+.back-icon:hover {
+    -fx-background-image: url("../../assets/back-active.png");
 }
 
 .picture {

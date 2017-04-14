@@ -44,7 +44,6 @@ import static app.Partials.*;
 public class Header extends BorderPane {
 
     private static Header instance;
-    private SearchPage searchPage;
 
     private BorderPane headerContainer;
     private ImageView logo;
@@ -58,6 +57,7 @@ public class Header extends BorderPane {
     private Rectangle activeTabIndicator;
 
     private Label pageTitle;
+    private Button backButton;
 
     private GridPane rightSideContainer;
     private Button searchButton;
@@ -86,6 +86,14 @@ public class Header extends BorderPane {
         //Tabs and page title
         pageTitle = new Label();
         pageTitle.getStyleClass().add("page-title");
+        BorderPane.setAlignment(pageTitle, Pos.CENTER_LEFT);
+
+        backButton = new Button();
+        backButton.getStyleClass().addAll("icon-button", "back-icon");
+        BorderPane.setAlignment(backButton, Pos.CENTER_LEFT);
+        BorderPane.setMargin(backButton, new Insets(0, 3, 0, 0));
+
+        backButton.setOnAction(e -> Navigator.hidePage());
 
         if (userType == BUYER) {
             //Explore tab
@@ -140,7 +148,6 @@ public class Header extends BorderPane {
             navigationTabsContainer.setBottom(activeTabIndicator);
         } else {
             navigationTabsContainer.setCenter(pageTitle);
-            BorderPane.setAlignment(pageTitle, Pos.CENTER_LEFT);
         }
 
         //Create button
@@ -265,10 +272,12 @@ public class Header extends BorderPane {
     public void showPageTitle() {
         navigationTabsContainer.setTop(null);
         navigationTabsContainer.setBottom(null);
+        navigationTabsContainer.setLeft(backButton);
         navigationTabsContainer.setCenter(pageTitle);
     }
 
     public void hidePageTitle() {
+        navigationTabsContainer.setLeft(null);
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);

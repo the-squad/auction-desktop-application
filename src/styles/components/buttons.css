@@ -83,3 +83,15 @@
     -fx-background-color: -fx-primary-color;
     -fx-border-color: -fx-primary-color;
 }
+
+.icon-button {
+    -fx-cursor: hand;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-min-width: 30px;
+    -fx-max-width: 30px;
+    -fx-background-size: 20px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: transparent;
+}
