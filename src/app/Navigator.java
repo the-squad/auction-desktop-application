@@ -28,7 +28,6 @@ import app.components.Header;
 import app.controllers.AccountSettings;
 import app.pages.*;
 import app.tabs.*;
-import javafx.application.Platform;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
@@ -67,6 +66,8 @@ public class Navigator {
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
+            case 11:
+                return SearchResultsPage.getInstance().getSearchResultsPage();
         }
         return null;
     }
