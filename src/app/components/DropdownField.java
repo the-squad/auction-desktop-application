@@ -24,13 +24,14 @@
 package app.components;
 
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
+import static app.Partials.*;
 
 public class DropdownField extends Input {
+
+    private int inputSize = NORMAL;
 
     private String []items;
     private ComboBox input;
@@ -38,12 +39,32 @@ public class DropdownField extends Input {
     public DropdownField(String inputName, String ...items) {
         super(inputName);
         this.items = items.clone();
+
+        this.render();
     }
 
-    public GridPane render() {
+    public DropdownField(String inputName, int inputSize, String ...items) {
+        super(inputName);
+        this.items = items.clone();
+        this.inputSize = inputSize;
+
+        this.render();
+    }
+
+    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage,String ...items) {
+        super(inputName, hideErrorMessage);
+        this.items = items.clone();
+        this.inputSize = inputSize;
+
+        this.render();
+    }
+
+    public void render() {
         //Dropdown field
         input = new ComboBox();
         input.setVisibleRowCount(6);
+        input.setMinWidth(inputSize);
+        input.setMaxWidth(inputSize);
 
         //Placeholder styling
         input.setPromptText("Select");
@@ -76,16 +97,12 @@ public class DropdownField extends Input {
         input.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> markAsNormal());
 
         //Dropdown field container
-        inputFieldContainer = new GridPane();
         inputFieldContainer.getStyleClass().add("dropdown-field");
 
         GridPane.setConstraints(input, 0, 1);
 
         inputFieldContainer.getChildren().addAll(input);
-
-        return inputFieldContainer;
     }
-
 
     private void onBlur() {
         String selectedItem = getValue();
@@ -96,11 +113,19 @@ public class DropdownField extends Input {
         }
     }
 
-    private String getValue() {
+    public String getValue() {
         return (String) input.getValue();
+    }
+
+    public void setDefaultSelect() {
+        input.getSelectionModel().selectFirst();
     }
 
     public void clearItems() {
         input.getItems().clear();
+    }
+
+    public GridPane getDropdownField() {
+        return inputFieldContainer;
     }
 }
