@@ -32,6 +32,7 @@ public class Partials {
     public static int DATE = 3;
     public static int TIME = 4;
     public static int ADDRESS = 5;
+    public static int NUMBER = 6;
 
     public static int BUYER = 0;
     public static int SELLER = 1;
@@ -51,6 +52,7 @@ public class Partials {
     public static int FEED_TAB = 8;
     public static int INVENTORY_TAB = 9;
     public static int ACCOUNT_SETTINGS = 10;
+    public static int SEARCH_RESULTS_PAGE = 11;
 
     public static int AUCTION_CARD = 0;
     public static int ITEM_CARD = 1;
@@ -58,4 +60,13 @@ public class Partials {
     //Background color
     public static int GRAY = 0;
     public static int WHITE = 1;
+
+    //Input field sizes
+    public static int SHORT = 175;
+    public static int NORMAL = 300;
+    public static int LONG = 400;
+
+    //True or false
+    public static Boolean HIDE_ERROR_MESSAGE = Boolean.TRUE;
+    public static Boolean SHOW_ERROR_MESSAGE = Boolean.FALSE;
 }
