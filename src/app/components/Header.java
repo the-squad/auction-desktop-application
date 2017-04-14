@@ -143,6 +143,7 @@ public class Header extends BorderPane {
         //CategoriesPanel container big parent
         navigationTabsContainer = new BorderPane();
         navigationTabsContainer.setMinWidth(350);
+        navigationTabsContainer.setMaxWidth(350);
         if (userType == BUYER || userType == SELLER) {
             navigationTabsContainer.setTop(tabsContainer);
             navigationTabsContainer.setBottom(activeTabIndicator);
