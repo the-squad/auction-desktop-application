@@ -24,6 +24,7 @@
 
 package app;
 
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -71,7 +72,7 @@ public class Animations {
         KeyValue pageOpacityEnd = new KeyValue(page.opacityProperty(), 1);
 
         KeyValue pageTranslateStart = new KeyValue(page.translateYProperty(), 20);
-        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 0);
+        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 0, Interpolator.EASE_BOTH);
 
         //Hiding and moving fromChild
         KeyFrame startFadeOut = new KeyFrame(Duration.ZERO, tabOpacityStart);
@@ -101,7 +102,7 @@ public class Animations {
         KeyValue pageOpacityEnd = new KeyValue(page.opacityProperty(), 0);
 
         KeyValue pageTranslateStart = new KeyValue(page.translateYProperty(), 0);
-        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 20);
+        KeyValue pageTranslateEnd = new KeyValue(page.translateYProperty(), 20, Interpolator.EASE_BOTH);
 
         KeyValue tabOpacityStart = new KeyValue(tab.opacityProperty(), 0);
         KeyValue tabChildOpacityEnd = new KeyValue(tab.opacityProperty(), 1);
@@ -137,10 +138,10 @@ public class Animations {
         KeyValue toChildOpacityEnd = new KeyValue(toChild.opacityProperty(), 1);
 
         KeyValue fromChildTranslateStart = new KeyValue(fromChild.translateYProperty(), 0);
-        KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20);
+        KeyValue fromChildTranslateEnd = new KeyValue(fromChild.translateYProperty(), 20, Interpolator.EASE_BOTH);
 
         KeyValue toChildTranslateStart = new KeyValue(toChild.translateYProperty(), 20);
-        KeyValue toChildTranslateEnd = new KeyValue(toChild.translateYProperty(), 0);
+        KeyValue toChildTranslateEnd = new KeyValue(toChild.translateYProperty(), 0, Interpolator.EASE_BOTH);
 
         //Creating the timeline keyframes
         //Hiding and moving fromChild
