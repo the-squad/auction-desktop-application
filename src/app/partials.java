@@ -69,4 +69,6 @@ public class Partials {
     //True or false
     public static Boolean HIDE_ERROR_MESSAGE = Boolean.TRUE;
     public static Boolean SHOW_ERROR_MESSAGE = Boolean.FALSE;
+
+    public static double SCROLLING_SPEED = 3;
 }
