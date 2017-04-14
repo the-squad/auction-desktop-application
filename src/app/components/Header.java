@@ -64,6 +64,8 @@ public class Header extends BorderPane {
     private Button notificationsButton;
     private Rectangle profilePicture;
     private Button createButton;
+    private Rectangle divider;
+    private Button logOutButton;
 
     private Header() {
         this.render();
@@ -193,6 +195,18 @@ public class Header extends BorderPane {
             }
         });
 
+        //Divider
+        divider = new Rectangle();
+        divider.setHeight(30);
+        divider.setWidth(1);
+        divider.setStyle("-fx-fill: -fx-medium-gray-color");
+
+        //Logout button
+        logOutButton = new Button();
+        logOutButton.getStyleClass().addAll("icon-button", "logout-icon");
+
+        logOutButton.setOnAction(e -> Navigator.switchPage(HOME_PAGE, LANDING_PAGE));
+
         //Right part container
         rightSideContainer = new GridPane();
         rightSideContainer.setMinWidth(350);
@@ -212,10 +226,16 @@ public class Header extends BorderPane {
 
 
         GridPane.setConstraints(notificationsButton, 2, 0);
+
         GridPane.setConstraints(profilePicture, 3, 0);
         GridPane.setMargin(profilePicture, new Insets(0, 0,0 ,10));
 
-        rightSideContainer.getChildren().addAll(notificationsButton, profilePicture);
+        GridPane.setConstraints(divider, 4, 0);
+        GridPane.setMargin(divider, new Insets(0, 5, 0, 5));
+
+        GridPane.setConstraints(logOutButton, 5, 0);
+
+        rightSideContainer.getChildren().addAll(notificationsButton, profilePicture, divider, logOutButton);
 
         //Header container
         headerContainer = new BorderPane();
