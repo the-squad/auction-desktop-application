@@ -77,6 +77,7 @@ public class App extends Application {
         cssFiles.add("accountSettings");
         cssFiles.add("pagesBackground");
         cssFiles.add("searchPage");
+        cssFiles.add("profilePage");
 
         return cssFiles;
     }
