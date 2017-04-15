@@ -157,6 +157,8 @@ public class Header extends BorderPane {
         if (userType == SELLER) {
             createButton = new Button();
             createButton.getStyleClass().addAll("icon-button", "add-icon");
+
+            createButton.setOnAction(e -> Navigator.viewPage(ADDITION_PAGE, ""));
         }
 
         //Search button
