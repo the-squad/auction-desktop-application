@@ -150,7 +150,7 @@ public class LandingPage extends GridPane {
         //Form headline text
         formDetails = new Label();
         formDetails.setText("Log into your account");
-        formDetails.getStyleClass().add("form-headline");
+        formDetails.getStyleClass().add("headline");
 
         //User name field
         nameField = new InputField("Full Name", TEXT);
@@ -395,10 +395,14 @@ public class LandingPage extends GridPane {
 
     private void selectUserType(int selectedType) {
         if (selectedType == SELLER) {
+            if (sellerTypeContainer.getStyleClass().contains("select-container--active")) return;
+
             buyerTypeContainer.getStyleClass().remove("select-container--active");
             sellerTypeContainer.getStyleClass().add("select-container--active");
             userTypeField.setValue("Seller");
         } else {
+            if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
+
             sellerTypeContainer.getStyleClass().remove("select-container--active");
             buyerTypeContainer.getStyleClass().add("select-container--active");
             userTypeField.setValue("Buyer");
@@ -446,7 +450,7 @@ public class LandingPage extends GridPane {
 
     private void goToHomePage() {
         //Showing the loading indicator
-        userType = BUYER;
+        userType = SELLER;
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
         //Loading the home page
