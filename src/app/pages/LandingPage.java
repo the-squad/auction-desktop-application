@@ -469,6 +469,14 @@ public class LandingPage extends GridPane {
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
             switchForm(LOGIN);
             formParentContainer.setCenter(logInform);
+
+            sellerTypeContainer.getStyleClass().remove("select-container--active");
+            buyerTypeContainer.getStyleClass().remove("select-container--active");
+
+            nameField.setValue("");
+            emailField.setValue("");
+            passwordField.setValue("");
+            repeatPassword.setValue("");
         });
     }
 
