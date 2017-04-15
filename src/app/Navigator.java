@@ -68,6 +68,8 @@ public class Navigator {
                 return AccountSettings.getInstance().getAccountSettingsPage();
             case 11:
                 return SearchResultsPage.getInstance().getSearchResultsPage();
+            case 12:
+                return AdditionPage.getInstance().getAdditionPage();
         }
         return null;
     }
