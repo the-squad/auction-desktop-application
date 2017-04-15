@@ -53,6 +53,9 @@ public class Partials {
     public static int INVENTORY_TAB = 9;
     public static int ACCOUNT_SETTINGS = 10;
     public static int SEARCH_RESULTS_PAGE = 11;
+    public static int ADDITION_PAGE = 12;
+    public static int ITEM_DETAILS = 13;
+    public static int AUCTION_DETAILS = 14;
 
     public static int AUCTION_CARD = 0;
     public static int ITEM_CARD = 1;
