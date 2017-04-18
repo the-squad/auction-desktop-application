@@ -49,7 +49,7 @@ public class App extends Application {
         cssFiles.add("cards");
         cssFiles.add("filter");
         cssFiles.add("header");
-        cssFiles.add("inputField");
+        cssFiles.add("input");
         cssFiles.add("photos");
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
