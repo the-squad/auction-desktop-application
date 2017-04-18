@@ -24,20 +24,65 @@
 
 package app.pages;
 
-import javafx.scene.layout.BorderPane;
+import app.components.SellerDetails;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+
+import static app.Partials.*;
 
 public class AuctionView {
 
     private static AuctionView instance;
 
-    private BorderPane auctionViewContainer;
+    private ScrollPane auctionViewContainer;
+    private GridPane auctionDetailsContainer;
+    private Label auctionName;
+    private SellerDetails sellerDetails;
+    private Label auctionDescription;
+    private Label priceHeadline;
+    private Label currentPrice;
+    private Label biddersNumber;
 
     private AuctionView() {
         this.render();
     }
 
     private void render() {
-        // TODO
+        //Auction name
+        auctionName = new Label("Moto 360");
+        auctionName.getStyleClass().add("item-name");
+
+        //Seller details
+        sellerDetails = new SellerDetails(RIGHT_PADDING);
+
+        //Auction Details container
+        auctionDetailsContainer = new GridPane();
+        auctionDetailsContainer.getStyleClass().add("card");
+        auctionDetailsContainer.setPadding(new Insets(25));
+
+        GridPane.setConstraints(auctionName, 0 ,0);
+        GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 1);
+
+        auctionDetailsContainer.getChildren().addAll(auctionName,
+                                                     sellerDetails.getSellerDetails());
+
+        //Auction view scrollbar
+        auctionViewContainer = new ScrollPane(auctionDetailsContainer);
+        auctionViewContainer.setFitToWidth(true);
+        auctionViewContainer.setFitToHeight(true);
+        auctionViewContainer.getStyleClass().add("scrollbar");
+        auctionViewContainer.toBack();
+        auctionViewContainer.setPadding(new Insets(20, 50, 0, 50));
+
+        //Making the scrollbar faster
+        auctionDetailsContainer.setOnScroll(event -> {
+            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+            double width = auctionViewContainer.getContent().getBoundsInLocal().getWidth();
+            double value = auctionViewContainer.getVvalue();
+            auctionViewContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        });
     }
 
     public void fillAuctionData() {
@@ -48,7 +93,7 @@ public class AuctionView {
         // TODO
     }
 
-    public BorderPane getAuctionView() {
+    public ScrollPane getAuctionView() {
         return auctionViewContainer;
     }
 
