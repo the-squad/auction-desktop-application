@@ -74,4 +74,8 @@ public class Partials {
     public static Boolean SHOW_ERROR_MESSAGE = Boolean.FALSE;
 
     public static double SCROLLING_SPEED = 3;
+
+    //Border radius
+    public static int FULL_PADDING = 0;
+    public static int RIGHT_PADDING = 1;
 }
