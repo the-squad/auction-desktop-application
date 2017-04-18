@@ -54,6 +54,7 @@ public class App extends Application {
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
         cssFiles.add("selectors");
+        cssFiles.add("sellerDetails");
 
         return cssFiles;
     }
