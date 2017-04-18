@@ -26,6 +26,7 @@ package app;
 
 import app.components.Header;
 import app.controllers.AccountSettings;
+import app.controllers.AuctionDetails;
 import app.pages.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
@@ -70,6 +71,8 @@ public class Navigator {
                 return SearchResultsPage.getInstance().getSearchResultsPage();
             case 12:
                 return AdditionPage.getInstance().getAdditionPage();
+            case 14:
+                return AuctionDetails.getInstance().getAuctionDetails();
         }
         return null;
     }
