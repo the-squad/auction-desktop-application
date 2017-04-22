@@ -78,6 +78,7 @@ public class App extends Application {
         cssFiles.add("pagesBackground");
         cssFiles.add("searchPage");
         cssFiles.add("profilePage");
+        cssFiles.add("auctionView");
 
         return cssFiles;
     }
