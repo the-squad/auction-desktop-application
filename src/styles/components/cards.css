@@ -26,9 +26,12 @@
     -fx-background-color: #fff;
     -fx-background-radius: 5px;
     -fx-border: 0;
+    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
+}
+
+.small-card {
     -fx-min-width: 250px;
     -fx-max-width: 250px;
-    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
     -fx-max-height: 200px;
 }
 
@@ -104,18 +107,4 @@
 .auction-status {
     -fx-text-fill: -fx-medium-gray-color;
     -fx-font-size: 10px;
-}
-
-.user-container {
-    -fx-cursor: hand;
-}
-
-.user-container:hover {
-    -fx-background-color: rgba(232,231,235, 0.7);
-}
-
-.user-name {
-    -fx-text-fill: -fx-dark-gray-color;
-    -fx-font-weight: 700;
-    -fx-font-size: 14px;
 }

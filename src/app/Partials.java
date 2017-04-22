@@ -53,6 +53,9 @@ public class Partials {
     public static int INVENTORY_TAB = 9;
     public static int ACCOUNT_SETTINGS = 10;
     public static int SEARCH_RESULTS_PAGE = 11;
+    public static int ADDITION_PAGE = 12;
+    public static int ITEM_DETAILS = 13;
+    public static int AUCTION_DETAILS = 14;
 
     public static int AUCTION_CARD = 0;
     public static int ITEM_CARD = 1;
@@ -71,4 +74,8 @@ public class Partials {
     public static Boolean SHOW_ERROR_MESSAGE = Boolean.FALSE;
 
     public static double SCROLLING_SPEED = 3;
+
+    //Border radius
+    public static int FULL_PADDING = 0;
+    public static int RIGHT_PADDING = 1;
 }

@@ -24,21 +24,15 @@
 package app.components;
 
 import app.Navigator;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 
-import static app.Partials.BUYER;
-import static app.Partials.PROFILE_PAGE;
+import static app.Partials.*;
 
 public class AuctionCard extends Card {
 
@@ -50,9 +44,7 @@ public class AuctionCard extends Card {
     private Label currentBid;
     private Label auctionStatus;
 
-    private GridPane userDetailsContainer;
-    private Rectangle userPicture;
-    private Label username;
+    private SellerDetails sellerDetails;
 
     private Boolean userSubscribed;
 
@@ -67,7 +59,7 @@ public class AuctionCard extends Card {
         itemName = new Label("Moto 360");
         itemName.getStyleClass().add("item-name");
 
-        // TODO action to go to Auction View
+        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, "Moto 360"));
 
         //Subscribe button
         if (viewType == BUYER) {
@@ -119,36 +111,7 @@ public class AuctionCard extends Card {
 
         //If is the card for the buyer show seller info
         if (viewType == BUYER) {
-            //User picture
-            userPicture = new Rectangle(30, 30,
-                    new ImagePattern((
-                            new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
-                                    30,
-                                    30,
-                                    true,
-                                    true))));
-            userPicture.setArcHeight(50);
-            userPicture.setArcWidth(50);
-            userPicture.getStyleClass().add("user-picture");
-
-            //User name
-            username = new Label("Muhammad Tarek");
-            username.getStyleClass().add("user-name");
-
-            //User details container
-            userDetailsContainer = new GridPane();
-            userDetailsContainer.getStyleClass().add("user-container");
-            userDetailsContainer.setMinWidth(250);
-            userDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
-
-            userDetailsContainer.setOnMouseClicked(me -> Navigator.viewPage(PROFILE_PAGE, username.getText()));
-
-            GridPane.setConstraints(userPicture, 0, 0);
-            GridPane.setMargin(userPicture, new Insets(0, 14, 0, 0));
-
-            GridPane.setConstraints(username, 1, 0);
-
-            userDetailsContainer.getChildren().addAll(userPicture, username);
+            sellerDetails = new SellerDetails(FULL_PADDING);
         }
 
         //Auction details container
@@ -164,13 +127,13 @@ public class AuctionCard extends Card {
         GridPane.setMargin(currentBid, new Insets(1, 15, 4, 15));
 
         GridPane.setConstraints(auctionStatus, 0, 2);
-        GridPane.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 2 : 10), 15));
+        GridPane.setMargin(auctionStatus, new Insets(1, 15, ((viewType == BUYER) ? 4 : 10), 15));
 
         cardDetails.getChildren().addAll(itemNameAndButtonContainer, currentBid, auctionStatus);
 
         if (viewType == BUYER) {
-            GridPane.setConstraints(userDetailsContainer, 0, 3);
-            cardDetails.getChildren().add(userDetailsContainer);
+            GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 3);
+            cardDetails.getChildren().add(sellerDetails.getSellerDetails());
         }
 
         //Auction card container

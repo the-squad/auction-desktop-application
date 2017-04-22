@@ -92,6 +92,14 @@
     -fx-background-image: url("../../assets/back-active.png");
 }
 
+.logout-icon {
+    -fx-background-image: url("../../assets/logout.png");
+}
+
+.logout-icon:hover {
+    -fx-background-image: url("../../assets/logout-active.png");
+}
+
 .picture {
     -fx-cursor: hand;
 }

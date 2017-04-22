@@ -26,5 +26,10 @@
 .text-field,
 .combo-box,
 .combo-box > .cell {
-  -fx-font-family: NotoSans;
+    -fx-font-family: NotoSans;
+}
+
+.headline {
+    -fx-text-fill: -fx-darker-gray-color;
+    -fx-font-size: 25px;
 }

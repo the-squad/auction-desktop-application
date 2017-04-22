@@ -21,3 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+.select-container,
+.select-container--active {
+    -fx-cursor: hand;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.select-container:hover {
+    -fx-background-color: rgba(77,137,251, 0.05);
+    -fx-border-color: rgba(77,137,251, 0.35);
+}
+
+.select-container--active,
+.select-container--active:hover {
+    -fx-background-color: rgba(77,137,251, 0.1);
+    -fx-border-color: rgba(77,137,251, 0.7);
+}
+
+.select-headline {
+    -fx-text-fill: -fx-darker-gray-color;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+
+.select-description {
+    -fx-text-fill: -fx-dark-gray-color;
+    -fx-font-size: 14px;
+}

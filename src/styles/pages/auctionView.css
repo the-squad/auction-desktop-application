@@ -21,3 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+.auction-item-name {
+    -fx-font-size: 30px;
+    -fx-font-weight: 400;
+    -fx-text-fill: -fx-darker-gray-color;
+}
+
+.auction-item-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-gray-color;
+}
+
+.price-headline {
+    -fx-text-fill: -fx-medium-gary-color;
+    -fx-font-size: 14px;
+}
+
+.auction-bid {
+    -fx-font-size: 25px;
+    -fx-font-weight: 400;
+    -fx-text-fill: -fx-primary-color !important;
+}

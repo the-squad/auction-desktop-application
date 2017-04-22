@@ -55,4 +55,5 @@ THE SOFTWARE.
 
 .form-headline {
     -fx-font-size: 25px;
+    -fx-text-fill: -fx-darker-gray-color;
 }

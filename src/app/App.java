@@ -32,9 +32,9 @@ public class App extends Application {
         primaryStage.setMinHeight(600);
 
         //Importing CSS Files
-        importComponentsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
-        importPartialsCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/partials/" + cssFile + ".css"));
-        importPagesCSS().stream().forEach((cssFile) -> scene.getStylesheets().add("/styles/pages/" + cssFile + ".css"));
+        importComponentsCSS().forEach((cssFile) -> scene.getStylesheets().add("/styles/components/" + cssFile + ".css"));
+        importPartialsCSS().forEach((cssFile) -> scene.getStylesheets().add("/styles/partials/" + cssFile + ".css"));
+        importPagesCSS().forEach((cssFile) -> scene.getStylesheets().add("/styles/pages/" + cssFile + ".css"));
 
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image("/assets/app-logo.png"));
@@ -49,12 +49,12 @@ public class App extends Application {
         cssFiles.add("cards");
         cssFiles.add("filter");
         cssFiles.add("header");
-        cssFiles.add("inputField");
+        cssFiles.add("input");
         cssFiles.add("photos");
-        cssFiles.add("radioButtons");
         cssFiles.add("scrollbar");
         cssFiles.add("categoriesPanel");
-        cssFiles.add("loading");
+        cssFiles.add("selectors");
+        cssFiles.add("sellerDetails");
 
         return cssFiles;
     }
@@ -78,6 +78,7 @@ public class App extends Application {
         cssFiles.add("pagesBackground");
         cssFiles.add("searchPage");
         cssFiles.add("profilePage");
+        cssFiles.add("auctionView");
 
         return cssFiles;
     }

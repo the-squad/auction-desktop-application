@@ -53,7 +53,7 @@ public class Card {
 
         //Card container
         cardContainer = new BorderPane();
-        cardContainer.getStyleClass().add("card");
+        cardContainer.getStyleClass().addAll("card", "small-card");
         cardContainer.setTop(pictureView);
     }
 

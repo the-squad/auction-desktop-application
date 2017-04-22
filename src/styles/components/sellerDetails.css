@@ -22,7 +22,24 @@
  * THE SOFTWARE.
  */
 
-.loading > .headline {
-    -fx-font-size: 25px;
+.user-container {
+    -fx-cursor: hand;
+}
+
+.bottom-borders {
+    -fx-background-radius: 0 0 4px 4px;
+}
+
+.all-borders {
+    -fx-background-radius: 4px;
+}
+
+.user-container:hover {
+    -fx-background-color: rgba(232,231,235, 1);
+}
+
+.user-name {
     -fx-text-fill: -fx-dark-gray-color;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
 }

@@ -123,3 +123,34 @@
 .combo-box .arrow, .combo-box .arrow-button {
     -fx-background-color: transparent;
 }
+
+/*
+  TEXT AREA
+ */
+.text-area {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, white, transparent, white;
+    -fx-padding: 0 0 0 10px !important;
+}
+
+.input-field--danger .text-area {
+    -fx-background-image: none;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: -fx-primary-color;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: gray;
+    -fx-highlight-fill: #7ecfff;
+}
