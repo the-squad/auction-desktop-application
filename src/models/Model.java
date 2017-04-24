@@ -84,7 +84,7 @@ public abstract class Model<T extends Model> {
 
     }
 
-    protected static <T extends Model> T find(Class<T> clazz, int ID) {
+    public static <T extends Model> T find(Class<T> clazz, int ID) {
         List<T> elements = Model.find(clazz, "ID = ?", ID);
         if (elements == null || elements.isEmpty()) {
             return null;
