@@ -76,4 +76,3 @@ build.xml
 manifest.mf
 Project Firefly.iml
 *.psd
-/src/models/Config.java
