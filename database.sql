@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2017 at 08:56 PM
--- Server version: 10.1.16-MariaDB
--- PHP Version: 7.0.9
+-- Generation Time: Apr 25, 2017 at 03:39 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -28,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `auctions`
 --
 
-DROP TABLE IF EXISTS `auctions`;
 CREATE TABLE `auctions` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
@@ -46,6 +43,10 @@ CREATE TABLE `auctions` (
 --       `items` -> `ID`
 --   `UserID`
 --       `users` -> `ID`
+--   `ItemID`
+--       `items` -> `ID`
+--   `UserID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -54,7 +55,6 @@ CREATE TABLE `auctions` (
 -- Table structure for table `auction_reports`
 --
 
-DROP TABLE IF EXISTS `auction_reports`;
 CREATE TABLE `auction_reports` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
@@ -68,6 +68,10 @@ CREATE TABLE `auction_reports` (
 --       `auctions` -> `ID`
 --   `UserID`
 --       `users` -> `ID`
+--   `AuctionID`
+--       `auctions` -> `ID`
+--   `UserID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -76,7 +80,6 @@ CREATE TABLE `auction_reports` (
 -- Table structure for table `bids`
 --
 
-DROP TABLE IF EXISTS `bids`;
 CREATE TABLE `bids` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
@@ -90,6 +93,10 @@ CREATE TABLE `bids` (
 --       `auctions` -> `ID`
 --   `UserID`
 --       `users` -> `ID`
+--   `AuctionID`
+--       `auctions` -> `ID`
+--   `UserID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -98,7 +105,6 @@ CREATE TABLE `bids` (
 -- Table structure for table `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `ID` int(11) NOT NULL,
   `Name` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -114,7 +120,6 @@ CREATE TABLE `categories` (
 -- Table structure for table `images`
 --
 
-DROP TABLE IF EXISTS `images`;
 CREATE TABLE `images` (
   `ID` int(11) NOT NULL,
   `ItemID` int(11) NOT NULL,
@@ -125,6 +130,8 @@ CREATE TABLE `images` (
 -- RELATIONS FOR TABLE `images`:
 --   `ItemID`
 --       `items` -> `ID`
+--   `ItemID`
+--       `items` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -133,7 +140,6 @@ CREATE TABLE `images` (
 -- Table structure for table `inventories`
 --
 
-DROP TABLE IF EXISTS `inventories`;
 CREATE TABLE `inventories` (
   `ID` int(11) NOT NULL,
   `SellerID` int(11) NOT NULL
@@ -141,6 +147,8 @@ CREATE TABLE `inventories` (
 
 --
 -- RELATIONS FOR TABLE `inventories`:
+--   `SellerID`
+--       `users` -> `ID`
 --   `SellerID`
 --       `users` -> `ID`
 --
@@ -151,7 +159,6 @@ CREATE TABLE `inventories` (
 -- Table structure for table `items`
 --
 
-DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items` (
   `ID` int(11) NOT NULL,
   `InventoryID` int(11) NOT NULL,
@@ -166,6 +173,10 @@ CREATE TABLE `items` (
 --       `categories` -> `ID`
 --   `InventoryID`
 --       `inventories` -> `ID`
+--   `CategoryID`
+--       `categories` -> `ID`
+--   `InventoryID`
+--       `inventories` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -174,7 +185,6 @@ CREATE TABLE `items` (
 -- Table structure for table `seller_reports`
 --
 
-DROP TABLE IF EXISTS `seller_reports`;
 CREATE TABLE `seller_reports` (
   `ID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
@@ -188,6 +198,10 @@ CREATE TABLE `seller_reports` (
 --       `users` -> `ID`
 --   `UserID`
 --       `users` -> `ID`
+--   `UserID`
+--       `users` -> `ID`
+--   `SellerID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -196,7 +210,6 @@ CREATE TABLE `seller_reports` (
 -- Table structure for table `subscribe_auctions`
 --
 
-DROP TABLE IF EXISTS `subscribe_auctions`;
 CREATE TABLE `subscribe_auctions` (
   `ID` int(11) NOT NULL,
   `AuctionID` int(11) NOT NULL,
@@ -209,6 +222,10 @@ CREATE TABLE `subscribe_auctions` (
 --       `auctions` -> `ID`
 --   `SubscriberID`
 --       `users` -> `ID`
+--   `AuctionID`
+--       `auctions` -> `ID`
+--   `SubscriberID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -217,7 +234,6 @@ CREATE TABLE `subscribe_auctions` (
 -- Table structure for table `subscribe_sellers`
 --
 
-DROP TABLE IF EXISTS `subscribe_sellers`;
 CREATE TABLE `subscribe_sellers` (
   `ID` int(11) NOT NULL,
   `SubscriberID` int(11) NOT NULL,
@@ -230,6 +246,10 @@ CREATE TABLE `subscribe_sellers` (
 --       `users` -> `ID`
 --   `SubscriberID`
 --       `users` -> `ID`
+--   `SubscriberID`
+--       `users` -> `ID`
+--   `SelleID`
+--       `users` -> `ID`
 --
 
 -- --------------------------------------------------------
@@ -238,7 +258,6 @@ CREATE TABLE `subscribe_sellers` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `ID` int(11) NOT NULL,
   `UserTypeID` int(11) NOT NULL,
@@ -250,16 +269,19 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- MIME TYPES FOR TABLE `users`:
---   `Photo`
---       `Image_PNG`
---
-
---
 -- RELATIONS FOR TABLE `users`:
 --   `UserTypeID`
 --       `user_types` -> `ID`
+--   `UserTypeID`
+--       `user_types` -> `ID`
 --
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`ID`, `UserTypeID`, `Name`, `Email`, `Phone`, `Address`, `Photo`) VALUES
+(1, 1, 'mohamed kamal', 'mohamed@yahoo.com', '01147960889', 'kamaaaaaaaaaaaal', NULL);
 
 -- --------------------------------------------------------
 
@@ -267,7 +289,6 @@ CREATE TABLE `users` (
 -- Table structure for table `user_types`
 --
 
-DROP TABLE IF EXISTS `user_types`;
 CREATE TABLE `user_types` (
   `ID` int(11) NOT NULL,
   `Type` varchar(50) COLLATE utf8_unicode_ci NOT NULL
@@ -277,11 +298,6 @@ CREATE TABLE `user_types` (
 -- RELATIONS FOR TABLE `user_types`:
 --
 
---
--- Truncate table before insert `user_types`
---
-
-TRUNCATE TABLE `user_types`;
 --
 -- Dumping data for table `user_types`
 --
@@ -299,19 +315,25 @@ INSERT INTO `user_types` (`ID`, `Type`) VALUES
 -- Indexes for table `auctions`
 --
 ALTER TABLE `auctions`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `Fk_user_id` (`UserID`),
+  ADD KEY `Fk_item_id` (`ItemID`);
 
 --
 -- Indexes for table `auction_reports`
 --
 ALTER TABLE `auction_reports`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_UserReport_id` (`UserID`),
+  ADD KEY `FK_AuctionReport_id` (`AuctionID`);
 
 --
 -- Indexes for table `bids`
 --
 ALTER TABLE `bids`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_Bider` (`UserID`),
+  ADD KEY `FK_Auction_id` (`AuctionID`);
 
 --
 -- Indexes for table `categories`
@@ -323,43 +345,54 @@ ALTER TABLE `categories`
 -- Indexes for table `images`
 --
 ALTER TABLE `images`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_Item_Image` (`ItemID`);
 
 --
 -- Indexes for table `inventories`
 --
 ALTER TABLE `inventories`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_Seller_Inventory` (`SellerID`);
 
 --
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_InventoryId_item` (`InventoryID`),
+  ADD KEY `FK_Catagory_item` (`CategoryID`);
 
 --
 -- Indexes for table `seller_reports`
 --
 ALTER TABLE `seller_reports`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `Fk_ReporterID_User` (`UserID`),
+  ADD KEY `Fk_Seller_User` (`SellerID`);
 
 --
 -- Indexes for table `subscribe_auctions`
 --
 ALTER TABLE `subscribe_auctions`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_Auction_Subscriber` (`AuctionID`),
+  ADD KEY `FK_user_Subscriber` (`SubscriberID`);
 
 --
 -- Indexes for table `subscribe_sellers`
 --
 ALTER TABLE `subscribe_sellers`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_SUB` (`SubscriberID`),
+  ADD KEY `FK_Seller` (`SelleID`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_UserType` (`UserTypeID`);
 
 --
 -- Indexes for table `user_types`
@@ -430,7 +463,77 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_types`
 --
 ALTER TABLE `user_types`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;COMMIT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `auctions`
+--
+ALTER TABLE `auctions`
+  ADD CONSTRAINT `Fk_item_id` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ID`),
+  ADD CONSTRAINT `Fk_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `auction_reports`
+--
+ALTER TABLE `auction_reports`
+  ADD CONSTRAINT `FK_AuctionReport_id` FOREIGN KEY (`AuctionID`) REFERENCES `auctions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_UserReport_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `bids`
+--
+ALTER TABLE `bids`
+  ADD CONSTRAINT `FK_Auction_id` FOREIGN KEY (`AuctionID`) REFERENCES `auctions` (`ID`),
+  ADD CONSTRAINT `FK_Bider` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `images`
+--
+ALTER TABLE `images`
+  ADD CONSTRAINT `FK_Item_Image` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `inventories`
+--
+ALTER TABLE `inventories`
+  ADD CONSTRAINT `FK_Seller_Inventory` FOREIGN KEY (`SellerID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `items`
+--
+ALTER TABLE `items`
+  ADD CONSTRAINT `FK_Catagory_item` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_InventoryId_item` FOREIGN KEY (`InventoryID`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `seller_reports`
+--
+ALTER TABLE `seller_reports`
+  ADD CONSTRAINT `Fk_ReporterID_User` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Fk_Seller_User` FOREIGN KEY (`SellerID`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `subscribe_auctions`
+--
+ALTER TABLE `subscribe_auctions`
+  ADD CONSTRAINT `FK_Auction_Subscriber` FOREIGN KEY (`AuctionID`) REFERENCES `auctions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_user_Subscriber` FOREIGN KEY (`SubscriberID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `subscribe_sellers`
+--
+ALTER TABLE `subscribe_sellers`
+  ADD CONSTRAINT `FK_SUB` FOREIGN KEY (`SubscriberID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_Seller` FOREIGN KEY (`SelleID`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_UserType` FOREIGN KEY (`UserTypeID`) REFERENCES `user_types` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
