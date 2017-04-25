@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Muhammad.
+ * Copyright 2017 Contributors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
 package models;
 
 public class Config {
+    //Database localhost
     public static final String DB_URL = "jdbc:mysql://localhost/project-firefly";
     //  Database credentials
     public static final String USER = "root";
