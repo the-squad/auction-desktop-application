@@ -25,6 +25,7 @@
 package models;
 
 public class Config {
+    //Database localhost
     public static final String DB_URL = "jdbc:mysql://localhost/project-firefly";
     //  Database credentials
     public static final String USER = "root";

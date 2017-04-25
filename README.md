@@ -16,7 +16,7 @@
 * In the title menu File > Project Structure > Libraries
 * Click (+) icon and navigate to the downloaded .Jar and select it
 
-**In order to config the database copy [Config.example.java](Config.example.java) to src > app > models and 
+**In order to config the database copy [Config.example](Config.example) to src > app > models and 
 rename it to Config.java**
 
 ```Java
