@@ -103,7 +103,7 @@ public class User extends Model<User> {
         return null;
     }
 
-    public User signUp(String name, String email, String password) {
+    public User signUp(String name, String email, String password , int userType) {
         return null;
         // TODO
     }
