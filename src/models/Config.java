@@ -22,42 +22,11 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
-
-public class Card {
-
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
-    }
-
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
-    }
-
-    protected void setPictureView() {
-        // TODO
-    }
+public class Config {
+    public static final String DB_URL = "jdbc:mysql://localhost/project-firefly";
+    //  Database credentials
+    public static final String USER = "root";
+    public static final String PASS = "";
 }

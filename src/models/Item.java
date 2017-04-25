@@ -22,40 +22,65 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package models;
 
-import javafx.scene.control.ScrollPane;
+public class Item extends Model<Item>{
 
-public class NotificationsPage {
 
-    private static NotificationsPage instance;
+    private int _id;
+    private int _inventoryID;
+    private int _categoryID;
+    private String _name;
+    private int _quantity;
 
-    private ScrollPane notificationsPageContainer;
-
-    private NotificationsPage() {
-        this.render();
+    protected Item() {
     }
 
-    private void render() {
-        // TODO
+    public Item(int inventoryID, int categoryID, String name, int quantity) {
+        this._inventoryID = inventoryID;
+        this._categoryID = categoryID;
+        this._name = name;
+        this._quantity = quantity;
     }
 
-    public void fillNotifications() {
-        // TODO
+    public int getId() {
+        return _id;
     }
 
-    private void clearNotifications() {
-        // TODO
+    public int getInventoryID() {
+        return _inventoryID;
     }
 
-    public ScrollPane getNotificationsPage() {
-        return notificationsPageContainer;
+    public Item setInventoryID(int inventoryID) {
+        this._inventoryID = inventoryID;
+        return this;
     }
 
-    public static NotificationsPage getInstance() {
-        if (instance == null) {
-            instance = new NotificationsPage();
-        }
-        return instance;
+    public int getCategoryID() {
+        return _categoryID;
     }
+
+    public Item setCategoryID(int categoryID) {
+        this._categoryID = categoryID;
+        return this;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public Item setName(String name) {
+        this._name = name;
+        return this;
+    }
+
+    public int getQuantity() {
+        return _quantity;
+    }
+
+    public Item setQuantity(int quantity) {
+        this._quantity = quantity;
+        return this;
+    }
+    
 }
