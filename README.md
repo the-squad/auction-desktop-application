@@ -21,7 +21,7 @@ rename it to Config.java**
 
 ```Java
 //  Database localhost
-public static final String DB_URL = "jdbc:mysql://localhost/project-firefly";
+public static final String DB_URL = "jdbc:mysql://localhost/[database name]";
 //  Database credentials
 public static final String USER = "root";
 public static final String PASS = "";
