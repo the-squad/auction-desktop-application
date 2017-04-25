@@ -15,3 +15,14 @@
 ### IntellJ IDE
 * In the title menu File > Project Structure > Libraries
 * Click (+) icon and navigate to the downloaded .Jar and select it
+
+**In order to config the database copy [Config.example.java](Config.example.java) to src > app > models and 
+rename it to Config.java**
+
+```Java
+//  Database localhost
+public static final String DB_URL = "jdbc:mysql://localhost/project-firefly";
+//  Database credentials
+public static final String USER = "root";
+public static final String PASS = "";
+```
