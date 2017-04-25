@@ -5,6 +5,8 @@
  */
 package models;
 
+import java.util.ArrayList;
+
 
 /**
  *
@@ -34,4 +36,9 @@ public class Category extends Model<Category>{
         this._name = name;
     }
     
+    public ArrayList<Category> getCategories()
+    {
+        // TODO
+        return null;
+    }
 }

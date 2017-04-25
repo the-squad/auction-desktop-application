@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.util.ArrayList;
 
-public class Buyer extends User {
+public class Buyer extends User implements IAuctionInterface {
 
     public void reportSeller(int sellerId, String complaint) {
         // TODO
@@ -61,4 +60,27 @@ public class Buyer extends User {
         return null;
         // TODO
     }
+
+    public ArrayList<Auction> explore(Category category) {
+        // TODO
+        return null;
+    }
+
+    public ArrayList<Auction> search(double price, int status, int numberOfBidders) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public ArrayList<Auction> search(String query) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public ArrayList<Auction> getAuction() {
+        return null;
+        // TODO
+    }
+
 }

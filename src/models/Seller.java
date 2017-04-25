@@ -26,7 +26,7 @@ package models;
 
 import java.util.ArrayList;
 
-public class Seller extends User {
+public class Seller extends User implements IAuctionInterface{
 
     private ArrayList<Auction> auctions;
 
@@ -53,4 +53,21 @@ public class Seller extends User {
     public void updateItemInInventory() {
         // TODO
     }
+    public static Seller getSellerData(int sellerId)
+    {
+        return null;
+    }
+    
+    @Override
+    public ArrayList<Auction> search(String query) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public ArrayList<Auction> getAuction() {
+        return null;
+        // TODO
+    }
+    
 }

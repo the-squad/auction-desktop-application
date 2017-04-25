@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author Mohamed
  */
-public class User extends Model<User>{
+public class User extends Model<User> {
 
     private int _id;
     private int _userTypeID;
@@ -98,4 +98,26 @@ public class User extends Model<User>{
         return "User{" + "_id=" + _id + ", _userTypeID=" + _userTypeID + ", _name=" + _name + ", _email=" + _email + ", _phone=" + _phone + ", _address=" + _address + '}';
     }
 
+    public User login(String email, String password) {
+        // TODO
+        return null;
+    }
+
+    public User signUp(String name, String email, String password) {
+        return null;
+        // TODO
+    }
+
+    public User getUserData() {
+        return this;
+    }
+
+    public Boolean deleteAccount(String password) {
+        // TODO
+        return false;
+    }
+
+    public int checkEmail(String email) {
+        return 0;
+    }
 }

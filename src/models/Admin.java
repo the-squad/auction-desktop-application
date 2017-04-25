@@ -25,4 +25,25 @@
 package models;
 
 public class Admin extends User {
+    
+    public void deleteUser()
+    {
+        // TODO
+    }
+    public void  deleteAuction()
+    {
+        // TODO
+    }
+    public void ignoreReport()
+    {
+        // TODO
+    }
+    public void AcceptReport()
+    {
+        // TODO
+    }
+    public void addAdmin()
+    {
+        // TODO
+    }
 }
