@@ -124,9 +124,14 @@ public class User extends Model<User> {
             return null;
     }
 
-    public User signUp(String name, String email, String password , int userType) {
-        return null;
-        // TODO
+    public static User signUp(String name, String email, String password , int userType) {
+        User user = new User(userType,email);
+        user.setName(name);
+        user.setPassword(password);
+        if (user.create())
+            return user;
+        else
+            return null;
     }
 
     public User getUserData() {
@@ -138,7 +143,16 @@ public class User extends Model<User> {
         return false;
     }
 
-    public int checkEmail(String email) {
-        return 0;
+    public static int checkEmail(String email) {
+        List<User> users = Model.find(User.class,"Email = ?",email);
+        if (users.size() > 0)
+        {
+            if (users.get(0).getUserTypeID() == 1)
+                return 2;
+            else
+                return 0;
+        }
+        else
+            return 1;
     }
 }
