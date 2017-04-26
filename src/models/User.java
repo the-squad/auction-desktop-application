@@ -27,6 +27,8 @@ package models;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -114,8 +116,12 @@ public class User extends Model<User> {
     }
 
     public User login(String email, String password) {
-        // TODO
-        return null;
+        List<User> users = new ArrayList<>();
+        users = Model.find(User.class,"email = ? AND password = ?",email,password);
+        if(users.size() == 1)
+            return users.get(0);
+        else
+            return null;
     }
 
     public User signUp(String name, String email, String password , int userType) {
