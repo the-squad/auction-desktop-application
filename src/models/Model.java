@@ -40,8 +40,14 @@ import java.util.stream.*;
  */
 public abstract class Model<T extends Model> {
 
+//<editor-fold defaultstate="collapsed" desc="Database connections">
     private static Connection connection;
-
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Database Operations">
+    
+//<editor-fold defaultstate="collapsed" desc="Static functions">
+    
     /**
      * Get all record of selected class
      *
@@ -58,7 +64,7 @@ public abstract class Model<T extends Model> {
             return elements;
         }
     }
-
+    
     /**
      * Get record of selected class by ID
      *
@@ -75,7 +81,7 @@ public abstract class Model<T extends Model> {
             return elements.get(0);
         }
     }
-
+    
     /**
      * Get all record of selected class
      *
@@ -126,9 +132,71 @@ public abstract class Model<T extends Model> {
             Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
-
+        
     }
-
+    
+    /**
+     * Delete record of selected class by ID
+     *
+     * @param <T> Database model (Not required)
+     * @param clazz Selected class
+     * @param id Record ID
+     * @return List of Selected records from database, Or null if there is
+     * Errors.
+     */
+    public static <T extends Model> boolean delete(Class<T> clazz, int id) {
+        try {
+            T model = clazz.newInstance();
+            getConnection();
+            String sql = "DELETE FROM `" + model.getTable() + "` WHERE id = ?";
+            PreparedStatement statement = generateQuery(sql, id);
+            return statement.executeUpdate() >= 1;
+        } catch (SQLException | IllegalAccessException | InstantiationException ex) {
+            Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return false;
+    }
+    
+    /**
+     ** Get records count from database.
+     *
+     * @param <T> Database model (Not required)
+     * @param clazz Selected class
+     * @return Record count, or -1 if there is an error.
+     */
+    public static <T extends Model> int count(Class<T> clazz) {
+        return count(clazz, "");
+    }
+    
+    /**
+     * Get records count from database.
+     *
+     * @param <T> Database model (Not required)
+     * @param clazz Selected class
+     * @param Criteria SQL Conditions and values replaced with ?
+     * @param Params Values of ?
+     * <h4>Example:</h4>
+     * <code>Model.count(User.class, "`Name` LIKE ? OR `UserTypeID` > ?", "M*", 5)</code>
+     * @return Record count, or -1 if there is an error.
+     */
+    public static <T extends Model> int count(Class<T> clazz, String Criteria, Object... Params) {
+        try {
+            String sql = String.format("SELECT count(*) FROM `%S` %S %S",
+                    clazz.newInstance().getTable(),
+                    (Criteria.isEmpty() ? "" : " WHERE "),
+                    Criteria);
+            PreparedStatement statement = generateQuery(sql, Params);
+            statement.execute();
+            ResultSet set = statement.getResultSet();
+            if (set.next()) {
+                return set.getInt(1);
+            }
+        } catch (SQLException | InstantiationException | IllegalAccessException ex) {
+            Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return -1;
+    }
+    
     /**
      * Generate a Prepared Statement from SQL query with its values
      *
@@ -181,7 +249,7 @@ public abstract class Model<T extends Model> {
                     Logger.getGlobal().log(Level.WARNING, "Unknown datatype: {0}", paramType);
                     Statement.setObject(i + 1, Params[i]);
                 }
-
+                
             }
             return Statement;
         } catch (SQLException ex) {
@@ -189,29 +257,10 @@ public abstract class Model<T extends Model> {
         }
         return null;
     }
-
-    /**
-     * Delete record of selected class by ID
-     *
-     * @param <T> Database model (Not required)
-     * @param clazz Selected class
-     * @param id Record ID
-     * @return List of Selected records from database, Or null if there is
-     * Errors.
-     */
-    public static <T extends Model> boolean delete(Class<T> clazz, int id) {
-        try {
-            T model = clazz.newInstance();
-            getConnection();
-            String sql = "DELETE FROM `" + model.getTable() + "` WHERE id = ?";
-            PreparedStatement statement = generateQuery(sql, id);
-            return statement.executeUpdate() >= 1;
-        } catch (SQLException | IllegalAccessException | InstantiationException ex) {
-            Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return false;
-    }
-
+    
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Local functions">
     /**
      * Save Class changes into database.
      *
@@ -239,7 +288,7 @@ public abstract class Model<T extends Model> {
         }
         return false;
     }
-
+    
     /**
      * Create new record from object and set its id.
      *
@@ -276,6 +325,11 @@ public abstract class Model<T extends Model> {
         }
         return false;
     }
+//</editor-fold>
+    
+//</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Helper functions">
 
     /**
      * Get Connection from database class.
@@ -364,4 +418,6 @@ public abstract class Model<T extends Model> {
                 .reduce("{", (t, u) -> t + u + ", ")
                 .replaceFirst("..$", "") + "}";
     }
+//</editor-fold>
+    
 }
