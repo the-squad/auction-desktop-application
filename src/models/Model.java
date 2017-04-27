@@ -43,11 +43,9 @@ public abstract class Model<T extends Model> {
 //<editor-fold defaultstate="collapsed" desc="Database connections">
     private static Connection connection;
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="Database Operations">
-    
 //<editor-fold defaultstate="collapsed" desc="Static functions">
-    
     /**
      * Get all record of selected class
      *
@@ -64,7 +62,7 @@ public abstract class Model<T extends Model> {
             return elements;
         }
     }
-    
+
     /**
      * Get record of selected class by ID
      *
@@ -81,7 +79,7 @@ public abstract class Model<T extends Model> {
             return elements.get(0);
         }
     }
-    
+
     /**
      * Get all record of selected class
      *
@@ -132,9 +130,9 @@ public abstract class Model<T extends Model> {
             Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
-        
+
     }
-    
+
     /**
      * Delete record of selected class by ID
      *
@@ -156,7 +154,7 @@ public abstract class Model<T extends Model> {
         }
         return false;
     }
-    
+
     /**
      ** Get records count from database.
      *
@@ -167,7 +165,7 @@ public abstract class Model<T extends Model> {
     public static <T extends Model> int count(Class<T> clazz) {
         return count(clazz, "");
     }
-    
+
     /**
      * Get records count from database.
      *
@@ -196,7 +194,7 @@ public abstract class Model<T extends Model> {
         }
         return -1;
     }
-    
+
     /**
      * Generate a Prepared Statement from SQL query with its values
      *
@@ -249,7 +247,7 @@ public abstract class Model<T extends Model> {
                     Logger.getGlobal().log(Level.WARNING, "Unknown datatype: {0}", paramType);
                     Statement.setObject(i + 1, Params[i]);
                 }
-                
+
             }
             return Statement;
         } catch (SQLException ex) {
@@ -257,9 +255,8 @@ public abstract class Model<T extends Model> {
         }
         return null;
     }
-    
+
 //</editor-fold>
-    
 //<editor-fold defaultstate="collapsed" desc="Local functions">
     /**
      * Save Class changes into database.
@@ -288,7 +285,7 @@ public abstract class Model<T extends Model> {
         }
         return false;
     }
-    
+
     /**
      * Create new record from object and set its id.
      *
@@ -326,11 +323,9 @@ public abstract class Model<T extends Model> {
         return false;
     }
 //</editor-fold>
-    
-//</editor-fold>
-    
-//<editor-fold defaultstate="collapsed" desc="Helper functions">
 
+//</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="Helper functions">
     /**
      * Get Connection from database class.
      */
@@ -364,8 +359,13 @@ public abstract class Model<T extends Model> {
      * @return Table name.
      */
     protected String getTable() {
-        return getClass()
-                .getSimpleName()
+        String name = "";
+        Class cls = getClass();
+        while (!cls.getSimpleName().equals("Model")) {
+            name = cls.getSimpleName();
+            cls = cls.getSuperclass();
+        }
+        return name
                 .replaceAll("y$", "ie")
                 .replaceAll("(.)([A-Z])", "$1_$2")
                 .toLowerCase() + "s";
@@ -419,5 +419,5 @@ public abstract class Model<T extends Model> {
                 .replaceFirst("..$", "") + "}";
     }
 //</editor-fold>
-    
+
 }
