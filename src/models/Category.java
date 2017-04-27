@@ -21,12 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.util.ArrayList;
 
-public class Category extends Model<Category>{
+public class Category extends Model<Category> {
 
     private int _id;
     private String _name;
@@ -49,10 +48,8 @@ public class Category extends Model<Category>{
     public void setName(String name) {
         this._name = name;
     }
-    
-    public ArrayList<Category> getCategories()
-    {
-        // TODO
-        return null;
+
+    public static ArrayList<Category> getCategories() {
+        return new ArrayList<>(Model.find(Category.class));
     }
 }
