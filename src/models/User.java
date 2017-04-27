@@ -41,6 +41,7 @@ public class User extends Model<User> {
     private String _email;
     private String _phone;
     private String _address;
+    private String _password;
     private byte[] _photo;
 
     public User(int userTypeID, String email) {
@@ -57,6 +58,15 @@ public class User extends Model<User> {
 
     public int getUserTypeID() {
         return _userTypeID;
+    }
+
+    public String getPassword() {
+        return _password;
+    }
+
+    public User setPassword(String _password) {
+        this._password = _password;
+        return this;
     }
 
     public String getName() {
@@ -110,28 +120,25 @@ public class User extends Model<User> {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "_id=" + _id + ", _userTypeID=" + _userTypeID + ", _name=" + _name + ", _email=" + _email + ", _phone=" + _phone + ", _address=" + _address + '}';
-    }
-
     public User login(String email, String password) {
         List<User> users = new ArrayList<>();
-        users = Model.find(User.class,"email = ? AND password = ?",email,password);
-        if(users.size() == 1)
+        users = Model.find(User.class, "email = ? AND password = ?", email, password);
+        if (users.size() == 1) {
             return users.get(0);
-        else
+        } else {
             return null;
+        }
     }
 
-    public static User signUp(String name, String email, String password , int userType) {
-        User user = new User(userType,email);
+    public static User signUp(String name, String email, String password, int userType) {
+        User user = new User(userType, email);
         user.setName(name);
         user.setPassword(password);
-        if (user.create())
+        if (user.create()) {
             return user;
-        else
+        } else {
             return null;
+        }
     }
 
     public User getUserData() {
@@ -144,15 +151,15 @@ public class User extends Model<User> {
     }
 
     public static int checkEmail(String email) {
-        List<User> users = Model.find(User.class,"Email = ?",email);
-        if (users.size() > 0)
-        {
-            if (users.get(0).getUserTypeID() == 1)
+        List<User> users = Model.find(User.class, "Email = ?", email);
+        if (users.size() > 0) {
+            if (users.get(0).getUserTypeID() == 1) {
                 return 2;
-            else
+            } else {
                 return 0;
-        }
-        else
+            }
+        } else {
             return 1;
+        }
     }
 }
