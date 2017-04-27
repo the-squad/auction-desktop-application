@@ -377,8 +377,12 @@ public abstract class Model<T extends Model> {
      * @return List of class fields.
      */
     protected List<Field> getFields() {
+        Class cls = getClass();
+        while (!cls.getSuperclass().getSimpleName().equals("Model")) {            
+            cls = cls.getSuperclass();
+        }
         return Arrays
-                .asList(getClass().getDeclaredFields())
+                .asList(cls.getDeclaredFields())
                 .stream()
                 .filter((field) -> field.getName().startsWith("_"))
                 .collect(Collectors.toList());
