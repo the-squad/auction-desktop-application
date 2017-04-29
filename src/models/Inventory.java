@@ -38,11 +38,6 @@ public class Inventory extends Model<Inventory>{
     public Inventory(int sellerID) {
         this._sellerID = sellerID;
         items=new ArrayList<>();
-        for(int i=1;i<4;i++)
-        {
-            Item item =Model.find(Item.class, i);
-            items.add(item);
-        }
         
     }
 
