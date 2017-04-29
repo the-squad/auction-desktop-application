@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class Auction extends Model<Auction> {
     private double _initialPrice;
     private double _bidRate;
     private ArrayList<Bid> Bids;
-    
+
     protected Auction() {
     }
 
@@ -113,13 +112,15 @@ public class Auction extends Model<Auction> {
         this._bidRate = bidRate;
         return this;
     }
-    
-    public void bidAuction(double money , int userId)
-    {
-        Bid bid = new Bid(userId,this._id,money);
-        if (bid.create()){
-            if (Bids == null){
-                Bids = new ArrayList<>();
+
+    public void bidAuction(double money, int userId) {
+        if (money > this._bidRate /*&& money > bids*/) {
+        Bid bid = new Bid(userId, this._id, money);
+            if (bid.create()) {
+                if (Bids == null) {
+                    Bids = new ArrayList<>();
+                }
+                Bids.add(bid);
             }
         }
     }
