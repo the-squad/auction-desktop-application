@@ -24,6 +24,7 @@
 
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Auction extends Model<Auction> {
@@ -36,7 +37,8 @@ public class Auction extends Model<Auction> {
     private Date _terminationDate;
     private double _initialPrice;
     private double _bidRate;
-
+    private ArrayList<Bid> Bids;
+    
     protected Auction() {
     }
 
@@ -47,6 +49,7 @@ public class Auction extends Model<Auction> {
         this._terminationDate = terminationDate;
         this._initialPrice = initialPrice;
         this._bidRate = bidRate;
+        Bids = new ArrayList<>();
     }
 
     public int getId() {
@@ -110,5 +113,14 @@ public class Auction extends Model<Auction> {
         this._bidRate = bidRate;
         return this;
     }
-
+    
+    public void bidAuction(double money , int userId)
+    {
+        Bid bid = new Bid(userId,this._id,money);
+        if (bid.create()){
+            if (Bids == null){
+                Bids = new ArrayList<>();
+            }
+        }
+    }
 }

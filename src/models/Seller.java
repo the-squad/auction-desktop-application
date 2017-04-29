@@ -28,13 +28,18 @@ import java.util.ArrayList;
 public class Seller extends User implements IAuctionInterface {
 
     private ArrayList<Auction> auctions;
-
+    
+    public Seller()
+    {
+        auctions = new ArrayList<>();
+    }
     public void createAuction() {
         // TODO
     }
 
-    public void deleteAuction() {
-        // TODO
+    public void deleteAuction(int index) {
+        Model.delete(Auction.class, auctions.get(index).getId());
+        auctions.remove(index);
     }
 
     public void updateAuction() {
