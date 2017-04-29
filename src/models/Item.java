@@ -83,4 +83,9 @@ public class Item extends Model<Item>{
         return this;
     }
     
+    public void delteItem(int itemID)
+    {
+        Model.delete(Item.class, itemID);
+    }
+    
 }

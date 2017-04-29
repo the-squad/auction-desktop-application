@@ -24,16 +24,26 @@
 
 package models;
 
+import java.util.ArrayList;
+
 public class Inventory extends Model<Inventory>{
 
     private int _id;
     private int _sellerID;
+    ArrayList<Item> items;
 
     protected Inventory() {
     }
 
     public Inventory(int sellerID) {
         this._sellerID = sellerID;
+        items=new ArrayList<>();
+        for(int i=1;i<4;i++)
+        {
+            Item item =Model.find(Item.class, i);
+            items.add(item);
+        }
+        
     }
 
     public int getId() {
@@ -47,5 +57,15 @@ public class Inventory extends Model<Inventory>{
     public void setSellerID(int sellerID) {
         this._sellerID = sellerID;
     }
+    
+    public void deleteItem(int itemID)
+    {
+        Item item =items.stream().filter(a->a.getId()==itemID).findFirst().get();
+        items.remove(item);
+        
+        item.delteItem(itemID);
+        
+    }
 
+    
 }
