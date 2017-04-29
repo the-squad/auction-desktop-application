@@ -36,7 +36,7 @@ public class Auction extends Model<Auction> {
     private Date _terminationDate;
     private double _initialPrice;
     private double _bidRate;
-    private ArrayList<Bid> Bids;
+    private ArrayList<Bid> bids;
 
     protected Auction() {
     }
@@ -48,7 +48,7 @@ public class Auction extends Model<Auction> {
         this._terminationDate = terminationDate;
         this._initialPrice = initialPrice;
         this._bidRate = bidRate;
-        Bids = new ArrayList<>();
+        bids = new ArrayList<>();
     }
 
     public int getId() {
@@ -112,16 +112,29 @@ public class Auction extends Model<Auction> {
         this._bidRate = bidRate;
         return this;
     }
-
-    public void bidAuction(double money, int userId) {
-        if (money > this._bidRate /*&& money > bids*/) {
-        Bid bid = new Bid(userId, this._id, money);
+    
+    public ArrayList<Bid> getBids() {
+        if(bids == null)
+        {
+            bids = new ArrayList(Model.find(Bid.class, "AuctionID = ? ORDER BY Price DESC", this._id));
+        }
+        return bids;
+    }
+    
+    public boolean bidAuction(double money, int userId) {
+        if (bids == null) {
+            bids = this.getBids();
+        }
+        if (money > this._bidRate && bids.get(0).getPrice() < money || bids.isEmpty()) {
+            Bid bid = new Bid(userId, this._id, money);
             if (bid.create()) {
-                if (Bids == null) {
-                    Bids = new ArrayList<>();
-                }
-                Bids.add(bid);
+                bids.add(bid);
+                return true;
             }
+            else
+                return false;
+        } else {
+            return false;
         }
     }
 }

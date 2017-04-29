@@ -30,7 +30,7 @@ public class Bid extends Model<Bid>{
     private int _auctionID;
     private double _price;
 
-    private Bid() {
+    protected Bid() {
     }
 
     public Bid(int userID, int auctionID, double price) {
