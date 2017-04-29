@@ -22,40 +22,66 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package models;
 
-import javafx.scene.control.ScrollPane;
+import java.util.ArrayList;
 
-public class NotificationsPage {
+public class Buyer extends User implements IAuctionInterface {
 
-    private static NotificationsPage instance;
-
-    private ScrollPane notificationsPageContainer;
-
-    private NotificationsPage() {
-        this.render();
-    }
-
-    private void render() {
+    public void reportSeller(int sellerId, String complaint) {
         // TODO
     }
 
-    public void fillNotifications() {
+    public void reportAuction(int auctionId, String complaint) {
         // TODO
     }
 
-    private void clearNotifications() {
+    public ArrayList<Item> getItems() {
+        return null;
         // TODO
     }
 
-    public ScrollPane getNotificationsPage() {
-        return notificationsPageContainer;
+    public boolean makeBid(Auction auction , double money) {
+        return auction.bidAuction(money, this.getId());
     }
 
-    public static NotificationsPage getInstance() {
-        if (instance == null) {
-            instance = new NotificationsPage();
-        }
-        return instance;
+    public boolean followSeller(User seller) {
+        return new SubscribeSeller(this.getId(),seller.getId()).create();
     }
+
+    public void unFollowSeller() {
+        // TODO
+    }
+
+    public void subscribeAuction() {
+        // TODO
+    }
+
+    public ArrayList<Auction> getFeed() {
+        return null;
+        // TODO
+    }
+
+    public ArrayList<Auction> explore(Category category) {
+        // TODO
+        return null;
+    }
+
+    public ArrayList<Auction> search(double price, int status, int numberOfBidders) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public ArrayList<Auction> search(String query) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public ArrayList<Auction> getAuction() {
+        return null;
+        // TODO
+    }
+
 }

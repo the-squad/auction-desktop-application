@@ -22,42 +22,39 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
+public class Image extends Model<Image>{
 
-public class Card {
+    private int _id;
+    private int _itemID;
+    private byte[] _image;
 
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
+    protected Image() {
     }
 
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+    public Image(int itemID, byte[] image) {
+        this._itemID = itemID;
+        this._image = image;
     }
 
-    protected void setPictureView() {
-        // TODO
+    public int getId() {
+        return _id;
     }
+
+    public int getItemID() {
+        return _itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this._itemID = itemID;
+    }
+
+    public byte[] getImage() {
+        return _image;
+    }
+
+    public void setImage(byte[] image) {
+        this._image = image;
+    }    
 }

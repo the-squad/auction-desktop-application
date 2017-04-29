@@ -22,42 +22,25 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
+public class UserType extends Model<UserType> {
 
-public class Card {
+    private int _id;
+    private String _type;
 
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
+    protected UserType() {
     }
 
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+    public UserType(String type) {
+        this._type = type;
     }
 
-    protected void setPictureView() {
-        // TODO
+    public int getId() {
+        return _id;
+    }
+
+    public String getType() {
+        return _type;
     }
 }
