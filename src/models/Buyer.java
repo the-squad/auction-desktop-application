@@ -60,8 +60,9 @@ public class Buyer extends User implements IAuctionInterface {
         }
     }
 
-    public void subscribeAuction() {
-        // TODO
+    public void subscribeAuction(int auctionID) {
+        SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID,this.getId());
+        SubscribeAuctionObject.create();
     }
 
     public ArrayList<Auction> getFeed() {
