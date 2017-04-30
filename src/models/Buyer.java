@@ -24,6 +24,8 @@
 
 package models;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Buyer extends User implements IAuctionInterface {
@@ -49,8 +51,13 @@ public class Buyer extends User implements IAuctionInterface {
         // TODO
     }
 
-    public void unFollowSeller() {
-        // TODO
+    public void unFollowSeller(int sellerID) {
+        PreparedStatement statement = Model.generateQuery("DELETE FROM subscribe_sellers WHERE SubscriberID = ? AND SelleID = ?",this.getId(),sellerID);
+        try {
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void subscribeAuction() {
