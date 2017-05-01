@@ -24,6 +24,8 @@
 
 package app;
 
+import models.User;
+
 public class Partials {
 
     public static int TEXT = 0;
@@ -78,4 +80,7 @@ public class Partials {
     //Border radius
     public static int FULL_PADDING = 0;
     public static int RIGHT_PADDING = 1;
+
+    //Current user
+    public static User currentUser;
 }

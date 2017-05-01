@@ -49,7 +49,8 @@ public class User extends Model<User> {
         this._email = email;
     }
 
-    protected User() {
+    public User() {
+        //DO NOTHING
     }
 
     public Integer getId() {
@@ -120,7 +121,7 @@ public class User extends Model<User> {
         return this;
     }
 
-    public User login(String email, String password) {
+    public static User login(String email, String password) {
         List<User> users = new ArrayList<>();
         users = Model.find(User.class, "email = ? AND password = ?", email, password);
         if (users.size() == 1) {

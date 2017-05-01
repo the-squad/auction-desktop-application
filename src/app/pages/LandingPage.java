@@ -42,6 +42,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import models.User;
 
 import java.util.Objects;
 
@@ -399,53 +400,41 @@ public class LandingPage extends GridPane {
 
             buyerTypeContainer.getStyleClass().remove("select-container--active");
             sellerTypeContainer.getStyleClass().add("select-container--active");
-            userTypeField.setValue("Seller");
+            userTypeField.setValue("2");
         } else {
             if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
 
             sellerTypeContainer.getStyleClass().remove("select-container--active");
             buyerTypeContainer.getStyleClass().add("select-container--active");
-            userTypeField.setValue("Buyer");
+            userTypeField.setValue("3");
         }
     }
 
     private void login() {
-        //Getting values
-        emailField.getValue();
-        passwordField.getValue();
-
-        loadingIndicator.setLoadingMessage("Logging in");
-        this.goToHomePage();
-
-        /*
-         TODO
-         - Call the login method
-         - Check if the data is correct, then call goToHomePage and get user photo
-         - If the data are incorrect show an error message to the field
-         - If the email doesn't exist switch to sign up form and fill the email automatically
-         - Set the user type
-         */
+        if (User.checkEmail(emailField.getValue()) == 1) {
+            emailField.markAsDanger("Email doesn't exist");
+        } else {
+            currentUser = User.login(emailField.getValue(), passwordField.getValue());
+            if (currentUser == null) {
+                passwordField.markAsDanger("Password doesn't match");
+            } else {
+                loadingIndicator.setLoadingMessage("Logging in");
+                this.goToHomePage();
+            }
+        }
     }
 
     private void signUp() {
-        //Getting values
-        nameField.getValue();
-        emailField.getValue();
-        passwordField.getValue();
-        repeatPassword.getValue();
-
-        loadingIndicator.setLoadingMessage("Signing up");
-        this.goToHomePage();
-
-        /*
-         TODO
-         - Check if all data are valid and the password matches, any invalid data shows an error message
-         - Call the sign up method
-         - Check if the data is correct, then call goToHomePage
-         - If the email is already exist switch to the login form and fill the email automatically
-         - Set the user type
-         */
-
+        if (!Objects.equals(passwordField.getValue(), repeatPassword.getValue())) {
+            System.out.println(passwordField.getValue() + "   " + repeatPassword.getValue());
+        } else if (User.checkEmail(emailField.getValue()) == 0) {
+            System.out.println("Email already exists");
+        } else {
+            System.out.print(userTypeField.getValue());
+            currentUser = User.signUp(nameField.getValue(), emailField.getValue(), passwordField.getValue(), Integer.parseInt(userTypeField.getValue()));
+            loadingIndicator.setLoadingMessage("Signing up");
+            this.goToHomePage();
+        }
     }
 
     private void goToHomePage() {
