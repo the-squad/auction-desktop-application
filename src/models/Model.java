@@ -209,8 +209,14 @@ public abstract class Model<T extends Model> {
             getConnection();
             PreparedStatement Statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             for (int i = 0; i < Params.length; i++) {
-                String paramType = Params[i].getClass().getTypeName();
-                boolean isArray = Params[i].getClass().isArray();
+                String paramType;
+                boolean isArray = false;
+                if (Params[i] == null) {
+                    paramType = "null";
+                } else {
+                    paramType = Params[i].getClass().getTypeName();
+                    isArray = Params[i].getClass().isArray();
+                }
                 if (isArray) {
                     paramType = Params[i].getClass().getComponentType().getTypeName();
                     if (!("byte".equals(paramType))) {
@@ -243,6 +249,8 @@ public abstract class Model<T extends Model> {
                 } else if (paramType.equals(java.util.Date.class.getName())) {
                     java.util.Date javaDate = (java.util.Date) Params[i];
                     Statement.setTimestamp(i + 1, new Timestamp(javaDate.getTime()));
+                } else if (paramType.equals("null")){
+                    Statement.setObject(i+1, null);
                 } else {
                     Logger.getGlobal().log(Level.WARNING, "Unknown datatype: {0}", paramType);
                     Statement.setObject(i + 1, Params[i]);
@@ -378,7 +386,7 @@ public abstract class Model<T extends Model> {
      */
     protected List<Field> getFields() {
         Class cls = getClass();
-        while (!cls.getSuperclass().getSimpleName().equals("Model")) {            
+        while (!cls.getSuperclass().getSimpleName().equals("Model")) {
             cls = cls.getSuperclass();
         }
         return Arrays
