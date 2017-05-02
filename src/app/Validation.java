@@ -26,21 +26,21 @@ package app;
 
 public class Validation {
 
-    public Boolean validateText(String text) {
+    public static Boolean validateText(String text) {
         String ePattern ="[a-zA-Z][a-zA-Z _]*";  
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(text);
         return m.matches();
     }
 
-    public Boolean validateEmail(String email) {
+    public static Boolean validateEmail(String email) {
         String ePattern = "[a-zA-Z][a-zA-Z0-9._]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
            java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
            java.util.regex.Matcher m = p.matcher(email);
            return m.matches();
     }
 
-    public Boolean validatePassword(String password) {
+    public static Boolean validatePassword(String password) {
         if (password.length()<6) {
              return false;
          }
@@ -50,21 +50,21 @@ public class Validation {
         return m.matches();
     }
 
-    public Boolean validateDate(String date) {
+    public static Boolean validateDate(String date) {
         String ePattern ="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/(19|20)[0-9][0-9]"; //dd/mm/yyyy
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(date);
         return m.matches();
     }
 
-    public Boolean validateTime(String time) {
+    public static Boolean validateTime(String time) {
         String ePattern ="(0[1-9]|1[012]):(0[1-9]|[12345][0-9]|00)(am|pm)"; //hh:mm(am|pm)
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(time);
         return m.matches();
     }
 
-    public Boolean validateNumber(String number) {
+    public static Boolean validateNumber(String number) {
         String ePattern ="[0-9]*";  //"[1-9][0-9]*" to avoid 0 in right if we need.  
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(number);
