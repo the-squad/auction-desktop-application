@@ -22,42 +22,37 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
+public class Bid extends Model<Bid>{
+    private int _id;
+    private int _userID;
+    private int _auctionID;
+    private double _price;
 
-public class Card {
-
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
+    protected Bid() {
     }
 
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+    public Bid(int userID, int auctionID, double price) {
+        this._userID = userID;
+        this._auctionID = auctionID;
+        this._price = price;
     }
 
-    protected void setPictureView() {
-        // TODO
+    public int getId() {
+        return _id;
     }
+
+    public int getUserID() {
+        return _userID;
+    }
+
+    public int getAuctionID() {
+        return _auctionID;
+    }
+
+    public double getPrice() {
+        return _price;
+    }
+    
 }

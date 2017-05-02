@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Muhammad.
+ * Copyright 2017 Contributors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@
  */
 
 package app;
+
+import models.User;
 
 public class Partials {
 
@@ -78,4 +80,7 @@ public class Partials {
     //Border radius
     public static int FULL_PADDING = 0;
     public static int RIGHT_PADDING = 1;
+
+    //Current user
+    public static User currentUser;
 }

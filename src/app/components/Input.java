@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Muhammad.
+ * Copyright 2017 Contributors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -59,6 +59,7 @@ class Input {
         errorMessage = new Label("Please enter a valid mail");
         errorMessage.getStyleClass().add("error-message");
         errorMessage.setWrapText(true);
+        //FIXME
         errorMessage.setVisible(false);
 
         //Adding to the grid pane
@@ -77,7 +78,8 @@ class Input {
     Change's input field to danger and shows an error message
     */
     public void markAsDanger(String error) {
-        inputFieldContainer.getStyleClass().add("input-field--danger");
+        if (!inputFieldContainer.getStyleClass().contains("input-field--danger"))
+            inputFieldContainer.getStyleClass().add("input-field--danger");
         errorMessage.setText(error);
         errorMessage.setVisible(true);
     }

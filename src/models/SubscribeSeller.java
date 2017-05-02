@@ -22,42 +22,39 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
+public class SubscribeSeller extends Model<SubscribeSeller>{
 
-public class Card {
+    private int _id;
+    private int _subscriberID;
+    private int _selleID;
 
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
+    protected SubscribeSeller() {
     }
 
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+    public SubscribeSeller(int subscriberID, int selleID) {
+        this._subscriberID = subscriberID;
+        this._selleID = selleID;
     }
 
-    protected void setPictureView() {
-        // TODO
+    public int getId() {
+        return _id;
+    }
+
+    public int getSubscriberID() {
+        return _subscriberID;
+    }
+
+    public void setSubscriberID(int subscriberID) {
+        this._subscriberID = subscriberID;
+    }
+
+    public int getSelleID() {
+        return _selleID;
+    }
+
+    public void setSelleID(int selleID) {
+        this._selleID = selleID;
     }
 }
