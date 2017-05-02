@@ -214,7 +214,7 @@ public class LandingPage extends GridPane {
             if (Objects.equals(callToActionButton.getText(), "Login")) {
                 this.login();
             } else if (Objects.equals(callToActionButton.getText(), "Next")) {
-                this.switchForm(USER_TYPE);
+                this.switchForm(USER_TYPE, false);
             } else {
                 this.signUp();
             }
@@ -226,11 +226,11 @@ public class LandingPage extends GridPane {
 
         switchFormButton.setOnAction(e -> {
             if (Objects.equals(callToActionButton.getText(), "Login")) {
-                this.switchForm(SIGNUP);
+                this.switchForm(SIGNUP, true);
             } else if (Objects.equals(callToActionButton.getText(), "Next")) {
-                this.switchForm(LOGIN);
+                this.switchForm(LOGIN, true);
             } else {
-                this.switchForm(SIGNUP);
+                this.switchForm(SIGNUP, false);
             }
 
         });
@@ -319,7 +319,7 @@ public class LandingPage extends GridPane {
         return landingPageContainer;
     }
 
-    private void switchForm(int formType) {
+    private void switchForm(int formType, Boolean clear) {
         fadeAnimation = new Timeline();
 
         //Opacity values
@@ -332,32 +332,24 @@ public class LandingPage extends GridPane {
 
         KeyFrame updateContent = new KeyFrame(Duration.millis(100), e -> {
             if (formType == LOGIN) {
-                logInform.getChildren().removeAll(formDetails,
-                                                  emailField.getInputField(),
-                                                  passwordField.getInputField(),
-                                                  callToActionButton,
-                                                  switchFormButton);
+                logInform.getChildren().clear();
                 logInform.getChildren().addAll(formDetails,
                                                 emailField.getInputField(),
                                                 passwordField.getInputField(),
                                                 callToActionButton,
                                                 switchFormButton);
 
-                emailField.clear();
-                passwordField.clear();
+                if (clear) {
+                    emailField.clear();
+                    passwordField.clear();
+                }
+
                 formParentContainer.setCenter(logInform);
                 formDetails.setText("Login to your account");
                 callToActionButton.setText("Login");
                 switchFormButton.setText("Don't have an account?");
             } else if (formType == SIGNUP) {
-                signUpForm.getChildren().removeAll(formDetails,
-                        nameField.getInputField(),
-                        emailField.getInputField(),
-                        passwordField.getInputField(),
-                        repeatPassword.getInputField(),
-                        callToActionButton,
-                        switchFormButton);
-
+                signUpForm.getChildren().clear();
                 signUpForm.getChildren().addAll(formDetails,
                                                 nameField.getInputField(),
                                                 emailField.getInputField(),
@@ -366,19 +358,18 @@ public class LandingPage extends GridPane {
                                                 callToActionButton,
                                                 switchFormButton);
 
-                emailField.clear();
-                passwordField.clear();
+                if (clear) {
+                    nameField.clear();
+                    emailField.clear();
+                    passwordField.clear();
+                    repeatPassword.clear();
+                }
                 formParentContainer.setCenter(signUpForm);
                 formDetails.setText("Create a new account");
                 callToActionButton.setText("Next");
                 switchFormButton.setText("Have an account?");
             } else {
-                userTypeForm.getChildren().removeAll(formDetails,
-                                                  sellerTypeContainer,
-                                                  buyerTypeContainer,
-                                                  callToActionButton,
-                                                  switchFormButton);
-
+                userTypeForm.getChildren().clear();
                 userTypeForm.getChildren().addAll(formDetails,
                                                   sellerTypeContainer,
                                                   buyerTypeContainer,
@@ -464,7 +455,7 @@ public class LandingPage extends GridPane {
         initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
             //Switching to the home page
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
-            switchForm(LOGIN);
+            switchForm(LOGIN, true);
             formParentContainer.setCenter(logInform);
 
             sellerTypeContainer.getStyleClass().remove("select-container--active");
