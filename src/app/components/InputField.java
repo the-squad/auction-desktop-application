@@ -23,6 +23,7 @@
  */
 package app.components;
 
+import app.Validation;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.PasswordField;
@@ -96,19 +97,45 @@ public class InputField extends Input {
      When the user lose focus on an input it will validate the value
      */
     private void onBlur() {
-        //TODO
+        Boolean validationResult = true;
+        String errorMessage = "";
+        if (this.getValue().length() == 0) {
+            validationResult = false;
+            errorMessage = "Field is required";
+        }
 
-        String message; //Call the validation message validate(getValue(), text)
+        if (validationResult) {
+            if (inputType == TEXT) {
+                validationResult = Validation.validateText(this.getValue());
+                errorMessage = "Name shouldn't contain numbers of special characters";
+            } else if (inputType == PASSWORD) {
+                validationResult = Validation.validatePassword(this.getValue());
+                errorMessage = "Password should contain small and capital letters and numbers";
+            } else if (inputType == EMAIL) {
+                validationResult = Validation.validateEmail(this.getValue());
+                errorMessage = "Email isn't valid";
+            } else if (inputType == DATE) {
+                validationResult = Validation.validateDate(this.getValue());
+                errorMessage = "Date format should be ..."; //TODO
+            } else if (inputType == TIME) {
+                validationResult = Validation.validateTime(this.getValue());
+                errorMessage = "Time format should be ..."; //TODO
+            } else {
+                validationResult = Validation.validateNumber(this.getValue());
+                errorMessage = "Letters and special characters aren't allowed";
+            }
+        }
 
-        /*
-         If there is an error message the input field will be highlighted
-         else it will set it to normal
-         */
-        /*
-        if (message != "true") {
-            markAsDanger(message);
+        if (!validationResult) {
+            markAsDanger(errorMessage);
         } else {
             markAsNormal();
-        }*/
+            errorMessage = "";
+        }
+    }
+
+    public void clear() {
+        input.setText("");
+        markAsNormal();
     }
 }

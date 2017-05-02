@@ -343,6 +343,8 @@ public class LandingPage extends GridPane {
                                                 callToActionButton,
                                                 switchFormButton);
 
+                emailField.clear();
+                passwordField.clear();
                 formParentContainer.setCenter(logInform);
                 formDetails.setText("Login to your account");
                 callToActionButton.setText("Login");
@@ -364,6 +366,8 @@ public class LandingPage extends GridPane {
                                                 callToActionButton,
                                                 switchFormButton);
 
+                emailField.clear();
+                passwordField.clear();
                 formParentContainer.setCenter(signUpForm);
                 formDetails.setText("Create a new account");
                 callToActionButton.setText("Next");
