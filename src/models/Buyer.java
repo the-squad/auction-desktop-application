@@ -43,12 +43,12 @@ public class Buyer extends User implements IAuctionInterface {
         // TODO
     }
 
-    public void makeBid() {
-        // TODO
+    public boolean makeBid(Auction auction , double money) {
+        return auction.bidAuction(money, this.getId());
     }
 
-    public void followSeller() {
-        // TODO
+    public boolean followSeller(User seller) {
+        return new SubscribeSeller(this.getId(),seller.getId()).create();
     }
 
     public void unFollowSeller(int sellerID) {
