@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2017 at 03:39 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: May 02, 2017 at 08:52 PM
+-- Server version: 10.1.10-MariaDB
+-- PHP Version: 5.5.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `auctions`
+-- Database: `project-firefly`
 --
 
 -- --------------------------------------------------------
@@ -37,18 +37,6 @@ CREATE TABLE `auctions` (
   `BidRate` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `auctions`:
---   `ItemID`
---       `items` -> `ID`
---   `UserID`
---       `users` -> `ID`
---   `ItemID`
---       `items` -> `ID`
---   `UserID`
---       `users` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -61,18 +49,6 @@ CREATE TABLE `auction_reports` (
   `AuctionID` int(11) NOT NULL,
   `Message` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `auction_reports`:
---   `AuctionID`
---       `auctions` -> `ID`
---   `UserID`
---       `users` -> `ID`
---   `AuctionID`
---       `auctions` -> `ID`
---   `UserID`
---       `users` -> `ID`
---
 
 -- --------------------------------------------------------
 
@@ -87,18 +63,6 @@ CREATE TABLE `bids` (
   `Price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `bids`:
---   `AuctionID`
---       `auctions` -> `ID`
---   `UserID`
---       `users` -> `ID`
---   `AuctionID`
---       `auctions` -> `ID`
---   `UserID`
---       `users` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -109,10 +73,6 @@ CREATE TABLE `categories` (
   `ID` int(11) NOT NULL,
   `Name` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `categories`:
---
 
 -- --------------------------------------------------------
 
@@ -126,14 +86,6 @@ CREATE TABLE `images` (
   `Image` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `images`:
---   `ItemID`
---       `items` -> `ID`
---   `ItemID`
---       `items` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -144,14 +96,6 @@ CREATE TABLE `inventories` (
   `ID` int(11) NOT NULL,
   `SellerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `inventories`:
---   `SellerID`
---       `users` -> `ID`
---   `SellerID`
---       `users` -> `ID`
---
 
 -- --------------------------------------------------------
 
@@ -167,18 +111,6 @@ CREATE TABLE `items` (
   `Quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `items`:
---   `CategoryID`
---       `categories` -> `ID`
---   `InventoryID`
---       `inventories` -> `ID`
---   `CategoryID`
---       `categories` -> `ID`
---   `InventoryID`
---       `inventories` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -192,18 +124,6 @@ CREATE TABLE `seller_reports` (
   `Message` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `seller_reports`:
---   `SellerID`
---       `users` -> `ID`
---   `UserID`
---       `users` -> `ID`
---   `UserID`
---       `users` -> `ID`
---   `SellerID`
---       `users` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -216,18 +136,6 @@ CREATE TABLE `subscribe_auctions` (
   `SubscriberID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- RELATIONS FOR TABLE `subscribe_auctions`:
---   `AuctionID`
---       `auctions` -> `ID`
---   `SubscriberID`
---       `users` -> `ID`
---   `AuctionID`
---       `auctions` -> `ID`
---   `SubscriberID`
---       `users` -> `ID`
---
-
 -- --------------------------------------------------------
 
 --
@@ -239,18 +147,6 @@ CREATE TABLE `subscribe_sellers` (
   `SubscriberID` int(11) NOT NULL,
   `SelleID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `subscribe_sellers`:
---   `SelleID`
---       `users` -> `ID`
---   `SubscriberID`
---       `users` -> `ID`
---   `SubscriberID`
---       `users` -> `ID`
---   `SelleID`
---       `users` -> `ID`
---
 
 -- --------------------------------------------------------
 
@@ -265,23 +161,9 @@ CREATE TABLE `users` (
   `Email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `Phone` varchar(13) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Address` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Photo` mediumblob
+  `Photo` mediumblob,
+  `Password` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `users`:
---   `UserTypeID`
---       `user_types` -> `ID`
---   `UserTypeID`
---       `user_types` -> `ID`
---
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`ID`, `UserTypeID`, `Name`, `Email`, `Phone`, `Address`, `Photo`) VALUES
-(1, 1, 'mohamed kamal', 'mohamed@yahoo.com', '01147960889', 'kamaaaaaaaaaaaal', NULL);
 
 -- --------------------------------------------------------
 
@@ -293,10 +175,6 @@ CREATE TABLE `user_types` (
   `ID` int(11) NOT NULL,
   `Type` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- RELATIONS FOR TABLE `user_types`:
---
 
 --
 -- Dumping data for table `user_types`
