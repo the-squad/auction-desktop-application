@@ -76,9 +76,6 @@ build.xml
 manifest.mf
 Project Firefly.iml
 *.psd
-<<<<<<< HEAD
 /src/models/Config.java
 project-firefly.iml
 /mysql-connector-java-5.1.42-bin.jar
-=======
->>>>>>> 426243a9fa63d33370f25c848a748c30cbdb8c1b

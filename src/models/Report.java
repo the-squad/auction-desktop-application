@@ -22,42 +22,43 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+package models;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
+import java.util.ArrayList;
 
-public class Card {
+public class Report {
+    private Auction auction;
+    private Seller  Seller ;
+    private String compliant; 
+    private Report(){}
 
-    BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
-
-    GridPane cardDetails;
-
-    Card() {
-        this.render();
+    public Report(Auction auction, Seller Seller, String compliant) {
+        this.auction = auction;
+        this.Seller = Seller;
+        this.compliant = compliant;
     }
 
-    private void render() {
-        //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
-
-        //Card container
-        cardContainer = new BorderPane();
-        cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+    public Auction getAuction() {
+        return auction;
     }
 
-    protected void setPictureView() {
+    public Seller getSeller() {
+        return Seller;
+    }
+
+    public String getCompliant() {
+        return compliant;
+    }
+    
+    public ArrayList<Report> getAllReport(){   
+        //Delete
+        return null;
+        
+    }
+    public void deleteReport(){
+        // TODO
+    }
+    public void acceptReport(){
         // TODO
     }
 }
