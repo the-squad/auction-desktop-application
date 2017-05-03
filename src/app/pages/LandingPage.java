@@ -43,6 +43,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import models.Buyer;
+import models.Model;
+import models.Seller;
 import models.User;
 
 import java.util.ArrayList;
@@ -471,6 +474,13 @@ public class LandingPage extends GridPane {
     private void goToHomePage() {
         //Showing the loading indicator
         userType = currentUser.getUserTypeID();
+
+        if (currentUser.getUserTypeID() == 2) {
+            currentSeller = Model.find(Seller.class, currentUser.getId());
+        } else {
+            currentBuyer = Model.find(Buyer.class, currentUser.getId());
+        }
+
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
         //Loading the home page
