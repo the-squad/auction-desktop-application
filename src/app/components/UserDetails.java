@@ -31,20 +31,32 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import models.User;
 
-import static app.Partials.FULL_PADDING;
+import static app.Partials.FIT_CONTAINER;
 import static app.Partials.PROFILE_PAGE;
 
-public class SellerDetails {
+public class UserDetails {
 
     private final int paddingType;
+    private final String userName;
+    //private final Image userPhoto;
 
     private GridPane sellerDetailsContainer;
     private Rectangle userPicture;
     private Label username;
 
-    public SellerDetails(int paddingType) {
+    // TODO DELETE THIS CONSTRUCTOR
+    public UserDetails(int paddingType) {
         this.paddingType = paddingType;
+        this.userName = "Muhammad Tarek";
+        this.render();
+    }
+
+    public UserDetails(int paddingType, User user) {
+        this.paddingType = paddingType;
+        this.userName = user.getName();
+        //TODO assign photo
         this.render();
     }
 
@@ -64,13 +76,13 @@ public class SellerDetails {
         // FIXME change this to image view
 
         //User name
-        username = new Label("Muhammad Tarek");
+        username = new Label(userName);
         username.getStyleClass().add("user-name");
 
         //User details container
         sellerDetailsContainer = new GridPane();
         sellerDetailsContainer.getStyleClass().add("user-container");
-        if (paddingType == FULL_PADDING) {
+        if (paddingType == FIT_CONTAINER) {
             sellerDetailsContainer.getStyleClass().add("bottom-borders");
             sellerDetailsContainer.setPadding(new Insets(10, 15, 10, 15));
             sellerDetailsContainer.setMinWidth(250);
@@ -89,7 +101,7 @@ public class SellerDetails {
         sellerDetailsContainer.getChildren().addAll(userPicture, username);
     }
 
-    public GridPane getSellerDetails() {
+    public GridPane getUserDetails() {
         return sellerDetailsContainer;
     }
 }

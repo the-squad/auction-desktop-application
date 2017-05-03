@@ -78,8 +78,8 @@ public class Partials {
     public static double SCROLLING_SPEED = 3;
 
     //Border radius
-    public static int FULL_PADDING = 0;
-    public static int RIGHT_PADDING = 1;
+    public static int FIT_CONTAINER = 0;
+    public static int FIT_DATA = 1;
 
     //Current user
     public static User currentUser;
