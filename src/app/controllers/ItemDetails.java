@@ -66,10 +66,10 @@ public class ItemDetails {
         //Item form container
         itemDetailsForm = new GridPane();
         itemDetailsForm.getStyleClass().add("card");
-        itemDetailsForm.setPadding(new Insets(35, 50 , 35, 50));
+        itemDetailsForm.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
         itemDetailsForm.setVgap(5);
         itemDetailsForm.setHgap(50);
-        itemDetailsForm.setMaxWidth(550);
+        itemDetailsForm.setMaxWidth(CARD_WIDTH);
         itemDetailsForm.setAlignment(Pos.CENTER);
 
         GridPane.setConstraints(itemNameField.getInputField(), 0 , 0);

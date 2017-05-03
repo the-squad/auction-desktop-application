@@ -24,6 +24,8 @@
 
 package app;
 
+import models.Buyer;
+import models.Seller;
 import models.User;
 
 public class Partials {
@@ -81,6 +83,13 @@ public class Partials {
     public static int FIT_CONTAINER = 0;
     public static int FIT_DATA = 1;
 
-    //Current user
+    //Global users actors
     public static User currentUser;
+    public static Buyer currentBuyer;
+    public static Seller currentSeller;
+
+    //Card props
+    public static int RIGHT_LEFT = 50;
+    public static int TOP_DOWN = 35;
+    public static int CARD_WIDTH = 550;
 }

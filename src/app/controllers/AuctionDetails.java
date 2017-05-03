@@ -82,10 +82,10 @@ public class AuctionDetails {
         //Auction form container
         auctionFormContainer = new GridPane();
         auctionFormContainer.getStyleClass().add("card");
-        auctionFormContainer.setPadding(new Insets(35, 50 , 35, 50));
+        auctionFormContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
         auctionFormContainer.setVgap(5);
         auctionFormContainer.setHgap(50);
-        auctionFormContainer.setMaxWidth(550);
+        auctionFormContainer.setMaxWidth(CARD_WIDTH);
         auctionFormContainer.setAlignment(Pos.CENTER);
 
         GridPane.setConstraints(auctionItemField.getDropdownField(), 0 ,0);
