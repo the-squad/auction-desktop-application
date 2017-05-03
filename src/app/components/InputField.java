@@ -138,4 +138,8 @@ public class InputField extends Input {
         input.setText("");
         markAsNormal();
     }
+
+    public void focus() {
+        input.requestFocus();
+    }
 }
