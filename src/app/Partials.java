@@ -36,9 +36,9 @@ public class Partials {
     public static int ADDRESS = 5;
     public static int NUMBER = 6;
 
-    public static int BUYER = 0;
-    public static int SELLER = 1;
-    public static int ADMIN = 2;
+    public static int BUYER = 3;
+    public static int SELLER = 2;
+    public static int ADMIN = 1;
 
     public static int userType;
 

@@ -466,7 +466,7 @@ public class LandingPage extends GridPane {
 
     private void goToHomePage() {
         //Showing the loading indicator
-        userType = SELLER;
+        userType = currentUser.getUserTypeID();
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
         //Loading the home page
