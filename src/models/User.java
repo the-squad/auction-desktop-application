@@ -21,17 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 public class User extends Model<User> {
 
@@ -45,12 +39,13 @@ public class User extends Model<User> {
     private byte[] _photo;
 
     public User(int userTypeID, String email) {
+        this();
         this._userTypeID = userTypeID;
         this._email = email;
     }
 
     public User() {
-        //DO NOTHING
+        _photo = new byte[]{};
     }
 
     public Integer getId() {
@@ -107,13 +102,16 @@ public class User extends Model<User> {
     }
 
     public BufferedImage getPhoto() {
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new ByteArrayInputStream(_photo));
-        } catch (IOException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return image;
+        return ImageUtils.byteArrayToBufferedImage(_photo);
+    }
+
+    public User setPhoto(BufferedImage photo) {
+        this._photo = ImageUtils.bufferedImageToByteArray(photo);
+        return this;
+    }
+
+    public User setPhoto(javafx.scene.image.Image photo) {
+        return setPhoto(ImageUtils.fxImageToBufferedImage(photo));
     }
 
     public User setPhoto(byte[] _photo) {
