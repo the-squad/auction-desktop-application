@@ -31,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import models.Auction;
 
 import static app.Partials.*;
 
@@ -44,7 +45,7 @@ public class AuctionCard extends Card {
     private Label currentBid;
     private Label auctionStatus;
 
-    private SellerDetails sellerDetails;
+    private UserDetails userDetails;
 
     private Boolean userSubscribed;
 
@@ -111,7 +112,7 @@ public class AuctionCard extends Card {
 
         //If is the card for the buyer show seller info
         if (viewType == BUYER) {
-            sellerDetails = new SellerDetails(FULL_PADDING);
+            userDetails = new UserDetails(FIT_CONTAINER);
         }
 
         //Auction details container
@@ -132,8 +133,8 @@ public class AuctionCard extends Card {
         cardDetails.getChildren().addAll(itemNameAndButtonContainer, currentBid, auctionStatus);
 
         if (viewType == BUYER) {
-            GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 3);
-            cardDetails.getChildren().add(sellerDetails.getSellerDetails());
+            GridPane.setConstraints(userDetails.getUserDetails(), 0, 3);
+            cardDetails.getChildren().add(userDetails.getUserDetails());
         }
 
         //Auction card container

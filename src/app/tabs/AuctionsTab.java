@@ -67,6 +67,10 @@ public class AuctionsTab {
         return auctionsPageContainer;
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public static AuctionsTab getInstance() {
         if (instance == null) {
             instance = new AuctionsTab();

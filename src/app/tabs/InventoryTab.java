@@ -67,6 +67,10 @@ public class InventoryTab {
         return inventoryPageContainer;
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public static InventoryTab getInstance() {
         if (instance == null) {
             instance = new InventoryTab();

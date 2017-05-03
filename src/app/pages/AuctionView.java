@@ -25,7 +25,7 @@
 package app.pages;
 
 import app.components.InputField;
-import app.components.SellerDetails;
+import app.components.UserDetails;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,7 +51,7 @@ public class AuctionView {
     private GridPane biddingBlock;
     private InputField bidField;
     private Button sumbitBid;
-    private SellerDetails sellerDetails;
+    private UserDetails userDetails;
 
     private AuctionView() {
         this.render();
@@ -99,7 +99,7 @@ public class AuctionView {
         biddingBlock.getChildren().addAll(bidField.getInputField(), sumbitBid);
 
         //Seller details
-        sellerDetails = new SellerDetails(RIGHT_PADDING);
+        userDetails = new UserDetails(FIT_DATA);
 
         //Auction Details container
         auctionDetailsContainer = new GridPane();
@@ -110,14 +110,14 @@ public class AuctionView {
         GridPane.setConstraints(itemName, 0 ,0);
         GridPane.setConstraints(itemDescription, 0 , 1);
         GridPane.setConstraints(priceBlock, 0, 2);
-        GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 3);
+        GridPane.setConstraints(userDetails.getUserDetails(), 0, 3);
         GridPane.setConstraints(biddingBlock, 0, 4);
 
         auctionDetailsContainer.getChildren().addAll(itemName,
                                                      itemDescription,
                                                      priceBlock,
                                                      biddingBlock,
-                                                     sellerDetails.getSellerDetails());
+                                                     userDetails.getUserDetails());
 
         //Auction view scrollbar
         auctionViewContainer = new ScrollPane(auctionDetailsContainer);

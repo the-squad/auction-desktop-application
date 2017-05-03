@@ -77,6 +77,10 @@ public class ExploreTab {
         gridView.loadAuctionCards(10);
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public ScrollPane getExploreTab() {
         return exploreTabScrollbar;
     }

@@ -124,4 +124,21 @@ public class Navigator {
         header = Header.getInstance();
         header.hidePageTitle();
     }
+
+    public static void refreshView() {
+        HomePage homePage = HomePage.getInstance();
+        homePage.destory();
+
+        AuctionsTab auctionsTab = AuctionsTab.getInstance();
+        auctionsTab.destroy();
+
+        ExploreTab exploreTab = ExploreTab.getInstance();
+        exploreTab.destroy();
+
+        FeedTab feedTab = FeedTab.getInstance();
+        feedTab.destroy();
+
+        InventoryTab inventoryTab = InventoryTab.getInstance();
+        inventoryTab.destroy();
+    }
 }
