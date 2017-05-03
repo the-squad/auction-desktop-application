@@ -1,27 +1,47 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2017 Contributors.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package models;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 
-/**
- *
- * @author Mohamed
- */
 public class ImageUtils {
 
     public static BufferedImage fxImageToBufferedImage(javafx.scene.image.Image image) {
         return SwingFXUtils.fromFXImage(image, null);
     }
 
-    public static javafx.scene.image.Image bufferedImageToFXImage(BufferedImage BImage) {
-        return new javafx.scene.image.Image(new ByteArrayInputStream(bufferedImageToByteArray(BImage)));
+    public static Image bufferedImageToFXImage(BufferedImage BImage) {
+        return new Image(new ByteArrayInputStream(bufferedImageToByteArray(BImage)));
     }
 
     public static byte[] bufferedImageToByteArray(BufferedImage BImage) {
@@ -47,13 +67,15 @@ public class ImageUtils {
     public static BufferedImage squareImage(BufferedImage Image) {
         int length = Image.getHeight() > Image.getWidth() ? Image.getWidth() : Image.getHeight();
         BufferedImage newImage = new BufferedImage(length, length, BufferedImage.TYPE_4BYTE_ABGR);
-        newImage.getGraphics().drawImage(Image, 0, 0, null);
+        int x = Image.getWidth() - length;
+        x = x > 0 ? x / 2 : x;
+        int y = Image.getHeight() - length;
+        y = y > 0 ? y / 2 : y;
+        newImage.getGraphics().drawImage(Image, 0, 0, length, length, x, y, x + length, y + length, null);
         return newImage;
     }
-    
-    public static void main(String[] args) throws IOException {
-        BufferedImage b = ImageIO.read(new File("D:/Drive/Desktop/1.PNG"));
-        b = squareImage(b);
-        ImageIO.write(b, "PNG", new File("D:/Drive/Desktop/1.PNG"));
+
+    public static Image cropAndConvertImage(BufferedImage Image) {
+        return bufferedImageToFXImage(squareImage(Image));
     }
 }
