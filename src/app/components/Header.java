@@ -37,6 +37,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import models.ImageUtils;
+
 import static app.Partials.*;
 
 public class Header extends BorderPane {
@@ -176,7 +178,8 @@ public class Header extends BorderPane {
         // TODO notification action
 
         //Profile picture
-        userInfo = new UserDetails(FIT_DATA);
+        Image testing = ImageUtils.cropAndConvertImage(currentUser.getPhoto(), 30, 30);
+        userInfo = new UserDetails(FIT_DATA, currentUser.getName(), testing);
 
         userInfo.getUserDetails().setOnMouseClicked(e -> {
             if (userType == SELLER) {

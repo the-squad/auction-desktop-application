@@ -39,8 +39,12 @@ import static app.Partials.PROFILE_PAGE;
 public class UserDetails {
 
     private final int paddingType;
-    private final String userName;
-    //private final Image userPhoto;
+    private String userName = "User name";
+    private Image userPhoto =  new Image(getClass().getResourceAsStream("/assets/default-user.jpg"),
+            30,
+            30,
+            true,
+            true);
 
     private GridPane sellerDetailsContainer;
     private Rectangle userPicture;
@@ -49,31 +53,23 @@ public class UserDetails {
     // TODO DELETE THIS CONSTRUCTOR
     public UserDetails(int paddingType) {
         this.paddingType = paddingType;
-        this.userName = "Muhammad Tarek";
         this.render();
     }
 
-    public UserDetails(int paddingType, User user) {
+    public UserDetails(int paddingType, String userName, Image userPhoto) {
         this.paddingType = paddingType;
-        this.userName = user.getName();
-        //TODO assign photo
+        this.userName = userName;
+        this.userPhoto = userPhoto;
         this.render();
     }
 
     private void render() {
         //User picture
-        userPicture = new Rectangle(30, 30,
-                new ImagePattern((
-                        new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
-                                30,
-                                30,
-                                true,
-                                true))));
+        userPicture = new Rectangle(30, 30);
+        userPicture.setFill(new ImagePattern(userPhoto));
         userPicture.setArcHeight(4);
         userPicture.setArcWidth(4);
         userPicture.getStyleClass().add("user-picture");
-
-        // FIXME change this to image view
 
         //User name
         username = new Label(userName);
