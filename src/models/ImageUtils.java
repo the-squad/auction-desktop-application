@@ -40,8 +40,8 @@ public class ImageUtils {
         return SwingFXUtils.fromFXImage(image, null);
     }
 
-    public static Image bufferedImageToFXImage(BufferedImage BImage) {
-        return new Image(new ByteArrayInputStream(bufferedImageToByteArray(BImage)));
+    public static Image bufferedImageToFXImage(BufferedImage BImage, int width, int height) {
+        return new Image(new ByteArrayInputStream(bufferedImageToByteArray(BImage)), width, height, true, true);
     }
 
     public static byte[] bufferedImageToByteArray(BufferedImage BImage) {
@@ -75,7 +75,7 @@ public class ImageUtils {
         return newImage;
     }
 
-    public static Image cropAndConvertImage(BufferedImage Image) {
-        return bufferedImageToFXImage(squareImage(Image));
+    public static Image cropAndConvertImage(BufferedImage Image, int width, int height) {
+        return bufferedImageToFXImage(squareImage(Image), width, height);
     }
 }
