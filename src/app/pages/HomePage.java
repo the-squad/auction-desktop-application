@@ -97,6 +97,10 @@ public class HomePage extends BorderPane {
         header.setUserPhoto();
     }
 
+    public void destory() {
+        instance = null;
+    }
+
     public BorderPane getHomePage() {
         return homePageContainer;
     }

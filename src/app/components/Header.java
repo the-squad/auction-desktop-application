@@ -207,7 +207,11 @@ public class Header extends BorderPane {
         logOutButton = new Button();
         logOutButton.getStyleClass().addAll("icon-button", "logout-icon");
 
-        logOutButton.setOnAction(e -> Navigator.switchPage(HOME_PAGE, LANDING_PAGE));
+        logOutButton.setOnAction(e -> {
+            Navigator.switchPage(HOME_PAGE, LANDING_PAGE);
+            Navigator.refreshView();
+            instance = null;
+        });
 
         //Right part container
         rightSideContainer = new GridPane();
@@ -224,8 +228,6 @@ public class Header extends BorderPane {
             GridPane.setConstraints(searchButton,1,0);
             rightSideContainer.getChildren().add(searchButton);
         }
-
-
 
         GridPane.setConstraints(notificationsButton, 2, 0);
 
@@ -304,7 +306,6 @@ public class Header extends BorderPane {
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);
-
     }
 
     public static Header getInstance() {

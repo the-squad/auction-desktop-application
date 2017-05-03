@@ -63,6 +63,10 @@ public class FeedTab {
         gridView.loadAuctionCards(10);
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public ScrollPane getFeedTab() {
         return feedPageContainer;
     }
