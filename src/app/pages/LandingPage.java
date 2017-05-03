@@ -35,6 +35,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -44,6 +45,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import models.User;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static app.Partials.*;
@@ -187,7 +189,7 @@ public class LandingPage extends GridPane {
 
         buyerDescription = new Label("Search for current auction, bid for stuff you love" +
                 " and get notified when you win the auction");
-        buyerDescription.getStyleClass().add("select-description");
+        buyerDescription.getStyleClass().addAll("select-description select-container--active");
         buyerDescription.setMaxWidth(300);
         buyerDescription.setWrapText(true);
 
@@ -198,7 +200,8 @@ public class LandingPage extends GridPane {
         buyerTypeContainer.setVgap(2);
         buyerTypeContainer.getStyleClass().add("select-container");
 
-        userTypeField = new InputField(" ", TEXT);
+        userTypeField = new InputField("", TEXT);
+        userTypeField.setValue("3");
 
         GridPane.setConstraints(buyerHeadline, 0, 0);
         GridPane.setConstraints(buyerDescription, 0, 1);
@@ -339,15 +342,16 @@ public class LandingPage extends GridPane {
                                                 callToActionButton,
                                                 switchFormButton);
 
-                if (clear) {
-                    emailField.clear();
-                    passwordField.clear();
-                }
-
                 formParentContainer.setCenter(logInform);
                 formDetails.setText("Login to your account");
                 callToActionButton.setText("Login");
                 switchFormButton.setText("Don't have an account?");
+
+                if (clear) {
+                    emailField.clear();
+                    passwordField.clear();
+                    emailField.focus();
+                }
             } else if (formType == SIGNUP) {
                 signUpForm.getChildren().clear();
                 signUpForm.getChildren().addAll(formDetails,
@@ -358,16 +362,18 @@ public class LandingPage extends GridPane {
                                                 callToActionButton,
                                                 switchFormButton);
 
+                formParentContainer.setCenter(signUpForm);
+                formDetails.setText("Create a new account");
+                callToActionButton.setText("Next");
+                switchFormButton.setText("Have an account?");
+
                 if (clear) {
                     nameField.clear();
                     emailField.clear();
                     passwordField.clear();
                     repeatPassword.clear();
+                    nameField.focus();
                 }
-                formParentContainer.setCenter(signUpForm);
-                formDetails.setText("Create a new account");
-                callToActionButton.setText("Next");
-                switchFormButton.setText("Have an account?");
             } else {
                 userTypeForm.getChildren().clear();
                 userTypeForm.getChildren().addAll(formDetails,
@@ -390,46 +396,72 @@ public class LandingPage extends GridPane {
     }
 
     private void selectUserType(int selectedType) {
-        if (selectedType == SELLER) {
-            if (sellerTypeContainer.getStyleClass().contains("select-container--active")) return;
+        if (checkForDataIntegrity(SIGNUP)) {
+            if (selectedType == SELLER) {
+                if (sellerTypeContainer.getStyleClass().contains("select-container--active")) return;
 
-            buyerTypeContainer.getStyleClass().remove("select-container--active");
-            sellerTypeContainer.getStyleClass().add("select-container--active");
-            userTypeField.setValue("2");
+                buyerTypeContainer.getStyleClass().remove("select-container--active");
+                sellerTypeContainer.getStyleClass().add("select-container--active");
+                userTypeField.setValue("2");
+            } else {
+                if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
+
+                sellerTypeContainer.getStyleClass().remove("select-container--active");
+                buyerTypeContainer.getStyleClass().add("select-container--active");
+                userTypeField.setValue("3");
+            }
         } else {
-            if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
-
-            sellerTypeContainer.getStyleClass().remove("select-container--active");
-            buyerTypeContainer.getStyleClass().add("select-container--active");
-            userTypeField.setValue("3");
+            switchForm(SIGNUP, false);
         }
     }
 
     private void login() {
-        if (User.checkEmail(emailField.getValue()) == 1) {
-            emailField.markAsDanger("Email doesn't exist");
-        } else {
-            currentUser = User.login(emailField.getValue(), passwordField.getValue());
-            if (currentUser == null) {
-                passwordField.markAsDanger("Password doesn't match");
+        if (checkForDataIntegrity(LOGIN)) {
+            if (User.checkEmail(emailField.getValue()) == 1) {
+                emailField.markAsDanger("Email doesn't exist");
             } else {
-                loadingIndicator.setLoadingMessage("Logging in");
-                this.goToHomePage();
+                currentUser = User.login(emailField.getValue(), passwordField.getValue());
+                if (currentUser == null) {
+                    passwordField.markAsDanger("Password doesn't match");
+                } else {
+                    loadingIndicator.setLoadingMessage("Logging in");
+                    this.goToHomePage();
+                }
             }
         }
     }
 
     private void signUp() {
-        if (!Objects.equals(passwordField.getValue(), repeatPassword.getValue())) {
-            System.out.println(passwordField.getValue() + "   " + repeatPassword.getValue());
-        } else if (User.checkEmail(emailField.getValue()) == 0) {
-            System.out.println("Email already exists");
+        if (checkForDataIntegrity(SIGNUP)) {
+            if (!Objects.equals(passwordField.getValue(), repeatPassword.getValue())) {
+                switchForm(SIGNUP, false);
+                repeatPassword.markAsDanger("Passwords doesn't match");
+            } else if (User.checkEmail(emailField.getValue()) == 0) {
+                switchForm(SIGNUP, false);
+                emailField.markAsDanger("Email is already registered");
+            } else {
+                currentUser = User.signUp(nameField.getValue(), emailField.getValue(), passwordField.getValue(), Integer.parseInt(userTypeField.getValue()));
+                loadingIndicator.setLoadingMessage("Signing up");
+                this.goToHomePage();
+            }
         } else {
-            System.out.print(userTypeField.getValue());
-            currentUser = User.signUp(nameField.getValue(), emailField.getValue(), passwordField.getValue(), Integer.parseInt(userTypeField.getValue()));
-            loadingIndicator.setLoadingMessage("Signing up");
-            this.goToHomePage();
+            switchForm(SIGNUP, false);
         }
+    }
+
+    private Boolean checkForDataIntegrity(int form) {
+        if (form == SIGNUP) {
+            for (Node inputField : signUpForm.getChildren()) {
+                if (inputField.getStyleClass().contains("input-field--danger"))
+                    return false;
+            }
+        } else if (form == LOGIN) {
+            for (Node inputField : logInform.getChildrenUnmodifiable()) {
+                if (inputField.getStyleClass().contains("input-field--danger"))
+                    return false;
+            }
+        }
+        return true;
     }
 
     private void goToHomePage() {
