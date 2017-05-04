@@ -64,18 +64,27 @@ public class ImageUtils {
         }
     }
 
-    public static BufferedImage squareImage(BufferedImage Image) {
+    public static BufferedImage cropImage(BufferedImage Image, int width, int height) {
         int length = Image.getHeight() > Image.getWidth() ? Image.getWidth() : Image.getHeight();
-        BufferedImage newImage = new BufferedImage(length, length, BufferedImage.TYPE_4BYTE_ABGR);
-        int x = Image.getWidth() - length;
-        x = x > 0 ? x / 2 : x;
-        int y = Image.getHeight() - length;
-        y = y > 0 ? y / 2 : y;
-        newImage.getGraphics().drawImage(Image, 0, 0, length, length, x, y, x + length, y + length, null);
+        int newWidth = Image.getWidth() == length ? length : Image.getHeight() * width / height;
+        int newHeight = Image.getHeight() == length ? length : Image.getWidth() * height / width;
+        if (newHeight > Image.getHeight()) {
+            newHeight = Image.getHeight();
+            newWidth = newHeight * width / height;
+        } else if (newWidth > Image.getWidth()) {
+            newWidth = Image.getWidth();
+            newHeight = newWidth * height / width;
+        }
+        BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_4BYTE_ABGR);
+        int x = Image.getWidth() - newWidth;
+        x = x > 0 ? x / 2 : 0;
+        int y = Image.getHeight() - newHeight;
+        y = y > 0 ? y / 2 : 0;
+        newImage.getGraphics().drawImage(Image, 0, 0, newWidth, newHeight, x, y, x + newWidth, y + newHeight, null);
         return newImage;
     }
 
     public static Image cropAndConvertImage(BufferedImage Image, int width, int height) {
-        return bufferedImageToFXImage(squareImage(Image), width, height);
+        return bufferedImageToFXImage(cropImage(Image, width, height), width, height);
     }
 }
