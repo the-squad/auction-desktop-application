@@ -24,7 +24,11 @@
 
 package models;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory extends Model<Inventory>{
 
@@ -32,13 +36,12 @@ public class Inventory extends Model<Inventory>{
     private int _sellerID;
     ArrayList<Item> items;
 
-    protected Inventory() {
+    public Inventory() {
     }
 
     public Inventory(int sellerID) {
         this._sellerID = sellerID;
         items=new ArrayList<>();
-        
     }
 
     public int getId() {
@@ -61,6 +64,10 @@ public class Inventory extends Model<Inventory>{
         item.delteItem(itemID);
         
     }
-
-    
+    public ArrayList<Item> getItems() {
+        if (items == null) {
+            items = new ArrayList(Model.find(Item.class, "InventoryID = ?", 1));
+        }
+        return items;
+    }
 }
