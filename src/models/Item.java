@@ -34,6 +34,7 @@ public class Item extends Model<Item>{
     private int _categoryID;
     private String _name;
     private int _quantity;
+    private String _description;
     private ArrayList<Image> images;
 
     protected Item() {
@@ -84,6 +85,15 @@ public class Item extends Model<Item>{
     public Item setQuantity(int quantity) {
         this._quantity = quantity;
         return this;
+    }
+
+    public Item setDescription(String _description) {
+        this._description = _description;
+        return this;
+    }
+
+    public String getDescription() {
+        return _description;
     }
     
     public void delteItem(int itemID)
