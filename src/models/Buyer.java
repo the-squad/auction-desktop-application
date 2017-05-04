@@ -71,8 +71,34 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     public ArrayList<Auction> getFeed() {
-        return null;
-        // TODO
+        List<Auction> auctions = new ArrayList<>();
+        PreparedStatement[] statement = new PreparedStatement[2];
+        statement[0] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_auctions ON auctions.ID = subscribe_auctions.AuctionID WHERE subscribe_auctions.SubscriberID = ?",3);
+        statement[1] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_sellers ON auctions.UserID = subscribe_sellers.SelleID WHERE subscribe_sellers.SubscriberID = ?",3);
+        List<Integer> auctionIDs = new ArrayList<>();
+        for(int counter = 0; counter < 2; counter++) {
+            try {
+                statement[counter].execute();
+                ResultSet resultSet = statement[counter].getResultSet();
+                while (resultSet.next()) {
+                    if(!auctionIDs.contains(resultSet.getInt("ID"))) {
+                        auctionIDs.add(resultSet.getInt("ID"));
+                        Auction auctionObject = new Auction();
+                        auctionObject.setUserID(resultSet.getInt("UserID"));
+                        auctionObject.setItemID(resultSet.getInt("ItemID"));
+                        auctionObject.setItemQuantity(resultSet.getInt("ItemQuantity"));
+                        auctionObject.setStartDate(resultSet.getDate("StartDate"));
+                        auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
+                        auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
+                        auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                        auctions.add(auctionObject);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return (ArrayList<Auction>) auctions;
     }
 
     public ArrayList<Auction> explore(Category category) {
