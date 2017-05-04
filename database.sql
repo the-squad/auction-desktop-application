@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2017 at 09:05 PM
+-- Generation Time: May 05, 2017 at 12:41 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -287,7 +287,7 @@ ALTER TABLE `user_types`
 -- AUTO_INCREMENT for table `auctions`
 --
 ALTER TABLE `auctions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `auction_reports`
 --
@@ -307,7 +307,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `inventories`
 --
@@ -337,7 +337,7 @@ ALTER TABLE `subscribe_sellers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `user_types`
 --
@@ -351,7 +351,7 @@ ALTER TABLE `user_types`
 -- Constraints for table `auctions`
 --
 ALTER TABLE `auctions`
-  ADD CONSTRAINT `Fk_item_id` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ID`),
+  ADD CONSTRAINT `Fk_item_id` FOREIGN KEY (`ItemID`) REFERENCES `items` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Fk_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -365,8 +365,8 @@ ALTER TABLE `auction_reports`
 -- Constraints for table `bids`
 --
 ALTER TABLE `bids`
-  ADD CONSTRAINT `FK_Auction_id` FOREIGN KEY (`AuctionID`) REFERENCES `auctions` (`ID`),
-  ADD CONSTRAINT `FK_Bider` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`);
+  ADD CONSTRAINT `FK_Auction_id` FOREIGN KEY (`AuctionID`) REFERENCES `auctions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_Bider` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `images`
@@ -392,7 +392,7 @@ ALTER TABLE `items`
 --
 ALTER TABLE `seller_reports`
   ADD CONSTRAINT `Fk_ReporterID_User` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Fk_Seller_User` FOREIGN KEY (`SellerID`) REFERENCES `users` (`ID`);
+  ADD CONSTRAINT `Fk_Seller_User` FOREIGN KEY (`SellerID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `subscribe_auctions`
@@ -406,7 +406,7 @@ ALTER TABLE `subscribe_auctions`
 --
 ALTER TABLE `subscribe_sellers`
   ADD CONSTRAINT `FK_SUB` FOREIGN KEY (`SubscriberID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_Seller` FOREIGN KEY (`SelleID`) REFERENCES `users` (`ID`);
+  ADD CONSTRAINT `FK_Seller` FOREIGN KEY (`SelleID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`
