@@ -321,8 +321,9 @@ public class LandingPage extends GridPane {
         loadingIndicator = new LoadingIndicator();
 
         //TESTING PURPOSING ONLY
-        emailField.setValue("buyer@firefly.com");
+        emailField.setValue("tarek-buyer@firefly.com");
         passwordField.setValue("Firefly101");
+        callToActionButton.fire();
     }
 
     public GridPane getLandingPage() {
