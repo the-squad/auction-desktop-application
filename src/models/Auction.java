@@ -143,6 +143,7 @@ public class Auction extends Model<Auction> {
         }
     }
     
+    public Item getItemAuction()
     {
         this.item=Model.find(Item.class, this._itemID);
         return this.item;
