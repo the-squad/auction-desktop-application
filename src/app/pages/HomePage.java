@@ -55,23 +55,18 @@ public class HomePage extends BorderPane {
         if (userType == BUYER) {
             //Creating the explore tab
             explore = ExploreTab.getInstance();
-            explore.loadCards(); // FUTURE TODO
 
             //Creating the feed tab
             feed = FeedTab.getInstance();
-            feed.loadCards(); // FUTURE TODO
 
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
-            inventory.loadCards(); // FUTURE TODO
         } if (userType == SELLER) {
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
-            inventory.loadCards(); // FUTURE TODO
 
             //Creating the auctions page
             auctions = AuctionsTab.getInstance();
-            auctions.loadCards();
         } if (userType == ADMIN) { // FUTURE TODO
             // TODO
         }
