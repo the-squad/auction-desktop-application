@@ -23,7 +23,11 @@
  */
 package models;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Seller extends User implements IAuctionInterface {
 
@@ -71,9 +75,28 @@ public class Seller extends User implements IAuctionInterface {
     }
 
     @Override
-    public ArrayList<Auction> search(String query) {
-        // TODO
-        return null;
+    public ArrayList<Auction> search(String itemName) {
+        List<Auction> auctions = new ArrayList<>();
+//        statement = Model.generateQuery("select auctions.* FROM auctions JOIN items ON items.ID = auctions.ItemID where auctions.UserID = ? AND items.Name LIKE '?%'",this.getId(),itemName);
+        PreparedStatement statement = Model.generateQuery("select auctions.* FROM auctions JOIN items ON items.ID = auctions.ItemID where auctions.UserID = ? AND items.Name = ?",this.getId(),itemName);
+        try {
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            while(resultSet.next()){
+                Auction auctionObject = new Auction();
+                auctionObject.setUserID(resultSet.getInt("UserID"));
+                auctionObject.setItemID(resultSet.getInt("ItemID"));
+                auctionObject.setItemQuantity(resultSet.getInt("ItemQuantity"));
+                auctionObject.setStartDate(resultSet.getDate("StartDate"));
+                auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
+                auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
+                auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                auctions.add(auctionObject);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (ArrayList<Auction>) auctions;
     }
 
     @Override

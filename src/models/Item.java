@@ -24,6 +24,8 @@
 
 package models;
 
+import java.util.ArrayList;
+
 public class Item extends Model<Item>{
 
 
@@ -32,6 +34,7 @@ public class Item extends Model<Item>{
     private int _categoryID;
     private String _name;
     private int _quantity;
+    private ArrayList<Image> images;
 
     protected Item() {
     }
@@ -86,6 +89,12 @@ public class Item extends Model<Item>{
     public void delteItem(int itemID)
     {
         Model.delete(Item.class, itemID);
+    }
+    
+    public ArrayList<Image> getIamgesItem()
+    {
+        this.images = new ArrayList<>(Model.find(Image.class, "itemID = ?", this._id));
+        return this.images;
     }
     
 }

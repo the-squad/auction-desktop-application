@@ -24,6 +24,13 @@
 
 package models;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+
 public class Image extends Model<Image>{
 
     private int _id;
@@ -50,8 +57,14 @@ public class Image extends Model<Image>{
         this._itemID = itemID;
     }
 
-    public byte[] getImage() {
-        return _image;
+    public BufferedImage getImage() {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new ByteArrayInputStream(_image));
+        } catch (IOException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return image;
     }
 
     public void setImage(byte[] image) {
