@@ -87,6 +87,7 @@ public class Item extends Model<Item>{
         return this;
     }
 
+<<<<<<< HEAD
     public Item setDescription(String _description) {
         this._description = _description;
         return this;
@@ -96,6 +97,8 @@ public class Item extends Model<Item>{
         return _description;
     }
     
+=======
+>>>>>>> 2ae5bedfbb29852291bdaea209a377ce98a7fd78
     public void delteItem(int itemID)
     {
         Model.delete(Item.class, itemID);
@@ -107,4 +110,5 @@ public class Item extends Model<Item>{
         return this.images;
     }
     
+
 }

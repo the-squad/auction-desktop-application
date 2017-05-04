@@ -73,8 +73,13 @@ public class Buyer extends User implements IAuctionInterface {
     public ArrayList<Auction> getFeed() {
         List<Auction> auctions = new ArrayList<>();
         PreparedStatement[] statement = new PreparedStatement[2];
+<<<<<<< HEAD
         statement[0] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_auctions ON auctions.ID = subscribe_auctions.AuctionID WHERE subscribe_auctions.SubscriberID = ?", this.getId());
         statement[1] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_sellers ON auctions.UserID = subscribe_sellers.SelleID WHERE subscribe_sellers.SubscriberID = ?", this.getId());
+=======
+        statement[0] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_auctions ON auctions.ID = subscribe_auctions.AuctionID WHERE subscribe_auctions.SubscriberID = ?",this.getId());
+        statement[1] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_sellers ON auctions.UserID = subscribe_sellers.SelleID WHERE subscribe_sellers.SubscriberID = ?",this.getId());
+>>>>>>> 2ae5bedfbb29852291bdaea209a377ce98a7fd78
         List<Integer> auctionIDs = new ArrayList<>();
         for(int counter = 0; counter < 2; counter++) {
             try {
