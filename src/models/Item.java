@@ -85,7 +85,7 @@ public class Item extends Model<Item>{
         this._quantity = quantity;
         return this;
     }
-    
+
     public void delteItem(int itemID)
     {
         Model.delete(Item.class, itemID);
@@ -97,4 +97,5 @@ public class Item extends Model<Item>{
         return this.images;
     }
     
+
 }
