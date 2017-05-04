@@ -59,6 +59,12 @@ public class Auction extends Model<Auction> {
         return _userID;
     }
 
+
+    public Auction setUserID(int userID) {
+        this._userID = userID;
+        return this;
+    }
+
     public int getItemID() {
         return _itemID;
     }
