@@ -99,7 +99,7 @@ public class AuctionView {
         biddingBlock.getChildren().addAll(bidField.getInputField(), sumbitBid);
 
         //Seller details
-        userDetails = new UserDetails(FIT_DATA);
+        // TODO userDetails = new UserDetails(FIT_DATA);
 
         //Auction Details container
         auctionDetailsContainer = new GridPane();
