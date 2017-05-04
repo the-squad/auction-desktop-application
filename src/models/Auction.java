@@ -38,9 +38,9 @@ public class Auction extends Model<Auction> {
     private double _bidRate;
     private ArrayList<Bid> bids;
     private Item item;
+    private Seller seller;
 
-    protected Auction() {
-    }
+    protected Auction() {}
 
     public Auction(int userID, int itemID, int itemQuantity, Date terminationDate, double initialPrice, double bidRate) {
         this._userID = userID;
@@ -144,9 +144,14 @@ public class Auction extends Model<Auction> {
         }
     }
     
-    public Item getItemAuction()
-    {
+    public Item getItemAuction() {
         this.item=Model.find(Item.class, this._itemID);
         return this.item;
+    }
+
+    public Seller getSeller() {
+        if (seller == null)
+            seller = Model.find(Seller.class, this._userID);
+        return seller;
     }
 }
