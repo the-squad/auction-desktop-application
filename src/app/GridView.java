@@ -26,11 +26,13 @@ package app;
 
 import app.components.AuctionCard;
 import app.components.ItemCard;
-import app.components.LoadingIndicator;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import models.Auction;
+
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class GridView {
@@ -55,23 +57,20 @@ public class GridView {
         extraSpace.setMinHeight(1);
     }
 
-    public void loadAuctionCards(int cardsNumber) {
-        AuctionCard cards[] = new AuctionCard[cardsNumber];
+    public void loadAuctionCards(ArrayList<Auction> auctions) {
+        ArrayList<AuctionCard> auctionCards = new ArrayList<>(auctions.size());
 
-        for (int counter = 0; counter < cardsNumber; counter++)
-            cards[counter] = new AuctionCard(userType);
+        for (Auction auction : auctions)
+            auctionCards.add(new AuctionCard(userType, auction));
 
         int counter = 0;
-        for (int rowCounter = 0; rowCounter < (cards.length / 4) + 1; rowCounter++) {
-            for (int columnCounter = 0; columnCounter < 4; columnCounter++) {
-                if (counter >= cards.length) break;
-                GridPane.setConstraints(cards[counter].getAuctionCard(), columnCounter, rowCounter);
-                cardsContainer.getChildren().add(cards[counter].getAuctionCard());
-                counter++;
-            }
+        for (AuctionCard auctionCard : auctionCards) {
+            GridPane.setConstraints(auctionCard.getAuctionCard(), counter % 4, counter / 4);
+            cardsContainer.getChildren().add(auctionCard.getAuctionCard());
+            counter++;
         }
 
-        GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
+        GridPane.setConstraints(extraSpace, 0 ,(auctionCards.size() / 4) + 2);
         cardsContainer.getChildren().add(extraSpace);
     }
 

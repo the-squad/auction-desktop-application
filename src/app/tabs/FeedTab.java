@@ -26,6 +26,10 @@ package app.tabs;
 
 import app.GridView;
 import javafx.scene.control.ScrollPane;
+import models.Auction;
+
+import java.util.ArrayList;
+
 import static app.Partials.SCROLLING_SPEED;
 
 public class FeedTab {
@@ -59,8 +63,8 @@ public class FeedTab {
         });
     }
 
-    public void loadCards() {
-        gridView.loadAuctionCards(10);
+    public void loadCards(ArrayList<Auction> auctions) {
+        gridView.loadAuctionCards(auctions);
     }
 
     public void destroy() {

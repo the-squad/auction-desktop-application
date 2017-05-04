@@ -58,6 +58,7 @@ public class HomePage extends BorderPane {
 
             //Creating the feed tab
             feed = FeedTab.getInstance();
+            feed.loadCards(currentBuyer.getFeed());
 
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
