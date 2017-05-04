@@ -66,7 +66,7 @@ public class Inventory extends Model<Inventory>{
     }
     public ArrayList<Item> getItems() {
         if (items == null) {
-            items = new ArrayList(Model.find(Item.class, "InventoryID = ?", 1));
+            items = new ArrayList(Model.find(Item.class, "InventoryID = ?", this.getId()));
         }
         return items;
     }
