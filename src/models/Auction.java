@@ -37,6 +37,7 @@ public class Auction extends Model<Auction> {
     private double _initialPrice;
     private double _bidRate;
     private ArrayList<Bid> bids;
+    private Item item;
 
     protected Auction() {
     }
@@ -140,5 +141,10 @@ public class Auction extends Model<Auction> {
         } else {
             return false;
         }
+    }
+    
+    {
+        this.item=Model.find(Item.class, this._itemID);
+        return this.item;
     }
 }
