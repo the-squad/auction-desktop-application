@@ -60,7 +60,7 @@ public class AuctionsTab {
     }
 
     public void loadCards() {
-        gridView.loadAuctionCards(16);
+        //gridView.loadAuctionCards(16);
     }
 
     public ScrollPane getAuctionsTab() {

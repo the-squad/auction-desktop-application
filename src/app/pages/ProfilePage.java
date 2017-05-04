@@ -176,7 +176,7 @@ public class ProfilePage {
 
         //Grid view
         gridView = new GridView();
-        gridView.loadAuctionCards(15);
+        //gridView.loadAuctionCards(15);
 
         //Profile page container
         profilePageContainer = new BorderPane();

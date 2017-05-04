@@ -74,7 +74,7 @@ public class ExploreTab {
     }
 
     public void loadCards() {
-        gridView.loadAuctionCards(10);
+        //gridView.loadAuctionCards(10);
     }
 
     public void destroy() {

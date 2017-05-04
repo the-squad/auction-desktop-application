@@ -51,7 +51,7 @@ public class SearchResultsPage {
 
         //Grid view
         gridView = new GridView();
-        gridView.loadAuctionCards(25);
+        //gridView.loadAuctionCards(25);
 
         //Search results container
         searchResultsPageContainer = new BorderPane();
