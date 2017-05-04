@@ -33,6 +33,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import models.Auction;
+import models.ImageUtils;
+
+import java.awt.image.BufferedImage;
 
 import static app.Partials.*;
 
@@ -51,18 +54,21 @@ public class AuctionCard extends Card {
 
     private Boolean userSubscribed;
 
-    public AuctionCard(int viewType) {
+    public AuctionCard(int viewType, Auction auction) {
         super();
         this.viewType = viewType;
+        this.auction = auction;
         this.render();
     }
 
     private void render() {
         //Item photo
-        // TODO photoClipper.setFill(new ImagePattern(auction.get));
+
+        photo = ImageUtils.cropAndConvertImage(auction.getItemAuction().getIamgesItem().get(0).getImage(), 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
 
         //Item name
-        itemName = new Label();
+        itemName = new Label(auction.getItemAuction().getName());
         itemName.getStyleClass().add("item-name");
 
         itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, "Moto 360"));
@@ -117,7 +123,9 @@ public class AuctionCard extends Card {
 
         //If is the card for the buyer show seller info
         if (viewType == BUYER) {
-            userDetails = new UserDetails(FIT_CONTAINER); // TODO send user details
+           userDetails = new UserDetails(FIT_CONTAINER, auction.getSeller().getName(),
+                   auction.getSeller().getPhoto(),
+                   auction.getUserID());
         }
 
         //Auction details container
