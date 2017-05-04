@@ -178,14 +178,13 @@ public class Header extends BorderPane {
         // TODO notification action
 
         //Profile picture
-        Image testing = ImageUtils.cropAndConvertImage(currentUser.getPhoto(), 30, 30);
-        userInfo = new UserDetails(FIT_DATA, currentUser.getName(), testing);
+        userInfo = new UserDetails(FIT_DATA, currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
 
         userInfo.getUserDetails().setOnMouseClicked(e -> {
             if (userType == SELLER) {
-                Navigator.viewPage(PROFILE_PAGE, "Muhammad Tarek");
+                Navigator.viewPage(PROFILE_PAGE, currentUser.getName());
             } else {
-                Navigator.viewPage(ACCOUNT_SETTINGS, "Account Settings");
+                Navigator.viewPage(ACCOUNT_SETTINGS, currentUser.getName());
             }
         });
 

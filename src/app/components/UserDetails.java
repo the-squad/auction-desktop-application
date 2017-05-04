@@ -31,7 +31,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import models.User;
+import models.ImageUtils;
+
+import java.awt.image.BufferedImage;
 
 import static app.Partials.FIT_CONTAINER;
 import static app.Partials.PROFILE_PAGE;
@@ -40,36 +42,28 @@ public class UserDetails {
 
     private final int paddingType;
     private String userName = "User name";
-    private Image userPhoto =  new Image(getClass().getResourceAsStream("/assets/default-user.jpg"),
-            30,
-            30,
-            true,
-            true);
+    private Image photo;
+    private int userId;
 
     private GridPane sellerDetailsContainer;
-    private Rectangle userPicture;
+    private Rectangle photoViewer;
     private Label username;
 
-    // TODO DELETE THIS CONSTRUCTOR
-    public UserDetails(int paddingType) {
-        this.paddingType = paddingType;
-        this.render();
-    }
-
-    public UserDetails(int paddingType, String userName, Image userPhoto) {
+    public UserDetails(int paddingType, String userName, BufferedImage photo, int userId) {
         this.paddingType = paddingType;
         this.userName = userName;
-        this.userPhoto = userPhoto;
+        this.photo = ImageUtils.cropAndConvertImage(photo, 30, 30);
+        this.userId = userId;
         this.render();
     }
 
     private void render() {
         //User picture
-        userPicture = new Rectangle(30, 30);
-        userPicture.setFill(new ImagePattern(userPhoto));
-        userPicture.setArcHeight(4);
-        userPicture.setArcWidth(4);
-        userPicture.getStyleClass().add("user-picture");
+        photoViewer = new Rectangle(30, 30);
+        photoViewer.setFill(new ImagePattern(photo));
+        photoViewer.setArcHeight(4);
+        photoViewer.setArcWidth(4);
+        photoViewer.getStyleClass().add("user-picture");
 
         //User name
         username = new Label(userName);
@@ -89,12 +83,12 @@ public class UserDetails {
 
         sellerDetailsContainer.setOnMouseClicked(me -> Navigator.viewPage(PROFILE_PAGE, username.getText()));
 
-        GridPane.setConstraints(userPicture, 0, 0);
-        GridPane.setMargin(userPicture, new Insets(0, 14, 0, 0));
+        GridPane.setConstraints(photoViewer, 0, 0);
+        GridPane.setMargin(photoViewer, new Insets(0, 14, 0, 0));
 
         GridPane.setConstraints(username, 1, 0);
 
-        sellerDetailsContainer.getChildren().addAll(userPicture, username);
+        sellerDetailsContainer.getChildren().addAll(photoViewer, username);
     }
 
     public GridPane getUserDetails() {
