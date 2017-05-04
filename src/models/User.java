@@ -24,6 +24,7 @@
 package models;
 
 import java.awt.image.BufferedImage;
+import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,15 +39,15 @@ public class User extends Model<User> {
     private String _password;
     private byte[] _photo;
 
+    private static BufferedImage defaultImage = ImageUtils.fxImageToBufferedImage(new Image(User.class.getResourceAsStream("/assets/default-user.jpg")));
+
     public User(int userTypeID, String email) {
         this();
         this._userTypeID = userTypeID;
         this._email = email;
     }
 
-    public User() {
-        _photo = new byte[]{};
-    }
+    public User() {}
 
     public Integer getId() {
         return _id;
@@ -102,6 +103,8 @@ public class User extends Model<User> {
     }
 
     public BufferedImage getPhoto() {
+        if (_photo == null)
+            return defaultImage;
         return ImageUtils.byteArrayToBufferedImage(_photo);
     }
 
