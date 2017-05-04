@@ -35,17 +35,6 @@
     -fx-max-height: 200px;
 }
 
-.item-image {
-    -fx-min-height: 175px;
-    -fx-max-height: 175px;
-    -fx-min-width: 250px;
-    -fx-max-width: 250px;
-    -fx-background-image: url("../../assets/image-placeholder.jpg");
-    -fx-background-position: center;
-    -fx-background-size: cover;
-    -fx-border-color:transparent transparent white transparent;
-}
-
 .item-name {
     -fx-text-fill: -fx-darker-gray-color;
     -fx-font-weight: 700;

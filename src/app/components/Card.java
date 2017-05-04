@@ -25,15 +25,18 @@
 package app.components;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class Card {
 
     BorderPane cardContainer;
     private Label pictureView;
-    private Rectangle pictureClipper;
+    private Image itemPhoto;
+    protected Rectangle photoClipper;
 
     GridPane cardDetails;
 
@@ -43,13 +46,12 @@ public class Card {
 
     private void render() {
         //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
-
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
+        photoClipper = new Rectangle(250, 175);
+        photoClipper.setFill(new ImagePattern(itemPhoto));
+        photoClipper.setArcWidth(5);
+        photoClipper.setArcHeight(5);
+        photoClipper.setWidth(250);
+        photoClipper.setHeight(175);
 
         //Card container
         cardContainer = new BorderPane();

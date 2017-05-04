@@ -31,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import models.Auction;
 
 import static app.Partials.*;
@@ -38,6 +39,7 @@ import static app.Partials.*;
 public class AuctionCard extends Card {
 
     private final int viewType;
+    private Auction auction;
 
     private GridPane itemNameAndButtonContainer;
     private Label itemName;
@@ -56,8 +58,11 @@ public class AuctionCard extends Card {
     }
 
     private void render() {
+        //Item photo
+        // TODO photoClipper.setFill(new ImagePattern(auction.get));
+
         //Item name
-        itemName = new Label("Moto 360");
+        itemName = new Label();
         itemName.getStyleClass().add("item-name");
 
         itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, "Moto 360"));
@@ -103,7 +108,7 @@ public class AuctionCard extends Card {
         }
 
         //Current bid
-        currentBid = new Label("250$");
+        currentBid = new Label(Double.toString(auction.getInitialPrice()));
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
@@ -112,14 +117,12 @@ public class AuctionCard extends Card {
 
         //If is the card for the buyer show seller info
         if (viewType == BUYER) {
-            userDetails = new UserDetails(FIT_CONTAINER);
+            userDetails = new UserDetails(FIT_CONTAINER); // TODO send user details
         }
 
         //Auction details container
         cardDetails = new GridPane();
         cardDetails.setPadding(new Insets(10, 0, 0, 0));
-
-        // TODO add action to go seller profile
 
         GridPane.setConstraints(itemNameAndButtonContainer, 0, 0);
         GridPane.setMargin(itemNameAndButtonContainer, new Insets(0, 15, 2, 15));
@@ -143,9 +146,5 @@ public class AuctionCard extends Card {
 
     public BorderPane getAuctionCard() {
         return cardContainer;
-    }
-
-    public void setDetails() {
-        //TODO use the auction object to fill in the data
     }
 }
