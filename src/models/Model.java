@@ -117,8 +117,7 @@ public abstract class Model<T extends Model> {
                     } else if (fieldType.equals((new byte[]{}).getClass().getTypeName())) {
                         field.set(model, resultSet.getBytes(field.getName().substring(1)));
                     } else if (fieldType.equals(java.util.Date.class.getName())) {
-                        java.sql.Date sqlDate = resultSet.getDate(field.getName().substring(1));
-                        field.set(model, new java.util.Date(sqlDate.getTime()));
+                        field.set(model, new java.util.Date(resultSet.getTimestamp(field.getName().substring(1)).getTime()));
                     } else {
                         throw new Error("Undefined datatype");
                     }
