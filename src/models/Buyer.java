@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.sql.PreparedStatement;
@@ -48,16 +47,16 @@ public class Buyer extends User implements IAuctionInterface {
         // TODO
     }
 
-    public boolean makeBid(Auction auction , double money) {
+    public boolean makeBid(Auction auction, double money) {
         return auction.bidAuction(money, this.getId());
     }
 
     public boolean followSeller(User seller) {
-        return new SubscribeSeller(this.getId(),seller.getId()).create();
+        return new SubscribeSeller(this.getId(), seller.getId()).create();
     }
 
     public void unFollowSeller(int sellerID) {
-        PreparedStatement statement = Model.generateQuery("DELETE FROM subscribe_sellers WHERE SubscriberID = ? AND SelleID = ?",this.getId(),sellerID);
+        PreparedStatement statement = Model.generateQuery("DELETE FROM subscribe_sellers WHERE SubscriberID = ? AND SelleID = ?", this.getId(), sellerID);
         try {
             statement.execute();
         } catch (SQLException e) {
@@ -66,7 +65,7 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     public void subscribeAuction(int auctionID) {
-        SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID,this.getId());
+        SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID, this.getId());
         SubscribeAuctionObject.create();
     }
 
@@ -78,12 +77,12 @@ public class Buyer extends User implements IAuctionInterface {
         statement[1] = Model.generateQuery("SELECT auctions.* from auctions JOIN subscribe_sellers ON auctions.UserID = subscribe_sellers.SelleID WHERE subscribe_sellers.SubscriberID = ?", this.getId());
 
         List<Integer> auctionIDs = new ArrayList<>();
-        for(int counter = 0; counter < 2; counter++) {
+        for (int counter = 0; counter < 2; counter++) {
             try {
                 statement[counter].execute();
                 ResultSet resultSet = statement[counter].getResultSet();
                 while (resultSet.next()) {
-                    if(!auctionIDs.contains(resultSet.getInt("ID"))) {
+                    if (!auctionIDs.contains(resultSet.getInt("ID"))) {
                         auctionIDs.add(resultSet.getInt("ID"));
                         Auction auctionObject = new Auction();
                         auctionObject.setUserID(resultSet.getInt("UserID"));
@@ -103,9 +102,11 @@ public class Buyer extends User implements IAuctionInterface {
         return (ArrayList<Auction>) auctions;
     }
 
-    public ArrayList<Auction> explore(Category category) {
-        // TODO
-        return null;
+    public ArrayList<Auction> exploreAuctions(Category category) {
+        List<Item> items = Model.find(Item.class, "CategoryID = ?", category.getId());
+        String keys = "`ItemID` in (";
+        keys = items.stream().map((item) -> "?,").reduce(keys, String::concat);
+        return new ArrayList<>(Model.find(Auction.class, keys.replaceFirst(",$", ")"), items.stream().map(i -> (Object) i.getId()).toArray()));
     }
 
     public ArrayList<Auction> search(double price, int status, int numberOfBidders) {
@@ -113,50 +114,48 @@ public class Buyer extends User implements IAuctionInterface {
         PreparedStatement statement = null;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = new Date();
-        if(price != -1 && status != -1 && numberOfBidders != -1) // search with all options
+        if (price != -1 && status != -1 && numberOfBidders != -1) // search with all options
         {
-            if(status == 1)
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?",price,dateFormat.format(today),numberOfBidders);
-            else
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?",price,dateFormat.format(today),numberOfBidders);
+            if (status == 1) {
+                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", price, dateFormat.format(today), numberOfBidders);
+            } else {
+                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", price, dateFormat.format(today), numberOfBidders);
+            }
 
-        }
-        else if(price != -1 && status == -1 && numberOfBidders == -1) // search with price only
+        } else if (price != -1 && status == -1 && numberOfBidders == -1) // search with price only
         {
-            auctions = Model.find(Auction.class,"InitialPrice <= ?",price);
-        }
-        else if(price != -1 && status != -1 && numberOfBidders == -1) // search with price , status
+            auctions = Model.find(Auction.class, "InitialPrice <= ?", price);
+        } else if (price != -1 && status != -1 && numberOfBidders == -1) // search with price , status
         {
-            if(status == 1)
-                auctions = Model.find(Auction.class,"InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)",price,dateFormat.format(today));
-            else
-                auctions = Model.find(Auction.class,"InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)",price,dateFormat.format(today));
-        }
-        else if(price != -1 && status == -1 && numberOfBidders != -1) // search with price , bidders
+            if (status == 1) {
+                auctions = Model.find(Auction.class, "InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
+            } else {
+                auctions = Model.find(Auction.class, "InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
+            }
+        } else if (price != -1 && status == -1 && numberOfBidders != -1) // search with price , bidders
         {
-            if(status == 1)
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?",dateFormat.format(today),numberOfBidders);
-            else
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?",dateFormat.format(today),numberOfBidders);
+            if (status == 1) {
+                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", dateFormat.format(today), numberOfBidders);
+            } else {
+                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", dateFormat.format(today), numberOfBidders);
+            }
 
-        }
-        else if(price == -1 && status != -1 && numberOfBidders == -1) // search with status only
+        } else if (price == -1 && status != -1 && numberOfBidders == -1) // search with status only
         {
-            if(status == 1)
-                auctions = Model.find(Auction.class,"? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)",dateFormat.format(today));
-            else
-                auctions = Model.find(Auction.class,"? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)",dateFormat.format(today));
-        }
-        else if(price == -1 && status == -1 && numberOfBidders != -1) // search with bidders only
+            if (status == 1) {
+                auctions = Model.find(Auction.class, "? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
+            } else {
+                auctions = Model.find(Auction.class, "? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
+            }
+        } else if (price == -1 && status == -1 && numberOfBidders != -1) // search with bidders only
         {
-            statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) = ?",numberOfBidders);
+            statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) = ?", numberOfBidders);
         }
-        if(statement!=null)
-        {
+        if (statement != null) {
             try {
                 statement.execute();
                 ResultSet resultSet = statement.getResultSet();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     Auction auctionObject = new Auction();
                     auctionObject.setUserID(resultSet.getInt("UserID"));
                     auctionObject.setItemID(resultSet.getInt("ItemID"));
