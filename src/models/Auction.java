@@ -23,6 +23,9 @@
  */
 package models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -154,4 +157,51 @@ public class Auction extends Model<Auction> {
             seller = Model.find(Seller.class, this._userID);
         return seller;
     }
+    
+    public double getHighBid() {
+        return getBids().get(0).getPrice();
+    }
+    
+    
+    public String startFinishTimeAuction(){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Date today = new Date();
+        
+        
+        /*String string1 = "2017/05/08 11:39:00";
+        this._startDate = dateFormat.parse(string1);
+        String string2 = "2017/05/06 14:40:00";
+        this._terminationDate = dateFormat.parse(string2);*/
+
+        
+        System.out.println(this._startDate);
+        System.out.println(this._terminationDate);
+        System.out.println(today);
+        
+        if (this._startDate.compareTo(today) > 0) {
+            long diff = this._startDate.getTime() - today.getTime();
+            long Minutes = diff / (60 * 1000) % 60;
+            long Hours = diff / (60 * 60 * 1000) % 60;
+
+            if (Hours == 0) {
+                return Minutes + " minutes To Start";
+            } else {
+                return Hours + " Hour To Start";
+            }
+        } else {
+            long diff = this._terminationDate.getTime() - today.getTime();
+            long Minutes = diff / (60 * 1000) % 60;
+            long Hours = diff / (60 * 60 * 1000) % 60;
+
+            if (Hours == 0) {
+                return Minutes + " minutes To finish";
+            } else {
+                return Hours + " Hour To finish";
+            }
+        }
+
+    }
+    
+    
 }
