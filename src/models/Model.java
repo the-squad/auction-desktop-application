@@ -117,7 +117,12 @@ public abstract class Model<T extends Model> {
                     } else if (fieldType.equals((new byte[]{}).getClass().getTypeName())) {
                         field.set(model, resultSet.getBytes(field.getName().substring(1)));
                     } else if (fieldType.equals(java.util.Date.class.getName())) {
-                        field.set(model, new java.util.Date(resultSet.getTimestamp(field.getName().substring(1)).getTime()));
+                        java.sql.Timestamp sqlDate = resultSet.getTimestamp(field.getName().substring(1));
+                        if (sqlDate == null) {
+                            field.set(model, null);
+                        } else {
+                            field.set(model, new java.util.Date(resultSet.getTimestamp(field.getName().substring(1)).getTime()));
+                        }
                     } else {
                         throw new Error("Undefined datatype");
                     }
@@ -248,8 +253,8 @@ public abstract class Model<T extends Model> {
                 } else if (paramType.equals(java.util.Date.class.getName())) {
                     java.util.Date javaDate = (java.util.Date) Params[i];
                     Statement.setTimestamp(i + 1, new Timestamp(javaDate.getTime()));
-                } else if (paramType.equals("null")){
-                    Statement.setObject(i+1, null);
+                } else if (paramType.equals("null")) {
+                    Statement.setObject(i + 1, null);
                 } else {
                     Logger.getGlobal().log(Level.WARNING, "Unknown datatype: {0}", paramType);
                     Statement.setObject(i + 1, Params[i]);
@@ -282,7 +287,7 @@ public abstract class Model<T extends Model> {
                     .map(key -> "`" + key + "` = ?, ")
                     .reduce(Keys, String::concat)
                     .replaceFirst(",\\s$", "");
-            String sql = "UPDATE `" + this.getTable() + "` SET " + Keys + "WHERE `id` = ?";
+            String sql = "UPDATE `" + this.getTable() + "` SET " + Keys + " WHERE `id` = ?";
             List<Object> values = getValuesWithoutID();
             values.add((int) FieldsWithValues.get("id"));
             PreparedStatement statement = generateQuery(sql, values.toArray());
