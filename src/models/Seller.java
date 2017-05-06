@@ -26,26 +26,51 @@ package models;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Seller extends User implements IAuctionInterface {
 
     private ArrayList<Auction> auctions;
-    
-    public void createAuction() {
-        // TODO
+
+    public Auction createAuction(Item item, int ItemQuantity, String StartDate, String StartTime,
+            String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+        if (item.getQuantity() < ItemQuantity) {
+            return null;
+        }
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        try {
+            Date startDate = df.parse(StartDate + " " + StartTime);
+            Date terminationDate = df.parse(TerminationDate + " " + TerminationTime);
+            if (startDate.compareTo(terminationDate) >= 0) {
+                System.out.println("fuck");
+                return null;
+            }
+            item.setQuantity(item.getQuantity() - ItemQuantity).save();
+            Auction auction = new Auction(this.getId(), item.getId(), ItemQuantity, terminationDate, InitialPrice, BidRate).setStartDate(startDate);
+            if (auction.create()) {
+                return auction;
+            }
+        } catch (ParseException e) {
+            Logger.getGlobal().log(Level.WARNING, e.getMessage(), e);
+        }
+        return null;
     }
 
     public boolean deleteAuction(int id) {
-        try{
+        try {
             Auction auction = auctions.stream().filter(a -> a.getId() == id).findFirst().get();
             Model.delete(Auction.class, auction.getId());
             auctions.remove(auction);
             return true;
-        }catch(Exception e)
-        {
-            
+        } catch (Exception e) {
+
         }
         return false;
     }
@@ -69,7 +94,7 @@ public class Seller extends User implements IAuctionInterface {
     public int getFollowersNumber() {
         return Model.count(SubscribeSeller.class, "SelleID = ?", this.getId());
     }
- 
+
     public static Seller getSellerData(int sellerId) {
         return Model.find(Seller.class, sellerId);
     }
@@ -78,11 +103,11 @@ public class Seller extends User implements IAuctionInterface {
     public ArrayList<Auction> search(String itemName) {
         List<Auction> auctions = new ArrayList<>();
 //        statement = Model.generateQuery("select auctions.* FROM auctions JOIN items ON items.ID = auctions.ItemID where auctions.UserID = ? AND items.Name LIKE '?%'",this.getId(),itemName);
-        PreparedStatement statement = Model.generateQuery("select auctions.* FROM auctions JOIN items ON items.ID = auctions.ItemID where auctions.UserID = ? AND items.Name = ?",this.getId(),itemName);
+        PreparedStatement statement = Model.generateQuery("select auctions.* FROM auctions JOIN items ON items.ID = auctions.ItemID where auctions.UserID = ? AND items.Name = ?", this.getId(), itemName);
         try {
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Auction auctionObject = new Auction();
                 auctionObject.setUserID(resultSet.getInt("UserID"));
                 auctionObject.setItemID(resultSet.getInt("ItemID"));
