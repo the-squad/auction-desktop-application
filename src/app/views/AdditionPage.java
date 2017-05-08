@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.views;
 
 import app.Navigator;
 import app.components.InputField;

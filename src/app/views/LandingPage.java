@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+package app.views;
 
 import app.Navigator;
 import app.components.InputField;
@@ -41,14 +41,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import models.Buyer;
 import models.Model;
 import models.Seller;
 import models.User;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import static app.Partials.*;

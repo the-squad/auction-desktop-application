@@ -24,7 +24,7 @@
 
 package app;
 
-import app.pages.LandingPage;
+import app.views.LandingPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

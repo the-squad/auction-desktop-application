@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.controllers;
+package app.views;
 
 import app.components.InputField;
 import javafx.geometry.Insets;

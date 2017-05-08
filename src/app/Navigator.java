@@ -25,10 +25,10 @@
 package app;
 
 import app.components.Header;
-import app.controllers.AccountSettings;
-import app.controllers.AuctionDetails;
-import app.controllers.ItemDetails;
-import app.pages.*;
+import app.views.AccountSettings;
+import app.views.AuctionDetails;
+import app.views.ItemDetails;
+import app.views.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;

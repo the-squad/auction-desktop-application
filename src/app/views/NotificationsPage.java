@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.views;
 
 import javafx.scene.control.ScrollPane;
 

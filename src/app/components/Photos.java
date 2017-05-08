@@ -23,6 +23,21 @@
  */
 package app.components;
 
+import javafx.scene.layout.BorderPane;
+
 public class Photos {
-    
+
+    private BorderPane photoContainer;
+
+    public Photos() {
+        this.render();
+    }
+
+    private void render() {
+
+    }
+
+    public BorderPane getPhotos() {
+        return photoContainer;
+    }
 }

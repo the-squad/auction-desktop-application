@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.views;
 
-import app.GridView;
+import app.layouts.GridView;
 import app.components.Filter;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -24,7 +24,8 @@
 
 package app.tabs;
 
-import app.GridView;
+import app.layouts.GridView;
+import app.layouts.ScrollView;
 import javafx.scene.control.ScrollPane;
 import static app.Partials.SCROLLING_SPEED;
 
@@ -32,7 +33,7 @@ public class AuctionsTab {
 
     private static AuctionsTab instance;
 
-    private ScrollPane auctionsPageContainer;
+    private ScrollView scrollView;
     private GridView gridView;
 
     private AuctionsTab() {
@@ -44,19 +45,7 @@ public class AuctionsTab {
         gridView = new GridView();
 
         //Scroll pane
-        auctionsPageContainer = new ScrollPane(gridView.getGridView());
-        auctionsPageContainer.setFitToWidth(true);
-        auctionsPageContainer.setFitToHeight(true);
-        auctionsPageContainer.getStyleClass().add("scrollbar");
-        auctionsPageContainer.toBack();
-
-        //Making the scrollbar faster
-        gridView.getGridView().setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = auctionsPageContainer.getContent().getBoundsInLocal().getWidth();
-            double value = auctionsPageContainer.getVvalue();
-            auctionsPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        scrollView = new ScrollView(gridView.getGridView());
     }
 
     public void loadCards() {
@@ -64,7 +53,7 @@ public class AuctionsTab {
     }
 
     public ScrollPane getAuctionsTab() {
-        return auctionsPageContainer;
+        return scrollView.getScrollView();
     }
 
     public void destroy() {

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package app;
+package app.layouts;
 
 import app.components.AuctionCard;
 import app.components.ItemCard;
