@@ -21,23 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
-import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-public class Photos {
+public class Photo {
 
-    private BorderPane photoContainer;
+    private Rectangle photo;
+    private int size;
 
-    public Photos() {
+    public Photo(int size) {
+        this.size = size;
         this.render();
     }
 
     private void render() {
-
+        photo = new Rectangle();
+        photo.setFill(Color.BEIGE); // TODO
+        photo.setArcWidth(4);
+        photo.setArcHeight(4);
+        photo.setHeight(size);
+        photo.setWidth(size);
+        photo.setStyle("-fx-cursor: hand");
     }
 
-    public BorderPane getPhotos() {
-        return photoContainer;
+    public Rectangle getPhotoView() {
+        return photo;
     }
 }

@@ -103,6 +103,7 @@ public class App extends Application {
         cssFiles.add("searchPage");
         cssFiles.add("profilePage");
         cssFiles.add("auctionView");
+        cssFiles.add("itemDetails");
 
         return cssFiles;
     }
