@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventory extends Model<Inventory>{
+public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
 
     private int _id;
     private int _sellerID;
