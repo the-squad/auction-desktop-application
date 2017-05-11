@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
 
-import app.GridView;
+package app.views;
+
+import app.layouts.GridView;
+import app.layouts.ScrollView;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,7 +43,7 @@ public class ProfilePage {
 
     private static ProfilePage instance;
 
-    private ScrollPane profilePageScrollbar;
+    private ScrollView profilePageScrollbar;
     private BorderPane profilePageContainer;
 
     private BorderPane coverContainer;
@@ -184,19 +186,7 @@ public class ProfilePage {
         profilePageContainer.setCenter(gridView.getGridView());
 
         //Scroll pane
-        profilePageScrollbar = new ScrollPane(profilePageContainer);
-        profilePageScrollbar.setFitToWidth(true);
-        profilePageScrollbar.setFitToHeight(true);
-        profilePageScrollbar.getStyleClass().add("scrollbar");
-        profilePageScrollbar.toBack();
-
-        //Making the scrollbar faster
-        profilePageContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = profilePageScrollbar.getContent().getBoundsInLocal().getWidth();
-            double value = profilePageScrollbar.getVvalue();
-            profilePageScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        profilePageScrollbar = new ScrollView(profilePageContainer);
     }
 
     public void fillUserData() {
@@ -208,7 +198,7 @@ public class ProfilePage {
     }
 
     public ScrollPane getProfilePage() {
-        return profilePageScrollbar;
+        return profilePageScrollbar.getScrollView();
     }
 
     public static ProfilePage getInstance() {

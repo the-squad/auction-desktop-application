@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.controllers;
+
+package app.views;
 
 import app.components.InputField;
+import app.layouts.ScrollView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -42,7 +44,7 @@ public class AccountSettings {
 
     private static AccountSettings instance;
 
-    private ScrollPane accountSettingsPageContainer;
+    private ScrollView accountSettingsPageContainer;
     private BorderPane cardParent;
     private GridPane cardContainer;
     private GridPane photoContainer;
@@ -167,23 +169,11 @@ public class AccountSettings {
         cardParent.setBottom(extraSpace);
 
         //Account settings page container
-        accountSettingsPageContainer = new ScrollPane(cardParent);
-        accountSettingsPageContainer.setFitToWidth(true);
-        accountSettingsPageContainer.setFitToHeight(true);
-        accountSettingsPageContainer.getStyleClass().add("scrollbar");
-        accountSettingsPageContainer.toBack();
-
-        //Making the scrollbar faster
-        cardContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = accountSettingsPageContainer.getContent().getBoundsInLocal().getWidth();
-            double value = accountSettingsPageContainer.getVvalue();
-            accountSettingsPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        accountSettingsPageContainer = new ScrollView(cardParent);
     }
 
     public ScrollPane getAccountSettingsPage() {
-        return accountSettingsPageContainer;
+        return accountSettingsPageContainer.getScrollView();
     }
 
     public static AccountSettings getInstance() {

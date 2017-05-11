@@ -63,7 +63,6 @@ public class AuctionCard extends Card {
 
     private void render() {
         //Item photo
-
         photo = ImageUtils.cropAndConvertImage(auction.getItemAuction().getIamgesItem().get(0).getImage(), 250, 175);
         photoViewer.setFill(new ImagePattern(photo));
 
@@ -71,7 +70,7 @@ public class AuctionCard extends Card {
         itemName = new Label(auction.getItemAuction().getName());
         itemName.getStyleClass().add("item-name");
 
-        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, "Moto 360"));
+        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName()));
 
         //Subscribe button
         if (viewType == BUYER) {

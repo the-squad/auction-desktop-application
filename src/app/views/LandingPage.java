@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+
+package app.views;
 
 import app.Navigator;
 import app.components.InputField;
@@ -41,14 +42,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import models.Buyer;
 import models.Model;
 import models.Seller;
 import models.User;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import static app.Partials.*;
@@ -95,6 +94,7 @@ public class LandingPage extends GridPane {
     private LoadingIndicator loadingIndicator;
 
     private Timeline fadeAnimation;
+    private Timeline resetForms;
 
     private LandingPage() {
         this.render();
@@ -179,7 +179,7 @@ public class LandingPage extends GridPane {
         sellerTypeContainer.setMinWidth(300);
         sellerTypeContainer.setMinHeight(130);
         sellerTypeContainer.setVgap(2);
-        sellerTypeContainer.getStyleClass().add("select-container");
+        sellerTypeContainer.getStyleClass().addAll("select-container", "select-container--active");
 
         GridPane.setConstraints(sellerHeadline, 0, 0);
         GridPane.setConstraints(sellerDescription, 0, 1);
@@ -192,7 +192,7 @@ public class LandingPage extends GridPane {
 
         buyerDescription = new Label("Search for current auction, bid for stuff you love" +
                 " and get notified when you win the auction");
-        buyerDescription.getStyleClass().addAll("select-description select-container--active");
+        buyerDescription.getStyleClass().add("select-description");
         buyerDescription.setMaxWidth(300);
         buyerDescription.setWrapText(true);
 
@@ -204,7 +204,7 @@ public class LandingPage extends GridPane {
         buyerTypeContainer.getStyleClass().add("select-container");
 
         userTypeField = new InputField("", TEXT);
-        userTypeField.setValue("3");
+        userTypeField.setValue("2");
 
         GridPane.setConstraints(buyerHeadline, 0, 0);
         GridPane.setConstraints(buyerDescription, 0, 1);
@@ -320,8 +320,24 @@ public class LandingPage extends GridPane {
         //Creating loading indicator
         loadingIndicator = new LoadingIndicator();
 
+        //Resting form
+        resetForms = new Timeline(new KeyFrame(Duration.millis(1000), a -> {
+            switchForm(LOGIN, true);
+            loadingIndicator.stopRotating();
+            formParentContainer.setCenter(logInform);
+
+            sellerTypeContainer.getStyleClass().remove("select-container--active");
+            buyerTypeContainer.getStyleClass().remove("select-container--active");
+
+            nameField.setValue("");
+            emailField.setValue("");
+            passwordField.setValue("");
+            repeatPassword.setValue("");
+            userTypeField.setValue("");
+        }));
+
         //TESTING PURPOSING ONLY
-        emailField.setValue("tarek-buyer@firefly.com");
+        emailField.setValue("tarek.buyer@firefly.com");
         passwordField.setValue("Firefly101");
         callToActionButton.fire();
     }
@@ -404,22 +420,18 @@ public class LandingPage extends GridPane {
     }
 
     private void selectUserType(int selectedType) {
-        if (checkForDataIntegrity(SIGNUP)) {
-            if (selectedType == SELLER) {
-                if (sellerTypeContainer.getStyleClass().contains("select-container--active")) return;
+        if (selectedType == SELLER) {
+            if (sellerTypeContainer.getStyleClass().contains("select-container--active")) return;
 
-                buyerTypeContainer.getStyleClass().remove("select-container--active");
-                sellerTypeContainer.getStyleClass().add("select-container--active");
-                userTypeField.setValue("2");
-            } else {
-                if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
-
-                sellerTypeContainer.getStyleClass().remove("select-container--active");
-                buyerTypeContainer.getStyleClass().add("select-container--active");
-                userTypeField.setValue("3");
-            }
+            buyerTypeContainer.getStyleClass().remove("select-container--active");
+            sellerTypeContainer.getStyleClass().add("select-container--active");
+            userTypeField.setValue("2");
         } else {
-            switchForm(SIGNUP, false);
+            if (buyerTypeContainer.getStyleClass().contains("select-container--active")) return;
+
+            sellerTypeContainer.getStyleClass().remove("select-container--active");
+            buyerTypeContainer.getStyleClass().add("select-container--active");
+            userTypeField.setValue("3");
         }
     }
 
@@ -483,6 +495,7 @@ public class LandingPage extends GridPane {
         }
 
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
+        loadingIndicator.startRotating();
 
         //Loading the home page
         Task<String> initializingHomePage = new Task<String>() {
@@ -502,16 +515,7 @@ public class LandingPage extends GridPane {
         initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
             //Switching to the home page
             Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
-            switchForm(LOGIN, true);
-            formParentContainer.setCenter(logInform);
-
-            sellerTypeContainer.getStyleClass().remove("select-container--active");
-            buyerTypeContainer.getStyleClass().remove("select-container--active");
-
-            nameField.setValue("");
-            emailField.setValue("");
-            passwordField.setValue("");
-            repeatPassword.setValue("");
+            resetForms.play();
         });
     }
 

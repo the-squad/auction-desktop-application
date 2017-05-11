@@ -22,47 +22,43 @@
  * THE SOFTWARE.
  */
 
-package app.tabs;
+package app.layouts;
 
-import app.layouts.GridView;
-import app.layouts.ScrollView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Region;
+
+import static app.Partials.CENTER;
 import static app.Partials.SCROLLING_SPEED;
 
-public class InventoryTab {
+public class ScrollView {
 
-    private static InventoryTab instance;
+    private final Region content;
+    private ScrollPane scrollPane;
 
-    private ScrollView scrollView;
-    private GridView gridView;
-
-    private InventoryTab() {
+    public ScrollView(Region content) {
+        this.content = content;
         this.render();
     }
 
     private void render() {
-        gridView = new GridView();
+        scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.getStyleClass().add("scrollbar");
+        scrollPane.toBack();
 
-        //Scroll pane
-        scrollView = new ScrollView(gridView.getGridView());
-    }
-
-    public void loadCards() {
-        gridView.loadItemCards(8);
-    }
-
-    public ScrollPane getInventoryTab() {
-        return scrollView.getScrollView();
-    }
-
-    public void destroy() {
-        instance = null;
-    }
-
-    public static InventoryTab getInstance() {
-        if (instance == null) {
-            instance = new InventoryTab();
+        //Making the scrollbar faster
+        if (content != null) {
+            content.setOnScroll(event -> {
+                double deltaY = event.getDeltaY() * SCROLLING_SPEED;
+                double width = scrollPane.getContent().getBoundsInLocal().getWidth();
+                double value = scrollPane.getVvalue();
+                scrollPane.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+            });
         }
-        return instance;
+    }
+
+    public ScrollPane getScrollView() {
+        return scrollPane;
     }
 }

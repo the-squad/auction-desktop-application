@@ -22,9 +22,10 @@
  * THE SOFTWARE.
  */
 
-package app;
+package app.layouts;
 
 import app.components.AuctionCard;
+import app.components.EmptyState;
 import app.components.ItemCard;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -37,8 +38,9 @@ import static app.Partials.*;
 
 public class GridView {
 
-    GridPane cardsContainer;
-    Label extraSpace;
+    private GridPane cardsContainer;
+    private Label extraSpace;
+    private EmptyState emptyState;
 
     public GridView() {
         this.render();
@@ -49,29 +51,42 @@ public class GridView {
         cardsContainer = new GridPane();
         cardsContainer.setVgap(20);
         cardsContainer.setHgap(20);
-        cardsContainer.setAlignment(Pos.TOP_CENTER);
+
         cardsContainer.setTranslateY(20);
+
+        //Creating empty state
+        emptyState = new EmptyState();
 
         //To give extra space at the bottom of the scrollbar
         extraSpace = new Label("");
         extraSpace.setMinHeight(1);
     }
 
-    public void loadAuctionCards(ArrayList<Auction> auctions) {
-        ArrayList<AuctionCard> auctionCards = new ArrayList<>(auctions.size());
+    public void loadAuctionCards(ArrayList<Auction> auctions, String emptyStateMessage) {
+        cardsContainer.getChildren().clear();
 
-        for (Auction auction : auctions)
-            auctionCards.add(new AuctionCard(userType, auction));
+        if (auctions == null) {
+            emptyState.setEmptyMessage(emptyStateMessage);
+            GridPane.setConstraints(emptyState.getEmptyState(), 0, 0);
+            cardsContainer.getChildren().add(emptyState.getEmptyState());
+            cardsContainer.setAlignment(Pos.CENTER);
+        } else {
+            ArrayList<AuctionCard> auctionCards = new ArrayList<>(auctions.size());
 
-        int counter = 0;
-        for (AuctionCard auctionCard : auctionCards) {
-            GridPane.setConstraints(auctionCard.getAuctionCard(), counter % 4, counter / 4);
-            cardsContainer.getChildren().add(auctionCard.getAuctionCard());
-            counter++;
+            for (Auction auction : auctions)
+                auctionCards.add(new AuctionCard(userType, auction));
+
+            int counter = 0;
+            for (AuctionCard auctionCard : auctionCards) {
+                GridPane.setConstraints(auctionCard.getAuctionCard(), counter % 4, counter / 4);
+                cardsContainer.getChildren().add(auctionCard.getAuctionCard());
+                counter++;
+            }
+
+            GridPane.setConstraints(extraSpace, 0 ,(auctionCards.size() / 4) + 2);
+            cardsContainer.setAlignment(Pos.TOP_CENTER);
+            cardsContainer.getChildren().add(extraSpace);
         }
-
-        GridPane.setConstraints(extraSpace, 0 ,(auctionCards.size() / 4) + 2);
-        cardsContainer.getChildren().add(extraSpace);
     }
 
     public void loadItemCards(int cardsNumber) {
@@ -92,10 +107,6 @@ public class GridView {
 
         GridPane.setConstraints(extraSpace, 0 ,(cardsNumber / 4) + 2);
         cardsContainer.getChildren().add(extraSpace);
-    }
-
-    public void clearCards() {
-        cardsContainer.getChildren().removeAll();
     }
 
     public GridPane getGridView() {

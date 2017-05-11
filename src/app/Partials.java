@@ -92,4 +92,8 @@ public class Partials {
     public static int RIGHT_LEFT = 50;
     public static int TOP_DOWN = 35;
     public static int CARD_WIDTH = 550;
+
+    //View mode
+    public static int VIEW_MODE = 0;
+    public static int EDIT_MODE = 1;
 }

@@ -25,13 +25,15 @@
 package app;
 
 import app.components.Header;
-import app.controllers.AccountSettings;
-import app.controllers.AuctionDetails;
-import app.controllers.ItemDetails;
-import app.pages.*;
+import app.views.AccountSettings;
+import app.views.AuctionDetails;
+import app.views.ItemDetails;
+import app.views.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+
+import static app.Partials.*;
 
 public class Navigator {
 
@@ -63,8 +65,13 @@ public class Navigator {
             case 7:
                 return AuctionsTab.getInstance().getAuctionsTab();
             case 8:
+                FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
+                if (userType == BUYER)
+                    InventoryTab.getInstance().loadCards();
+                else
+                    InventoryTab.getInstance().loadCards();
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
