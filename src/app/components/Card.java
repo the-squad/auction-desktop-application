@@ -37,14 +37,12 @@ import java.awt.image.BufferedImage;
 public class Card {
 
     BorderPane cardContainer;
-    private BufferedImage photoBytes;
     protected Image photo;
     protected Rectangle photoViewer;
 
     GridPane cardDetails;
 
-    Card(BufferedImage photoBytes) {
-        this.photoBytes = photoBytes;
+    Card() {
         this.render();
     }
 
@@ -55,10 +53,6 @@ public class Card {
         photoViewer.setArcHeight(5);
         photoViewer.setWidth(250);
         photoViewer.setHeight(175);
-
-        //Item photo
-        photo = ImageUtils.cropAndConvertImage(photoBytes, 250, 175);
-        photoViewer.setFill(new ImagePattern(photo));
 
         //Card container
         cardContainer = new BorderPane();

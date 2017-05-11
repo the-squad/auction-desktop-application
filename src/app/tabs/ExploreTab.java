@@ -77,9 +77,9 @@ public class ExploreTab {
     public void loadCards(Category category) {
         loadingIndicator.startRotating();
         if (category.getName().equals("All"))
-            loadingMessage = "Getting To You Every Auctions We Know";
+            loadingMessage = "Getting You All Auctions";
         else
-            loadingMessage = "Getting To You Auctions in " + category.getName();
+            loadingMessage = "Getting You Auctions in " + category.getName();
 
         loadingIndicator.setLoadingMessage(loadingMessage);
         exploreTabContainer.setCenter(loadingIndicator.getLoadingIndicator());
