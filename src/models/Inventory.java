@@ -25,7 +25,7 @@ package models;
 
 import java.util.ArrayList;
 
-public class Inventory extends Model<Inventory> {
+public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
 
     private int _id;
     private int _sellerID;
