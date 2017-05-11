@@ -59,10 +59,8 @@ public class LoadingIndicator {
         loadingIndicator.setFitHeight(55);
         loadingIndicator.setFitWidth(55);
 
-
         //Loading state container
         loadingIndicatorContainer = new GridPane();
-        loadingIndicatorContainer.getStyleClass().add("loading");
         loadingIndicatorContainer.setMaxHeight(130);
 
         GridPane.setConstraints(loadingMessage, 0, 0);

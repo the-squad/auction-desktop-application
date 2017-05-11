@@ -24,36 +24,70 @@
 
 package app.tabs;
 
+import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import models.Auction;
 
 import java.util.ArrayList;
 
-import static app.Partials.SCROLLING_SPEED;
+import static app.Partials.*;
 
 public class FeedTab {
 
     private static FeedTab instance;
 
     private ScrollView scrollView;
+    private BorderPane centerPane;
     private GridView gridView;
+    private LoadingIndicator loadingIndicator;
 
     private FeedTab() {
-        super();
         this.render();
     }
 
     private void render() {
+        //Grid view
         gridView = new GridView();
 
+        //Border pane
+        centerPane = new BorderPane();
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
+        loadingIndicator.setLoadingMessage("Getting your feed...");
+
         //Scroll pane
-        scrollView = new ScrollView(gridView.getGridView());
+        scrollView = new ScrollView(centerPane);
     }
 
     public void loadCards(ArrayList<Auction> auctions) {
-        gridView.loadAuctionCards(auctions);
+        loadingIndicator.startRotating();
+        centerPane.setCenter(loadingIndicator.getLoadingIndicator());
+
+        //Loading cards
+        Task<String> loadingCards = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadAuctionCards(auctions, "There is no auctions from people you follow");
+                return null;
+            }
+        };
+
+        //Creating a thread that triggered when the home page is rendered
+        Thread onLoadingCards = new Thread(loadingCards);
+        onLoadingCards.setDaemon(true);
+        onLoadingCards.start();
+
+        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
+            //View auctions cards
+            loadingIndicator.stopRotating();
+            centerPane.setCenter(gridView.getGridView());
+        });
     }
 
     public void destroy() {

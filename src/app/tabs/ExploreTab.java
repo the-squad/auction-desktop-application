@@ -24,13 +24,19 @@
 
 package app.tabs;
 
+import app.components.EmptyState;
+import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.components.CategoriesPanel;
 import app.layouts.ScrollView;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import static app.Partials.SCROLLING_SPEED;
+import models.Category;
+
+import static app.Partials.currentBuyer;
 
 public class ExploreTab {
 
@@ -40,15 +46,17 @@ public class ExploreTab {
     private BorderPane exploreTabContainer;
     private CategoriesPanel tabs;
     private GridView gridView;
+    private LoadingIndicator loadingIndicator;
+
+    private String loadingMessage;
 
     private ExploreTab() {
-        super();
         this.render();
     }
 
     private void render() {
         //Categories tabs
-        tabs = new CategoriesPanel("All", "Tech", "Music", "Cars", "Boards", "Buildings", "Planes", "Boats", "T.Vs");
+        tabs = new CategoriesPanel(Category.getCategories());
 
         //Explore tab container
         exploreTabContainer = new BorderPane();
@@ -57,14 +65,44 @@ public class ExploreTab {
         BorderPane.setMargin(tabs.getCategoriesTabs(), new Insets(20, 0, 0, 0));
 
         gridView = new GridView();
-        exploreTabContainer.setCenter(gridView.getGridView());
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
 
         //Scroll pane
         scrollView = new ScrollView(exploreTabContainer);
+        this.loadCards(Category.getCategories().get(0));
     }
 
-    public void loadCards() {
-        //gridView.loadAuctionCards(10);
+    public void loadCards(Category category) {
+        loadingIndicator.startRotating();
+        if (category.getName().equals("All"))
+            loadingMessage = "Getting To You Every Auctions We Know";
+        else
+            loadingMessage = "Getting To You Auctions in " + category.getName();
+
+        loadingIndicator.setLoadingMessage(loadingMessage);
+        exploreTabContainer.setCenter(loadingIndicator.getLoadingIndicator());
+
+        //Loading cards
+        Task<String> loadingCards = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName());
+                return null;
+            }
+        };
+
+        //Creating a thread that triggered when the home page is rendered
+        Thread onLoadingCards = new Thread(loadingCards);
+        onLoadingCards.setDaemon(true);
+        onLoadingCards.start();
+
+        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
+            //View auctions cards
+            loadingIndicator.stopRotating();
+            exploreTabContainer.setCenter(gridView.getGridView());
+        });
     }
 
     public void destroy() {

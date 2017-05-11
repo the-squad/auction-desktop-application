@@ -37,7 +37,6 @@ public class InventoryTab {
     private GridView gridView;
 
     private InventoryTab() {
-        super();
         this.render();
     }
 

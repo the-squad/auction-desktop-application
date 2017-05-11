@@ -37,7 +37,6 @@ public class AuctionsTab {
     private GridView gridView;
 
     private AuctionsTab() {
-        super();
         this.render();
     }
 
