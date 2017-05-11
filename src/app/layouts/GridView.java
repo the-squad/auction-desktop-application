@@ -87,7 +87,7 @@ public class GridView {
     public void loadItemCards(ArrayList<Item> items, String emptyStateMessage) {
         cardsContainer.getChildren().clear();
 
-        if (items == null) {
+        if (items == null || items.size() == 0) {
             this.viewEmptyState(emptyStateMessage);
         } else {
             ArrayList<ItemCard> auctionCards = new ArrayList<>(items.size());
