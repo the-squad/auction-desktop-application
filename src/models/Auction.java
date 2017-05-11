@@ -170,6 +170,9 @@ public class Auction extends Model<Auction> {
         return getBids().get(0).getPrice();
     }
     
+    public Auction getAuction(int id){
+        return Model.find(Auction.class, id);
+    }
     
     public String startFinishTimeAuction(){
 
