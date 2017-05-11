@@ -91,7 +91,7 @@ public class AuctionCard extends Card {
             subscribeButton.setOnAction(e -> {
                 if (userSubscribed) {
                     subscribeButton.getStyleClass().remove("subscribe-btn--active");
-                    // TODO unsubscribe auction
+                    currentBuyer.unSubscribeAuction(auction.getId());
                     userSubscribed = false;
                 } else {
                     subscribeButton.getStyleClass().add("subscribe-btn--active");
