@@ -32,7 +32,7 @@ public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
     ArrayList<Item> items;
 
     public Inventory() {
-        items = new ArrayList<>();
+        //items = new ArrayList<>();
     }
 
     public Inventory(int sellerID) {

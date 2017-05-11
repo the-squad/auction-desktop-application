@@ -167,4 +167,8 @@ public class User extends Model<User> {
             return 1;
         }
     }
+    public Inventory getInventory()
+    {
+        return Model.find(Inventory.class, "SellerID = ?",this.getId()).get(0);
+    }
 }
