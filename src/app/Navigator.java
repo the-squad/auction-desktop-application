@@ -33,6 +33,8 @@ import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
+import static app.Partials.*;
+
 public class Navigator {
 
     private static Region currentTab;
@@ -63,8 +65,13 @@ public class Navigator {
             case 7:
                 return AuctionsTab.getInstance().getAuctionsTab();
             case 8:
+                FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
+                if (userType == BUYER)
+                    InventoryTab.getInstance().loadCards();
+                else
+                    InventoryTab.getInstance().loadCards();
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
