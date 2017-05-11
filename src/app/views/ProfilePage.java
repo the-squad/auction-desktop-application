@@ -29,7 +29,6 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
