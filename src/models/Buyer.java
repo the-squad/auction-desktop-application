@@ -104,7 +104,11 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     public ArrayList<Auction> exploreAuctions(Category category) {
+        if (category.getName().equals("All"))
+            return new ArrayList<>(Model.find(Auction.class));
+
         List<Item> items = Model.find(Item.class, "CategoryID = ?", category.getId());
+        if (items.size() == 0) return null;
         String keys = "`ItemID` in (";
         keys = items.stream().map((item) -> "?,").reduce(keys, String::concat);
         return new ArrayList<>(Model.find(Auction.class, keys.replaceFirst(",$", ")"), items.stream().map(i -> (Object) i.getId()).toArray()));
