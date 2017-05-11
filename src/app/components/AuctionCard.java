@@ -117,7 +117,7 @@ public class AuctionCard extends Card {
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
-        auctionStatus = new Label("1 hour to start".toUpperCase());
+        auctionStatus = new Label(auction.startFinishTimeAuction().toUpperCase());
         auctionStatus.getStyleClass().add("auction-status");
 
         //If is the card for the buyer show seller info
