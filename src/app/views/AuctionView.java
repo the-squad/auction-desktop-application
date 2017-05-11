@@ -22,10 +22,11 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.views;
 
 import app.components.InputField;
-import app.components.SellerDetails;
+import app.components.UserDetails;
+import app.layouts.ScrollView;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,7 +41,7 @@ public class AuctionView {
 
     private static AuctionView instance;
 
-    private ScrollPane auctionViewContainer;
+    private ScrollView auctionViewContainer;
     private GridPane auctionDetailsContainer;
     private Label itemName;
     private Label itemDescription;
@@ -51,7 +52,7 @@ public class AuctionView {
     private GridPane biddingBlock;
     private InputField bidField;
     private Button sumbitBid;
-    private SellerDetails sellerDetails;
+    private UserDetails userDetails;
 
     private AuctionView() {
         this.render();
@@ -99,7 +100,7 @@ public class AuctionView {
         biddingBlock.getChildren().addAll(bidField.getInputField(), sumbitBid);
 
         //Seller details
-        sellerDetails = new SellerDetails(RIGHT_PADDING);
+        // TODO userDetails = new UserDetails(FIT_DATA);
 
         //Auction Details container
         auctionDetailsContainer = new GridPane();
@@ -110,30 +111,17 @@ public class AuctionView {
         GridPane.setConstraints(itemName, 0 ,0);
         GridPane.setConstraints(itemDescription, 0 , 1);
         GridPane.setConstraints(priceBlock, 0, 2);
-        GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 3);
+        GridPane.setConstraints(userDetails.getUserDetails(), 0, 3);
         GridPane.setConstraints(biddingBlock, 0, 4);
 
         auctionDetailsContainer.getChildren().addAll(itemName,
                                                      itemDescription,
                                                      priceBlock,
                                                      biddingBlock,
-                                                     sellerDetails.getSellerDetails());
+                                                     userDetails.getUserDetails());
 
         //Auction view scrollbar
-        auctionViewContainer = new ScrollPane(auctionDetailsContainer);
-        auctionViewContainer.setFitToWidth(true);
-        auctionViewContainer.setFitToHeight(true);
-        auctionViewContainer.getStyleClass().add("scrollbar");
-        auctionViewContainer.toBack();
-        auctionViewContainer.setPadding(new Insets(20, 50, 0, 50));
-
-        //Making the scrollbar faster
-        auctionDetailsContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = auctionViewContainer.getContent().getBoundsInLocal().getWidth();
-            double value = auctionViewContainer.getVvalue();
-            auctionViewContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        auctionViewContainer = new ScrollView(auctionDetailsContainer);
     }
 
     public void fillAuctionData() {
@@ -145,7 +133,7 @@ public class AuctionView {
     }
 
     public ScrollPane getAuctionView() {
-        return auctionViewContainer;
+        return auctionViewContainer.getScrollView();
     }
 
     public static AuctionView getInstance() {

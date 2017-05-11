@@ -22,40 +22,32 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.components;
 
-import javafx.scene.control.ScrollPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-public class NotificationsPage {
+public class Photo {
 
-    private static NotificationsPage instance;
+    private Rectangle photo;
+    private int size;
 
-    private ScrollPane notificationsPageContainer;
-
-    private NotificationsPage() {
+    public Photo(int size) {
+        this.size = size;
         this.render();
     }
 
     private void render() {
-        // TODO
+        photo = new Rectangle();
+        photo.setFill(Color.BEIGE); // TODO
+        photo.setArcWidth(4);
+        photo.setArcHeight(4);
+        photo.setHeight(size);
+        photo.setWidth(size);
+        photo.setStyle("-fx-cursor: hand");
     }
 
-    public void fillNotifications() {
-        // TODO
-    }
-
-    private void clearNotifications() {
-        // TODO
-    }
-
-    public ScrollPane getNotificationsPage() {
-        return notificationsPageContainer;
-    }
-
-    public static NotificationsPage getInstance() {
-        if (instance == null) {
-            instance = new NotificationsPage();
-        }
-        return instance;
+    public Rectangle getPhotoView() {
+        return photo;
     }
 }

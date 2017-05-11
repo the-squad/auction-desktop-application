@@ -21,12 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.controllers;
+
+package app.views;
 
 import app.Navigator;
 import app.components.DropdownField;
 import app.components.InputField;
 import app.components.ParagraphField;
+import app.components.PhotosViewer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -39,11 +41,13 @@ public class ItemDetails {
     private static ItemDetails instance;
 
     private BorderPane itemDetailsContainer;
+    private GridPane parentConatiner;
     private GridPane itemDetailsForm;
     private InputField itemNameField;
     private ParagraphField itemDescription;
     private DropdownField itemCategoryField;
     private InputField itemQuantityField;
+    private PhotosViewer photosViewer;
     private Button createItem;
 
     private ItemDetails() {
@@ -59,35 +63,45 @@ public class ItemDetails {
 
         createItem = new Button("Create Item");
         createItem.getStyleClass().add("btn-primary");
-        createItem.setTranslateX(85);
+        createItem.setTranslateX(275);
 
         createItem.setOnAction(e -> Navigator.hidePage());
 
+        //Item photosViewer
+        photosViewer = new PhotosViewer(EDIT_MODE);
+
         //Item form container
         itemDetailsForm = new GridPane();
-        itemDetailsForm.getStyleClass().add("card");
-        itemDetailsForm.setPadding(new Insets(35, 50 , 35, 50));
         itemDetailsForm.setVgap(5);
-        itemDetailsForm.setHgap(50);
-        itemDetailsForm.setMaxWidth(550);
-        itemDetailsForm.setAlignment(Pos.CENTER);
 
         GridPane.setConstraints(itemNameField.getInputField(), 0 , 0);
         GridPane.setConstraints(itemDescription.getParagraphField(), 0 , 1);
         GridPane.setConstraints(itemCategoryField.getDropdownField(), 0, 2);
         GridPane.setConstraints(itemQuantityField.getInputField(), 0, 3);
-        GridPane.setConstraints(createItem, 0 , 4);
 
         itemDetailsForm.getChildren().addAll(itemNameField.getInputField(),
                                              itemDescription.getParagraphField(),
                                              itemCategoryField.getDropdownField(),
-                                             itemQuantityField.getInputField(),
-                                             createItem);
+                                             itemQuantityField.getInputField());
+
+        //Parent container
+        parentConatiner = new GridPane();
+        parentConatiner.getStyleClass().add("card");
+        parentConatiner.setHgap(40);
+        parentConatiner.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
+        parentConatiner.setMaxWidth(CARD_WIDTH + 200);
+        parentConatiner.setAlignment(Pos.CENTER);
+
+        GridPane.setConstraints(itemDetailsForm, 0, 0);
+        GridPane.setConstraints(photosViewer.getPhotos(), 1, 0);
+        GridPane.setConstraints(createItem, 0, 1);
+
+        parentConatiner.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), createItem);
 
         //Item details container
         itemDetailsContainer = new BorderPane();
         itemDetailsContainer.setPadding(new Insets(20));
-        itemDetailsContainer.setCenter(itemDetailsForm);
+        itemDetailsContainer.setCenter(parentConatiner);
     }
 
     public BorderPane getItemDetails() {

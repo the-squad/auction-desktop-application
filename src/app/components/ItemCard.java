@@ -21,14 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import models.Category;
+import models.Item;
+import models.Model;
 
 public class ItemCard extends Card {
+
+    private final Item item;
 
     private Label itemName;
     private Label itemDescription;
@@ -38,25 +44,26 @@ public class ItemCard extends Card {
     private Label itemQuantityHeadline;
     private Label itemQuantity;
 
-    public ItemCard() {
-        super();
+    public ItemCard(Item item) {
+        super(item.getIamgesItem().get(0).getImage());
+        this.item = item;
         this.render();
     }
 
     private void render() {
         //Item name
-        itemName = new Label("Moto 360");
+        itemName = new Label(item.getName());
         itemName.getStyleClass().add("item-name");
 
         //Item Description
-        itemDescription = new Label("Smart watch from Motorolla powered by Android Wear");
+        itemDescription = new Label(item.getDescription());
         itemDescription.getStyleClass().add("item-description");
         itemDescription.setWrapText(true);
         itemDescription.setMaxWidth(250);
         itemDescription.setMaxHeight(45);
 
         //Item category
-        itemCategory = new Label("Tech");
+        itemCategory = new Label(Model.find(Category.class, item.getCategoryID()).getName());
         itemCategory.getStyleClass().add("item-category");
 
         //Item quantity headline
@@ -64,7 +71,7 @@ public class ItemCard extends Card {
         itemQuantityHeadline.getStyleClass().add("item-quantity-headline");
 
         //Item quantity
-        itemQuantity = new Label("10");
+        itemQuantity = new Label(String.valueOf(item.getQuantity()));
         itemQuantity.getStyleClass().add("item-quantity");
 
         //Item quantity container
@@ -85,13 +92,5 @@ public class ItemCard extends Card {
 
         cardDetails.getChildren().addAll(itemName, itemDescription, itemCategory, itemQuantityContainer);
         cardContainer.setBottom(cardDetails);
-    }
-
-    public BorderPane getItemCard() {
-        return cardContainer;
-    }
-
-    public void setDetails() {
-        //TODO use the item object to fill in the data
     }
 }

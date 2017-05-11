@@ -25,13 +25,9 @@
 package models;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 public class User extends Model<User> {
 
@@ -44,14 +40,15 @@ public class User extends Model<User> {
     private String _password;
     private byte[] _photo;
 
+    private static BufferedImage defaultImage = ImageUtils.fxImageToBufferedImage(new Image(User.class.getResourceAsStream("/assets/default-user.jpg")));
+
     public User(int userTypeID, String email) {
+        this();
         this._userTypeID = userTypeID;
         this._email = email;
     }
 
-    public User() {
-        //DO NOTHING
-    }
+    public User() {}
 
     public Integer getId() {
         return _id;
@@ -107,13 +104,20 @@ public class User extends Model<User> {
     }
 
     public BufferedImage getPhoto() {
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new ByteArrayInputStream(_photo));
-        } catch (IOException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return image;
+        if (_photo == null)
+            return defaultImage;
+        return ImageUtils.byteArrayToBufferedImage(_photo);
+    }
+
+    public User setPhoto(BufferedImage photo) {
+        photo = ImageUtils.cropImage(photo,300, 300);
+        photo = ImageUtils.scale(photo, 300, 300, 300f/photo.getHeight(), 300f/photo.getHeight());
+        this._photo = ImageUtils.bufferedImageToByteArray(photo);
+        return this;
+    }
+
+    public User setPhoto(javafx.scene.image.Image photo) {
+        return setPhoto(ImageUtils.fxImageToBufferedImage(photo));
     }
 
     public User setPhoto(byte[] _photo) {

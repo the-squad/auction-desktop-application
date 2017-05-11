@@ -22,10 +22,11 @@
  * THE SOFTWARE.
  */
 
-package app.pages;
+package app.views;
 
-import app.GridView;
+import app.layouts.GridView;
 import app.components.Filter;
+import app.layouts.ScrollView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -36,7 +37,7 @@ public class SearchResultsPage {
 
     private static SearchResultsPage instance;
 
-    private ScrollPane searchResultsPageScrollbar;
+    private ScrollView searchResultsPageScrollbar;
     private BorderPane searchResultsPageContainer;
     private Filter filter;
     private GridView gridView;
@@ -51,7 +52,7 @@ public class SearchResultsPage {
 
         //Grid view
         gridView = new GridView();
-        gridView.loadAuctionCards(25);
+        //gridView.loadAuctionCards(25);
 
         //Search results container
         searchResultsPageContainer = new BorderPane();
@@ -64,23 +65,11 @@ public class SearchResultsPage {
         searchResultsPageContainer.setCenter(gridView.getGridView());
 
         //Scroll pane
-        searchResultsPageScrollbar = new ScrollPane(searchResultsPageContainer);
-        searchResultsPageScrollbar.setFitToWidth(true);
-        searchResultsPageScrollbar.setFitToHeight(true);
-        searchResultsPageScrollbar.getStyleClass().add("scrollbar");
-        searchResultsPageScrollbar.toBack();
-
-        //Making the scrollbar faster
-        searchResultsPageContainer.setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = searchResultsPageScrollbar.getContent().getBoundsInLocal().getWidth();
-            double value = searchResultsPageScrollbar.getVvalue();
-            searchResultsPageScrollbar.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
-        });
+        searchResultsPageScrollbar = new ScrollView(searchResultsPageContainer);
     }
 
     public ScrollPane getSearchResultsPage() {
-        return searchResultsPageScrollbar;
+        return searchResultsPageScrollbar.getScrollView();
     }
 
     public static SearchResultsPage getInstance() {

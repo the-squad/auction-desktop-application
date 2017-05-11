@@ -24,6 +24,8 @@
 
 package app;
 
+import models.Buyer;
+import models.Seller;
 import models.User;
 
 public class Partials {
@@ -36,9 +38,9 @@ public class Partials {
     public static int ADDRESS = 5;
     public static int NUMBER = 6;
 
-    public static int BUYER = 0;
-    public static int SELLER = 1;
-    public static int ADMIN = 2;
+    public static int BUYER = 3;
+    public static int SELLER = 2;
+    public static int ADMIN = 1;
 
     public static int userType;
 
@@ -78,9 +80,20 @@ public class Partials {
     public static double SCROLLING_SPEED = 3;
 
     //Border radius
-    public static int FULL_PADDING = 0;
-    public static int RIGHT_PADDING = 1;
+    public static int FIT_CONTAINER = 0;
+    public static int FIT_DATA = 1;
 
-    //Current user
+    //Global users actors
     public static User currentUser;
+    public static Buyer currentBuyer;
+    public static Seller currentSeller;
+
+    //Card props
+    public static int RIGHT_LEFT = 50;
+    public static int TOP_DOWN = 35;
+    public static int CARD_WIDTH = 550;
+
+    //View mode
+    public static int VIEW_MODE = 0;
+    public static int EDIT_MODE = 1;
 }

@@ -23,8 +23,12 @@
  */
 package models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Auction extends Model<Auction> {
 
@@ -37,9 +41,9 @@ public class Auction extends Model<Auction> {
     private double _initialPrice;
     private double _bidRate;
     private ArrayList<Bid> bids;
-
-    protected Auction() {
-    }
+    private Item item;
+    private Seller seller;
+    protected Auction() {}
 
     public Auction(int userID, int itemID, int itemQuantity, Date terminationDate, double initialPrice, double bidRate) {
         this._userID = userID;
@@ -55,8 +59,18 @@ public class Auction extends Model<Auction> {
         return _id;
     }
 
+    public Auction setId(int id) {
+        this._id = id;
+        return this;
+    }
+
     public int getUserID() {
         return _userID;
+    }
+
+    public Auction setUserID(int userID) {
+        this._userID = userID;
+        return this;
     }
 
     public int getItemID() {
@@ -137,4 +151,68 @@ public class Auction extends Model<Auction> {
             return false;
         }
     }
+    
+    public Item getItemAuction() {
+        this.item=Model.find(Item.class, this._itemID);
+        return this.item;
+    }
+    
+    public  ArrayList<Buyer> getFollowers()
+    {
+        ArrayList<SubscribeAuction> subscribtions =(ArrayList<SubscribeAuction>) Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
+        if(subscribtions.size()==0)
+        {
+            return null;
+        }
+        String keys = "`ID` in (";
+        keys = subscribtions.stream().map((follower) -> "?,").reduce(keys, String::concat);
+        return new ArrayList<>(Model.find(Buyer.class, keys.replaceFirst(",$", ")"), subscribtions.stream().map(i -> (Object) i.getSubscriberID()).toArray()));
+    }
+
+    public Seller getSeller() {
+        if (seller == null)
+            seller = Model.find(Seller.class, this._userID);
+        return seller;
+    }
+    
+    public double getHighestPrice() {
+        if (getBids().size() == 0)
+            return this.getInitialPrice();
+        return getBids().get(0).getPrice();
+    }
+    
+    public Auction getAuction(int id){
+        return Model.find(Auction.class, id);
+    }
+    
+    public String startFinishTimeAuction(){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Date today = new Date();
+        
+        if (this._startDate.compareTo(today) > 0) {
+            long diff = this._startDate.getTime() - today.getTime();
+            long Minutes = diff / (60 * 1000) % 60;
+            long Hours = diff / (60 * 60 * 1000) % 60;
+
+            if (Hours == 0) {
+                return Minutes + " minutes To Start";
+            } else {
+                return Hours + " Hour To Start";
+            }
+        } else {
+            long diff = this._terminationDate.getTime() - today.getTime();
+            long Minutes = diff / (60 * 1000) % 60;
+            long Hours = diff / (60 * 60 * 1000) % 60;
+
+            if (Hours == 0) {
+                return Minutes + " minutes To finish";
+            } else {
+                return Hours + " Hour To finish";
+            }
+        }
+
+    }
+    
+    
 }

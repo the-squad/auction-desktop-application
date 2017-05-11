@@ -21,50 +21,81 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.tabs;
 
-import app.GridView;
-import javafx.animation.Timeline;
+import app.components.LoadingIndicator;
+import app.layouts.GridView;
+import app.layouts.ScrollView;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import models.Item;
+
+import java.util.ArrayList;
+
 import static app.Partials.SCROLLING_SPEED;
 
 public class InventoryTab {
 
     private static InventoryTab instance;
 
-    private ScrollPane inventoryPageContainer;
+    private ScrollView scrollView;
+    private BorderPane centerPane;
     private GridView gridView;
 
+    private LoadingIndicator loadingIndicator;
+
     private InventoryTab() {
-        super();
         this.render();
     }
 
     private void render() {
         gridView = new GridView();
 
-        //Scroll pane
-        inventoryPageContainer = new ScrollPane(gridView.getGridView());
-        inventoryPageContainer.setFitToWidth(true);
-        inventoryPageContainer.setFitToHeight(true);
-        inventoryPageContainer.getStyleClass().add("scrollbar");
-        inventoryPageContainer.toBack();
+        //Center pane
+        centerPane = new BorderPane();
 
-        //Making the scrollbar faster
-        gridView.getGridView().setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = inventoryPageContainer.getContent().getBoundsInLocal().getWidth();
-            double value = inventoryPageContainer.getVvalue();
-            inventoryPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        //Scroll pane
+        scrollView = new ScrollView(centerPane);
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
+        loadingIndicator.setLoadingMessage("Getting Your Inventory Items");
+    }
+
+    public void loadCards(ArrayList<Item> items) {
+        loadingIndicator.startRotating();
+        centerPane.setCenter(loadingIndicator.getLoadingIndicator());
+
+        //Loading cards
+        Task<String> loadingCards = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadItemCards(items, "Your Inventory Is Empty");
+                return null;
+            }
+        };
+
+        //Creating a thread that triggered when the home page is rendered
+        Thread onLoadingCards = new Thread(loadingCards);
+        onLoadingCards.setDaemon(true);
+        onLoadingCards.start();
+
+        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
+            //View auctions cards
+            loadingIndicator.stopRotating();
+            centerPane.setCenter(gridView.getGridView());
         });
     }
 
-    public void loadCards() {
-        gridView.loadItemCards(8);
+    public ScrollPane getInventoryTab() {
+        return scrollView.getScrollView();
     }
 
-    public ScrollPane getInventoryTab() {
-        return inventoryPageContainer;
+    public void destroy() {
+        instance = null;
     }
 
     public static InventoryTab getInstance() {

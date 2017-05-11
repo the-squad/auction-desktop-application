@@ -24,40 +24,49 @@
 
 package app.components;
 
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import models.ImageUtils;
+
+import java.awt.image.BufferedImage;
 
 public class Card {
 
     BorderPane cardContainer;
-    private Label pictureView;
-    private Rectangle pictureClipper;
+    private BufferedImage photoBytes;
+    protected Image photo;
+    protected Rectangle photoViewer;
 
     GridPane cardDetails;
 
-    Card() {
+    Card(BufferedImage photoBytes) {
+        this.photoBytes = photoBytes;
         this.render();
     }
 
     private void render() {
         //Item picture
-        pictureClipper = new Rectangle(250, 175);
-        pictureClipper.setArcWidth(5);
-        pictureClipper.setArcHeight(5);
+        photoViewer = new Rectangle(250, 175);
+        photoViewer.setArcWidth(5);
+        photoViewer.setArcHeight(5);
+        photoViewer.setWidth(250);
+        photoViewer.setHeight(175);
 
-        pictureView = new Label();
-        pictureView.getStyleClass().add("item-image");
-        pictureView.setClip(pictureClipper);
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(photoBytes, 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
 
         //Card container
         cardContainer = new BorderPane();
         cardContainer.getStyleClass().addAll("card", "small-card");
-        cardContainer.setTop(pictureView);
+        cardContainer.setTop(photoViewer);
     }
 
-    protected void setPictureView() {
-        // TODO
+    public BorderPane getCard() {
+        return cardContainer;
     }
 }

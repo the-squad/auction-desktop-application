@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
 import app.Navigator;
-import app.pages.SearchPage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -36,9 +36,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import models.ImageUtils;
+
 import static app.Partials.*;
 
 public class Header extends BorderPane {
@@ -62,7 +63,7 @@ public class Header extends BorderPane {
     private GridPane rightSideContainer;
     private Button searchButton;
     private Button notificationsButton;
-    private Rectangle profilePicture;
+    private UserDetails userInfo;
     private Button createButton;
     private Rectangle divider;
     private Button logOutButton;
@@ -178,22 +179,13 @@ public class Header extends BorderPane {
         // TODO notification action
 
         //Profile picture
-        profilePicture = new Rectangle(30, 30,
-                new ImagePattern((
-                        new Image(getClass().getResourceAsStream("/assets/picture.jpg"),
-                                30,
-                                30,
-                                false,
-                                true))));
-        profilePicture.getStyleClass().add("picture");
-        profilePicture.setArcHeight(8);
-        profilePicture.setArcWidth(8);
+        userInfo = new UserDetails(FIT_DATA, currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
 
-        profilePicture.setOnMouseClicked(e -> {
+        userInfo.getUserDetails().setOnMouseClicked(e -> {
             if (userType == SELLER) {
-                Navigator.viewPage(PROFILE_PAGE, "Muhammad Tarek");
+                Navigator.viewPage(PROFILE_PAGE, currentUser.getName());
             } else {
-                Navigator.viewPage(ACCOUNT_SETTINGS, "Account Settings");
+                Navigator.viewPage(ACCOUNT_SETTINGS, currentUser.getName());
             }
         });
 
@@ -207,7 +199,11 @@ public class Header extends BorderPane {
         logOutButton = new Button();
         logOutButton.getStyleClass().addAll("icon-button", "logout-icon");
 
-        logOutButton.setOnAction(e -> Navigator.switchPage(HOME_PAGE, LANDING_PAGE));
+        logOutButton.setOnAction(e -> {
+            Navigator.switchPage(HOME_PAGE, LANDING_PAGE);
+            Navigator.refreshView();
+            instance = null;
+        });
 
         //Right part container
         rightSideContainer = new GridPane();
@@ -225,19 +221,17 @@ public class Header extends BorderPane {
             rightSideContainer.getChildren().add(searchButton);
         }
 
-
-
         GridPane.setConstraints(notificationsButton, 2, 0);
 
-        GridPane.setConstraints(profilePicture, 3, 0);
-        GridPane.setMargin(profilePicture, new Insets(0, 0,0 ,10));
+        GridPane.setConstraints(userInfo.getUserDetails(), 3, 0);
+        GridPane.setMargin(userInfo.getUserDetails(), new Insets(0, 0,0 ,5));
 
         GridPane.setConstraints(divider, 4, 0);
         GridPane.setMargin(divider, new Insets(0, 5, 0, 5));
 
         GridPane.setConstraints(logOutButton, 5, 0);
 
-        rightSideContainer.getChildren().addAll(notificationsButton, profilePicture, divider, logOutButton);
+        rightSideContainer.getChildren().addAll(notificationsButton, userInfo.getUserDetails(), divider, logOutButton);
 
         //Header container
         headerContainer = new BorderPane();
@@ -304,7 +298,6 @@ public class Header extends BorderPane {
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);
-
     }
 
     public static Header getInstance() {

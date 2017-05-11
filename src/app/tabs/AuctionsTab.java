@@ -24,47 +24,78 @@
 
 package app.tabs;
 
-import app.GridView;
+import app.components.LoadingIndicator;
+import app.layouts.GridView;
+import app.layouts.ScrollView;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
+import models.Auction;
+
+import java.util.ArrayList;
+
 import static app.Partials.SCROLLING_SPEED;
 
 public class AuctionsTab {
 
     private static AuctionsTab instance;
 
-    private ScrollPane auctionsPageContainer;
+    private ScrollView scrollView;
+    private BorderPane centerPane;
     private GridView gridView;
 
+    private LoadingIndicator loadingIndicator;
+
     private AuctionsTab() {
-        super();
         this.render();
     }
 
     private void render() {
         gridView = new GridView();
 
-        //Scroll pane
-        auctionsPageContainer = new ScrollPane(gridView.getGridView());
-        auctionsPageContainer.setFitToWidth(true);
-        auctionsPageContainer.setFitToHeight(true);
-        auctionsPageContainer.getStyleClass().add("scrollbar");
-        auctionsPageContainer.toBack();
+        //Center pane
+        centerPane = new BorderPane();
 
-        //Making the scrollbar faster
-        gridView.getGridView().setOnScroll(event -> {
-            double deltaY = event.getDeltaY() * SCROLLING_SPEED;
-            double width = auctionsPageContainer.getContent().getBoundsInLocal().getWidth();
-            double value = auctionsPageContainer.getVvalue();
-            auctionsPageContainer.setVvalue(value + -deltaY/width); // deltaY/width to make the scrolling equally fast regardless of the actual width of the component
+        //Scroll pane
+        scrollView = new ScrollView(centerPane);
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
+        loadingIndicator.setLoadingMessage("Getting Your Auctions");
+    }
+
+    public void loadCards(ArrayList<Auction> auctions) {
+        loadingIndicator.startRotating();
+        centerPane.setCenter(loadingIndicator.getLoadingIndicator());
+
+        //Loading cards
+        Task<String> loadingCards = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions Yet");
+                return null;
+            }
+        };
+
+        //Creating a thread that triggered when the home page is rendered
+        Thread onLoadingCards = new Thread(loadingCards);
+        onLoadingCards.setDaemon(true);
+        onLoadingCards.start();
+
+        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
+            //View auctions cards
+            loadingIndicator.stopRotating();
+            centerPane.setCenter(gridView.getGridView());
         });
     }
 
-    public void loadCards() {
-        gridView.loadAuctionCards(16);
+    public ScrollPane getAuctionsTab() {
+        return scrollView.getScrollView();
     }
 
-    public ScrollPane getAuctionsTab() {
-        return auctionsPageContainer;
+    public void destroy() {
+        instance = null;
     }
 
     public static AuctionsTab getInstance() {

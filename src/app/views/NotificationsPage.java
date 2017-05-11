@@ -21,8 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.components;
 
-public class TimerPicker {
-    
+package app.views;
+
+import javafx.scene.control.ScrollPane;
+
+public class NotificationsPage {
+
+    private static NotificationsPage instance;
+
+    private ScrollPane notificationsPageContainer;
+
+    private NotificationsPage() {
+        this.render();
+    }
+
+    private void render() {
+        // TODO
+    }
+
+    public void fillNotifications() {
+        // TODO
+    }
+
+    private void clearNotifications() {
+        // TODO
+    }
+
+    public ScrollPane getNotificationsPage() {
+        return notificationsPageContainer;
+    }
+
+    public static NotificationsPage getInstance() {
+        if (instance == null) {
+            instance = new NotificationsPage();
+        }
+        return instance;
+    }
 }

@@ -21,26 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
+import app.tabs.ExploreTab;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import models.Category;
 
-/**
- *
- * @author Muhammad
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class CategoriesPanel {
 
-    final private String categories[];
+    private final ArrayList<Category> categories;
 
     private GridPane tabsContainer;
     private Label headline;
-    private Label tabs[];
+    private ArrayList<Label> tabs;
+    private HashMap<Label, Category> tabsTable;
 
-    public CategoriesPanel(String ...categories) {
-        this.categories = categories.clone();
+    private MouseEvent switchEvent;
+
+    public CategoriesPanel(ArrayList<Category> categories) {
+        this.categories = categories;
         this.render();
     }
 
@@ -55,19 +62,26 @@ public class CategoriesPanel {
         tabsContainer.getStyleClass().add("tabs-container");
 
         //Generating tabs
-        tabs = new Label[categories.length];
+        tabsTable = new HashMap<>(categories.size());
+        tabs = new ArrayList<>(categories.size());
 
         int counter = 0;
-        for (String category : categories) {
-            tabs[counter] = new Label(category);
-            tabs[counter].getStyleClass().add("tab--category");
+        for (Category category : categories) {
+            Label tab = new Label(category.getName());
+            tab.getStyleClass().add("tab--category");
+            tabs.add(tab);
 
-            Label currentTab = tabs[counter];
-            tabs[counter].setOnMouseClicked(e -> switchTab(currentTab));
+            tabsTable.put(tab, category);
 
-            if (counter == 0) tabs[counter].getStyleClass().add("tab--category-active");
-            GridPane.setConstraints(tabs[counter], counter + 1, 0);
-            tabsContainer.getChildren().add(tabs[counter]);
+            tab.setOnMouseClicked(e -> {
+                switchTab(tab);
+            });
+
+            if (counter == 0) {
+                tab.getStyleClass().add("tab--category-active");
+            }
+            GridPane.setConstraints(tab, counter + 1, 0);
+            tabsContainer.getChildren().add(tab);
             counter++;
         }
 
@@ -80,10 +94,12 @@ public class CategoriesPanel {
         return tabsContainer;
     }
 
-    private void switchTab(Label label) {
+    private void switchTab(Label tab) {
         //Highlighting the active tab
         Label activeLabel = (Label) tabsContainer.lookup(".tab--category-active");
         activeLabel.getStyleClass().remove("tab--category-active");
-        label.getStyleClass().add("tab--category-active");
+        tab.getStyleClass().add("tab--category-active");
+
+        ExploreTab.getInstance().loadCards(tabsTable.get(tab));
     }
 }

@@ -21,19 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.controllers;
 
-import app.Navigator;
+package app.views;
+
 import app.components.InputField;
+import app.layouts.ScrollView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import models.ImageUtils;
 
 import static app.Partials.*;
 
@@ -41,10 +44,11 @@ public class AccountSettings {
 
     private static AccountSettings instance;
 
-    private BorderPane accountSettingsPageContainer;
+    private ScrollView accountSettingsPageContainer;
+    private BorderPane cardParent;
+    private GridPane cardContainer;
     private GridPane photoContainer;
     private Image userPhoto;
-    private ImageView userPhotoView;
     private Rectangle photoClipper;
     private Button changePhotoButton;
 
@@ -58,6 +62,7 @@ public class AccountSettings {
     private GridPane buttonAndNotifierContainer;
     private Button updateAccountButton;
     private Label updateActionNotifier;
+    private Label extraSpace;
 
     private AccountSettings() {
         this.render();
@@ -65,34 +70,38 @@ public class AccountSettings {
 
     private void render() {
         //User photo
-        userPhoto = new Image(getClass().getResourceAsStream("/assets/picture.jpg"));
+        userPhoto = ImageUtils.cropAndConvertImage(currentUser.getPhoto(), 200, 200);
 
-        photoClipper = new Rectangle(250, 250);
+        photoClipper = new Rectangle(200, 200);
+        photoClipper.setFill(new ImagePattern(userPhoto));
         photoClipper.setArcHeight(16);
         photoClipper.setArcWidth(16);
-
-        userPhotoView = new ImageView(userPhoto);
-        userPhotoView.setFitWidth(250);
-        userPhotoView.setFitHeight(250);
-        userPhotoView.setClip(photoClipper);
 
         //Change photo button
         changePhotoButton = new Button("Change photo");
         changePhotoButton.getStyleClass().add("btn-secondary");
-        changePhotoButton.setMinWidth(250);
+        changePhotoButton.setMinWidth(200);
 
         //Account data fields
         nameField = new InputField("Name", TEXT, LONG);
+        nameField.setValue(currentUser.getName());
+
         emailField = new InputField("Email", EMAIL, LONG);
+        emailField.setValue(currentUser.getEmail());
+
         passwordField = new InputField("Password", PASSWORD, LONG);
+        passwordField.setValue(currentUser.getPassword());
+
         repeatPasswordField = new InputField("Repeat Password", PASSWORD, LONG);
         addressField = new InputField("Address", ADDRESS, LONG);
+        addressField.setValue(currentUser.getAddress());
 
-        updateAccountButton = new Button("Update Account");
+        updateAccountButton = new Button("Update");
         updateAccountButton.getStyleClass().add("btn-primary");
 
         updateAccountButton.setOnAction(e -> {
             updateActionNotifier.setVisible(true);
+            //TODO
         });
 
         updateActionNotifier = new Label("Account updated successfully");
@@ -112,13 +121,12 @@ public class AccountSettings {
         photoContainer = new GridPane();
         photoContainer.setAlignment(Pos.TOP_CENTER);
 
-        GridPane.setConstraints(userPhotoView, 0, 0);
-        GridPane.setMargin(userPhotoView, new Insets( 10, 0, 10, 40));
+        GridPane.setConstraints(photoClipper, 0, 0);
+        GridPane.setMargin(photoClipper, new Insets( 10, 0, 10, 0));
 
         GridPane.setConstraints(changePhotoButton, 0, 1);
-        GridPane.setMargin(changePhotoButton, new Insets(0, 0, 0, 40));
 
-        photoContainer.getChildren().addAll(userPhotoView, changePhotoButton);
+        photoContainer.getChildren().addAll(photoClipper, changePhotoButton);
 
         //Data form container
         formDataContainer = new GridPane();
@@ -138,32 +146,34 @@ public class AccountSettings {
                                                             addressField.getInputField(),
                                                             buttonAndNotifierContainer);
 
+        //Card Container
+        cardContainer = new GridPane();
+        cardContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT, TOP_DOWN, RIGHT_LEFT));
+        cardContainer.setMaxWidth(CARD_WIDTH);
+        cardContainer.getStyleClass().add("card");
+        cardContainer.setHgap(50);
+        cardContainer.setAlignment(Pos.CENTER);
+        cardContainer.setTranslateY(20);
+
+        GridPane.setConstraints(photoContainer, 0, 0);
+        GridPane.setConstraints(formDataContainer, 1, 0);
+
+        cardContainer.getChildren().addAll(photoContainer, formDataContainer);
+
+        cardParent = new BorderPane();
+        cardParent.setCenter(cardContainer);
+
+        extraSpace = new Label(" ");
+        extraSpace.setMinHeight(30);
+
+        cardParent.setBottom(extraSpace);
+
         //Account settings page container
-        accountSettingsPageContainer = new BorderPane();
-        accountSettingsPageContainer.setTranslateY(40);
-        accountSettingsPageContainer.setPadding(new Insets(20,75,0,50));
-        accountSettingsPageContainer.getStyleClass().add("account-settings");
-
-        accountSettingsPageContainer.setLeft(photoContainer);
-
-        accountSettingsPageContainer.setCenter(formDataContainer);
-        BorderPane.setAlignment(formDataContainer, Pos.CENTER_LEFT);
-        BorderPane.setMargin(formDataContainer, new Insets(0, 0, 0, 100));
+        accountSettingsPageContainer = new ScrollView(cardParent);
     }
 
-    public void fillAccountData() {
-        /*
-         TODO
-         nameField.setValue();
-         emailField.setValue();
-         passwordField.setValue();
-         repeatPasswordField.setValue();
-         addressField.setValue();
-         */
-    }
-
-    public BorderPane getAccountSettingsPage() {
-        return accountSettingsPageContainer;
+    public ScrollPane getAccountSettingsPage() {
+        return accountSettingsPageContainer.getScrollView();
     }
 
     public static AccountSettings getInstance() {

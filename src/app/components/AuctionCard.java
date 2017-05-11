@@ -31,12 +31,23 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
+import models.Auction;
+import models.Buyer;
+import models.ImageUtils;
+
+import java.awt.image.BufferedImage;
 
 import static app.Partials.*;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import models.Buyer;
 
 public class AuctionCard extends Card {
 
     private final int viewType;
+    private Auction auction;
 
     private GridPane itemNameAndButtonContainer;
     private Label itemName;
@@ -44,41 +55,51 @@ public class AuctionCard extends Card {
     private Label currentBid;
     private Label auctionStatus;
 
-    private SellerDetails sellerDetails;
+    private UserDetails userDetails;
 
     private Boolean userSubscribed;
 
-    public AuctionCard(int viewType) {
-        super();
+    public AuctionCard(int viewType, Auction auction) {
+        super(auction.getItemAuction().getIamgesItem().get(0).getImage());
         this.viewType = viewType;
+        this.auction = auction;
         this.render();
     }
 
     private void render() {
         //Item name
-        itemName = new Label("Moto 360");
+        itemName = new Label(auction.getItemAuction().getName());
         itemName.getStyleClass().add("item-name");
 
-        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, "Moto 360"));
+        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName()));
 
         //Subscribe button
         if (viewType == BUYER) {
             subscribeButton = new Button();
             subscribeButton.getStyleClass().add("subscribe-btn");
-            // TODO change to subscribe-btn--active if the user is already subscribed
             userSubscribed = false;
+
+            if (auction.getFollowers() != null) {
+                for (Buyer buyer : auction.getFollowers()) {
+                    if (Objects.equals(buyer.getId(), currentBuyer.getId())) {
+                        userSubscribed = true;
+                        subscribeButton.getStyleClass().add("subscribe-btn--active");
+                    }
+                }
+            }
 
             subscribeButton.setOnAction(e -> {
                 if (userSubscribed) {
                     subscribeButton.getStyleClass().remove("subscribe-btn--active");
+                    currentBuyer.unSubscribeAuction(auction.getId());
                     userSubscribed = false;
                 } else {
                     subscribeButton.getStyleClass().add("subscribe-btn--active");
+                    currentBuyer.subscribeAuction(auction.getId());
                     userSubscribed = true;
                 }
             });
         }
-
 
         //Item and button container
         itemNameAndButtonContainer = new GridPane();
@@ -102,23 +123,23 @@ public class AuctionCard extends Card {
         }
 
         //Current bid
-        currentBid = new Label("250$");
+        currentBid = new Label(Double.toString(auction.getHighestPrice()));
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
-        auctionStatus = new Label("1 hour to start".toUpperCase());
+        auctionStatus = new Label(auction.startFinishTimeAuction().toUpperCase());
         auctionStatus.getStyleClass().add("auction-status");
 
         //If is the card for the buyer show seller info
         if (viewType == BUYER) {
-            sellerDetails = new SellerDetails(FULL_PADDING);
+            userDetails = new UserDetails(FIT_CONTAINER, auction.getSeller().getName(),
+                    auction.getSeller().getPhoto(),
+                    auction.getUserID());
         }
 
         //Auction details container
         cardDetails = new GridPane();
         cardDetails.setPadding(new Insets(10, 0, 0, 0));
-
-        // TODO add action to go seller profile
 
         GridPane.setConstraints(itemNameAndButtonContainer, 0, 0);
         GridPane.setMargin(itemNameAndButtonContainer, new Insets(0, 15, 2, 15));
@@ -132,19 +153,11 @@ public class AuctionCard extends Card {
         cardDetails.getChildren().addAll(itemNameAndButtonContainer, currentBid, auctionStatus);
 
         if (viewType == BUYER) {
-            GridPane.setConstraints(sellerDetails.getSellerDetails(), 0, 3);
-            cardDetails.getChildren().add(sellerDetails.getSellerDetails());
+            GridPane.setConstraints(userDetails.getUserDetails(), 0, 3);
+            cardDetails.getChildren().add(userDetails.getUserDetails());
         }
 
         //Auction card container
         cardContainer.setBottom(cardDetails);
-    }
-
-    public BorderPane getAuctionCard() {
-        return cardContainer;
-    }
-
-    public void setDetails() {
-        //TODO use the auction object to fill in the data
     }
 }

@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
 import app.Validation;
@@ -137,5 +138,9 @@ public class InputField extends Input {
     public void clear() {
         input.setText("");
         markAsNormal();
+    }
+
+    public void focus() {
+        input.requestFocus();
     }
 }

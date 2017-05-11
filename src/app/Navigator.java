@@ -25,13 +25,18 @@
 package app;
 
 import app.components.Header;
-import app.controllers.AccountSettings;
-import app.controllers.AuctionDetails;
-import app.controllers.ItemDetails;
-import app.pages.*;
+import app.views.AccountSettings;
+import app.views.AuctionDetails;
+import app.views.ItemDetails;
+import app.views.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import models.Category;
+import models.Inventory;
+import models.Model;
+
+import static app.Partials.*;
 
 public class Navigator {
 
@@ -59,12 +64,20 @@ public class Navigator {
             case 5:
                 return AuctionView.getInstance().getAuctionView();
             case 6:
+                ExploreTab.getInstance().loadCards(Category.getCategories().get(0));
                 return ExploreTab.getInstance().getExploreTab();
             case 7:
+                AuctionsTab.getInstance().loadCards(currentSeller.getAuctions());
                 return AuctionsTab.getInstance().getAuctionsTab();
             case 8:
+                FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
+                if (userType == BUYER) {
+                    //InventoryTab.getInstance().loadCards(currentBuyer.getItems(Model.find(Inventory.class, "SellerID=?", currentBuyer.getId()).get(0)));
+                } else {
+                    //InventoryTab.getInstance().loadCards();
+                }
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
@@ -123,5 +136,22 @@ public class Navigator {
 
         header = Header.getInstance();
         header.hidePageTitle();
+    }
+
+    public static void refreshView() {
+        HomePage homePage = HomePage.getInstance();
+        homePage.destory();
+
+        AuctionsTab auctionsTab = AuctionsTab.getInstance();
+        auctionsTab.destroy();
+
+        ExploreTab exploreTab = ExploreTab.getInstance();
+        exploreTab.destroy();
+
+        FeedTab feedTab = FeedTab.getInstance();
+        feedTab.destroy();
+
+        InventoryTab inventoryTab = InventoryTab.getInstance();
+        inventoryTab.destroy();
     }
 }

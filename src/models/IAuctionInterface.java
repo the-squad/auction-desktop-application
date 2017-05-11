@@ -32,5 +32,5 @@ import java.util.ArrayList;
  */
 public interface IAuctionInterface {
     public ArrayList<Auction> search(String query);
-    public ArrayList<Auction> getAuction();
+    public ArrayList<Auction> getAuctions();
 }

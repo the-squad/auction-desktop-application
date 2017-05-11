@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package app.pages;
+
+package app.views;
 
 import app.Navigator;
 import app.components.Header;
@@ -30,6 +31,8 @@ import app.tabs.ExploreTab;
 import app.tabs.FeedTab;
 import app.tabs.InventoryTab;
 import javafx.scene.layout.BorderPane;
+import models.Category;
+
 import static app.Partials.*;
 
 public class HomePage extends BorderPane {
@@ -55,24 +58,10 @@ public class HomePage extends BorderPane {
         if (userType == BUYER) {
             //Creating the explore tab
             explore = ExploreTab.getInstance();
-            explore.loadCards(); // FUTURE TODO
-
-            //Creating the feed tab
-            feed = FeedTab.getInstance();
-            feed.loadCards(); // FUTURE TODO
-
+        } else if (userType == SELLER) {
             //Creating the inventory page
             inventory = InventoryTab.getInstance();
-            inventory.loadCards(); // FUTURE TODO
-        } if (userType == SELLER) {
-            //Creating the inventory page
-            inventory = InventoryTab.getInstance();
-            inventory.loadCards(); // FUTURE TODO
-
-            //Creating the auctions page
-            auctions = AuctionsTab.getInstance();
-            auctions.loadCards();
-        } if (userType == ADMIN) { // FUTURE TODO
+        } else { // FUTURE TODO
             // TODO
         }
 
@@ -95,6 +84,10 @@ public class HomePage extends BorderPane {
 
     public void setUserPhoto() {
         header.setUserPhoto();
+    }
+
+    public void destory() {
+        instance = null;
     }
 
     public BorderPane getHomePage() {
