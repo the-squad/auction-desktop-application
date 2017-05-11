@@ -32,6 +32,9 @@ import app.views.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import models.Category;
+import models.Inventory;
+import models.Model;
 
 import static app.Partials.*;
 
@@ -61,17 +64,20 @@ public class Navigator {
             case 5:
                 return AuctionView.getInstance().getAuctionView();
             case 6:
+                ExploreTab.getInstance().loadCards(Category.getCategories().get(0));
                 return ExploreTab.getInstance().getExploreTab();
             case 7:
+                AuctionsTab.getInstance().loadCards(currentSeller.getAuctions());
                 return AuctionsTab.getInstance().getAuctionsTab();
             case 8:
                 FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
-                if (userType == BUYER)
-                    InventoryTab.getInstance().loadCards();
-                else
-                    InventoryTab.getInstance().loadCards();
+                if (userType == BUYER) {
+                    //InventoryTab.getInstance().loadCards(currentBuyer.getItems(Model.find(Inventory.class, "SellerID=?", currentBuyer.getId()).get(0)));
+                } else {
+                    //InventoryTab.getInstance().loadCards();
+                }
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();

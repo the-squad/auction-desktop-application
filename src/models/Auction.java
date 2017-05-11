@@ -59,6 +59,11 @@ public class Auction extends Model<Auction> {
         return _id;
     }
 
+    public Auction setId(int id) {
+        this._id = id;
+        return this;
+    }
+
     public int getUserID() {
         return _userID;
     }
@@ -170,7 +175,9 @@ public class Auction extends Model<Auction> {
         return seller;
     }
     
-    public double getHighBid() {
+    public double getHighestPrice() {
+        if (getBids().size() == 0)
+            return this.getInitialPrice();
         return getBids().get(0).getPrice();
     }
     
