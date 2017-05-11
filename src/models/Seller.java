@@ -126,11 +126,15 @@ public class Seller extends User implements IAuctionInterface {
     }
 
     @Override
-    public ArrayList<Auction> getAuction() {
+    public ArrayList<Auction> getAuctions() {
         if (auctions == null) {
             auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
         }
         return auctions;
     }
-
+    
+    public boolean checkFollow(int userId)
+    {
+        return Model.find(SubscribeSeller.class , "SelleID = ? and SubscriberID = ?" ,this.getId() , userId).size() == 1;
+    }
 }

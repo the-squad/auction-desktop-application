@@ -186,7 +186,7 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     @Override
-    public ArrayList<Auction> getAuction() {
+    public ArrayList<Auction> getAuctions() {
         return null;
         // TODO
     }

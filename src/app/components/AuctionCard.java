@@ -33,6 +33,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import models.Auction;
+import models.Buyer;
 import models.ImageUtils;
 
 import java.awt.image.BufferedImage;
@@ -78,7 +79,6 @@ public class AuctionCard extends Card {
         if (viewType == BUYER) {
             subscribeButton = new Button();
             subscribeButton.getStyleClass().add("subscribe-btn");
-            // TODO change to subscribe-btn--active if the user is already subscribed
             userSubscribed = false;
             ArrayList<Buyer> arr = auction.getFollowers();
             if (arr != null) {
@@ -89,12 +89,15 @@ public class AuctionCard extends Card {
                     }
                 }
             }
+
             subscribeButton.setOnAction(e -> {
                 if (userSubscribed) {
                     subscribeButton.getStyleClass().remove("subscribe-btn--active");
+                    // TODO unsubscribe auction
                     userSubscribed = false;
                 } else {
                     subscribeButton.getStyleClass().add("subscribe-btn--active");
+                    currentBuyer.subscribeAuction(auction.getId());
                     userSubscribed = true;
                 }
             });
