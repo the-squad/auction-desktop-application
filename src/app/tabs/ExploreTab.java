@@ -77,9 +77,9 @@ public class ExploreTab {
     public void loadCards(Category category) {
         loadingIndicator.startRotating();
         if (category.getName().equals("All"))
-            loadingMessage = "Getting To You Every Auctions We Know";
+            loadingMessage = "Getting You All Auctions";
         else
-            loadingMessage = "Getting To You Auctions in " + category.getName();
+            loadingMessage = "Getting You Auctions in " + category.getName();
 
         loadingIndicator.setLoadingMessage(loadingMessage);
         exploreTabContainer.setCenter(loadingIndicator.getLoadingIndicator());
@@ -91,18 +91,15 @@ public class ExploreTab {
                 gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName());
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                exploreTabContainer.setCenter(gridView.getGridView());
+            }
         };
-
-        //Creating a thread that triggered when the home page is rendered
-        Thread onLoadingCards = new Thread(loadingCards);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
-            //View auctions cards
-            loadingIndicator.stopRotating();
-            exploreTabContainer.setCenter(gridView.getGridView());
-        });
+        new Thread(loadingCards).start();
     }
 
     public void destroy() {

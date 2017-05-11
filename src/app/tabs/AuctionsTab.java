@@ -76,18 +76,15 @@ public class AuctionsTab {
                 gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions Yet");
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                centerPane.setCenter(gridView.getGridView());
+            }
         };
-
-        //Creating a thread that triggered when the home page is rendered
-        Thread onLoadingCards = new Thread(loadingCards);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
-            //View auctions cards
-            loadingIndicator.stopRotating();
-            centerPane.setCenter(gridView.getGridView());
-        });
+        new Thread(loadingCards).start();
     }
 
     public ScrollPane getAuctionsTab() {

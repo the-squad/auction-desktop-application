@@ -60,13 +60,17 @@ public class AuctionCard extends Card {
     private Boolean userSubscribed;
 
     public AuctionCard(int viewType, Auction auction) {
-        super(auction.getItemAuction().getIamgesItem().get(0).getImage());
+        super();
         this.viewType = viewType;
         this.auction = auction;
         this.render();
     }
 
     private void render() {
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(auction.getItemAuction().getIamgesItem().get(0).getImage(), 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
+
         //Item name
         itemName = new Label(auction.getItemAuction().getName());
         itemName.getStyleClass().add("item-name");

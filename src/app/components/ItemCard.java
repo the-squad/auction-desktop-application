@@ -28,7 +28,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import models.Category;
+import models.ImageUtils;
 import models.Item;
 import models.Model;
 
@@ -45,12 +47,16 @@ public class ItemCard extends Card {
     private Label itemQuantity;
 
     public ItemCard(Item item) {
-        super(item.getIamgesItem().get(0).getImage());
+        super();
         this.item = item;
         this.render();
     }
 
     private void render() {
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(item.getIamgesItem().get(0).getImage(), 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
+
         //Item name
         itemName = new Label(item.getName());
         itemName.getStyleClass().add("item-name");

@@ -239,7 +239,17 @@ public class ProfilePage {
                 photo = ImageUtils.cropAndConvertImage(seller.getPhoto(), 150, 150);
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                photoViewer.setFill(new ImagePattern(photo));
+                userName.setText(seller.getName());
+                auctionsNumber.setText(String.valueOf(seller.getAuctions().size()));
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+            }
         };
+        new Thread(loadingProfileData).start();
 
         //Loading profile auctions
         Task<String> loadingProfileAuctions = new Task<String>() {
@@ -248,28 +258,16 @@ public class ProfilePage {
                 gridView.loadAuctionCards(seller.getAuctions(), "Getting Seller's Auctions");
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                profilePageContainer.setCenter(gridView.getGridView());
+                callToAction.setDisable(false);
+            }
         };
-
-        Thread onLoadingInfo = new Thread(loadingProfileData);
-        onLoadingInfo.setDaemon(true);
-        onLoadingInfo.start();
-
-        Thread onLoadingCards = new Thread(loadingProfileAuctions);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingProfileData.setOnSucceeded((WorkerStateEvent t) -> {
-            photoViewer.setFill(new ImagePattern(photo));
-            userName.setText(seller.getName());
-            auctionsNumber.setText(String.valueOf(seller.getAuctions().size()));
-            followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
-        });
-
-        loadingProfileAuctions.setOnSucceeded((WorkerStateEvent t) -> {
-            loadingIndicator.stopRotating();
-            profilePageContainer.setCenter(gridView.getGridView());
-            callToAction.setDisable(false);
-        });
+        new Thread(loadingProfileAuctions).start();
     }
 
     private void clearUserData() {

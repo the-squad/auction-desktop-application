@@ -73,11 +73,14 @@ public class Navigator {
                 FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
+<<<<<<< HEAD
                 if (userType == BUYER) {
                     InventoryTab.getInstance().loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
                 } else {
                     //InventoryTab.getInstance().loadCards();
                 }
+=======
+>>>>>>> refs/remotes/origin/staging
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
