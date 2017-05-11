@@ -27,7 +27,6 @@ package app.layouts;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Region;
 
-import static app.Partials.CENTER;
 import static app.Partials.SCROLLING_SPEED;
 
 public class ScrollView {
