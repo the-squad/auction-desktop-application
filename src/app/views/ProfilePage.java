@@ -24,6 +24,7 @@
 
 package app.views;
 
+import app.Navigator;
 import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
@@ -44,6 +45,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import models.ImageUtils;
 import models.Seller;
+import static app.Partials.*;
 
 public class ProfilePage {
 
@@ -128,6 +130,11 @@ public class ProfilePage {
         callToAction = new Button("Follow");
         callToAction.getStyleClass().addAll("btn-primary", "btn-profile");
 
+        callToAction.setOnAction(e -> {
+            if (userType == BUYER)
+                Navigator.switchTab(ACCOUNT_SETTINGS);
+        });
+
         //About user container
         aboutUserContainer = new GridPane();
         aboutUserContainer.getStyleClass().add("about");
@@ -203,6 +210,28 @@ public class ProfilePage {
         loadingIndicator.startRotating();
         profilePageContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
+        if (seller.checkFollow(currentBuyer.getId()) && userType == BUYER)
+            callToAction.setText("Following");
+        else if (userType == SELLER)
+            callToAction.setText("Edit Profile");
+        else
+            callToAction.setText("Follow");
+
+        callToAction.setDisable(true);
+
+        //Call to action
+        callToAction.setOnAction(e -> {
+            if (callToAction.getText().equals("Follow")) {
+                currentBuyer.followSeller(seller.getId());
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                callToAction.setText("Following");
+            } else {
+                currentBuyer.unFollowSeller(seller.getId());
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                callToAction.setText("Follow");
+            }
+        });
+
         //Loading profile info
         Task<String> loadingProfileData = new Task<String>() {
             @Override
@@ -239,6 +268,7 @@ public class ProfilePage {
         loadingProfileAuctions.setOnSucceeded((WorkerStateEvent t) -> {
             loadingIndicator.stopRotating();
             profilePageContainer.setCenter(gridView.getGridView());
+            callToAction.setDisable(false);
         });
     }
 
