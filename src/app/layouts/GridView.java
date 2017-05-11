@@ -43,11 +43,18 @@ public class GridView {
     private Label extraSpace;
     private EmptyState emptyState;
 
+    private ArrayList<AuctionCard> auctionCards;
+    private ArrayList<ItemCard> itemCards;
+
     public GridView() {
         this.render();
     }
 
     private void render() {
+        //Creating empty array lists
+        auctionCards = new ArrayList<>();
+        itemCards = new ArrayList<>();
+
         //Cards container
         cardsContainer = new GridPane();
         cardsContainer.setVgap(20);
@@ -65,12 +72,11 @@ public class GridView {
 
     public void loadAuctionCards(ArrayList<Auction> auctions, String emptyStateMessage) {
         cardsContainer.getChildren().clear();
+        auctionCards.clear();
 
         if (auctions == null || auctions.size() == 0) {
             this.viewEmptyState(emptyStateMessage);
         } else {
-            ArrayList<AuctionCard> auctionCards = new ArrayList<>(auctions.size());
-
             for (Auction auction : auctions)
                 auctionCards.add(new AuctionCard(userType, auction));
 
@@ -86,17 +92,16 @@ public class GridView {
 
     public void loadItemCards(ArrayList<Item> items, String emptyStateMessage) {
         cardsContainer.getChildren().clear();
+        itemCards.clear();
 
         if (items == null || items.size() == 0) {
             this.viewEmptyState(emptyStateMessage);
         } else {
-            ArrayList<ItemCard> auctionCards = new ArrayList<>(items.size());
-
             for (Item item : items)
-                auctionCards.add(new ItemCard(item));
+                itemCards.add(new ItemCard(item));
 
             int counter = 0;
-            for (ItemCard itemCard : auctionCards) {
+            for (ItemCard itemCard : itemCards) {
                 GridPane.setConstraints(itemCard.getCard(), counter % 4, counter / 4);
                 cardsContainer.getChildren().add(itemCard.getCard());
                 counter++;
