@@ -40,6 +40,8 @@ import java.awt.image.BufferedImage;
 
 import static app.Partials.*;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import models.Buyer;
 
 public class AuctionCard extends Card {
@@ -80,10 +82,10 @@ public class AuctionCard extends Card {
             subscribeButton = new Button();
             subscribeButton.getStyleClass().add("subscribe-btn");
             userSubscribed = false;
-            ArrayList<Buyer> arr = auction.getFollowers();
-            if (arr != null) {
-                for (Buyer buyer : arr) {
-                    if (buyer.getId() == currentBuyer.getId()) {
+
+            if (auction.getFollowers() != null) {
+                for (Buyer buyer : auction.getFollowers()) {
+                    if (Objects.equals(buyer.getId(), currentBuyer.getId())) {
                         userSubscribed = true;
                         subscribeButton.getStyleClass().add("subscribe-btn--active");
                     }
