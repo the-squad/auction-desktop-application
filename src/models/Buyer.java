@@ -90,6 +90,7 @@ public class Buyer extends User implements IAuctionInterface {
                     if (!auctionIDs.contains(resultSet.getInt("ID"))) {
                         auctionIDs.add(resultSet.getInt("ID"));
                         Auction auctionObject = new Auction();
+                        auctionObject.setId(resultSet.getInt("ID"));
                         auctionObject.setUserID(resultSet.getInt("UserID"));
                         auctionObject.setItemID(resultSet.getInt("ItemID"));
                         auctionObject.setItemQuantity(resultSet.getInt("ItemQuantity"));
