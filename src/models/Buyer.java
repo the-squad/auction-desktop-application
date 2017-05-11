@@ -43,9 +43,8 @@ public class Buyer extends User implements IAuctionInterface {
         new AuctionReport(this.getId(), auctionId, complaint).create();
     }
 
-    public ArrayList<Item> getItems() {
-        return null;
-        // TODO
+    public ArrayList<Item> getItems(IReadOnlyInventory inventory) {
+        return inventory.getItems();
     }
 
     public boolean makeBid(Auction auction, double money) {
