@@ -96,7 +96,7 @@ public class Item extends Model<Item>{
         return _description;
     }
     
-    public void delteItem(int itemID)
+    public void deleteItem(int itemID)
     {
         Model.delete(Item.class, itemID);
     }
