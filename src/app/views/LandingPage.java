@@ -321,8 +321,9 @@ public class LandingPage extends GridPane {
         loadingIndicator = new LoadingIndicator();
 
         //Resting form
-        resetForms = new Timeline(new KeyFrame(Duration.millis(5000), a -> {
+        resetForms = new Timeline(new KeyFrame(Duration.millis(1000), a -> {
             switchForm(LOGIN, true);
+            loadingIndicator.stopRotating();
             formParentContainer.setCenter(logInform);
 
             sellerTypeContainer.getStyleClass().remove("select-container--active");
@@ -494,6 +495,7 @@ public class LandingPage extends GridPane {
         }
 
         formParentContainer.setCenter(loadingIndicator.getLoadingIndicator());
+        loadingIndicator.startRotating();
 
         //Loading the home page
         Task<String> initializingHomePage = new Task<String>() {

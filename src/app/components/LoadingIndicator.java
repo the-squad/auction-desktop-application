@@ -74,17 +74,21 @@ public class LoadingIndicator {
 
         loadingMessage.translateXProperty().bind(loadingIndicatorContainer.widthProperty().subtract(loadingMessage.widthProperty()).divide(2));
         loadingIndicator.translateXProperty().bind(loadingIndicatorContainer.widthProperty().subtract(loadingIndicator.fitWidthProperty()).divide(2));
-        this.rotateIndicator();
-    }
 
-    private void rotateIndicator() {
+        //Rotate animation
         rotatingAnimation = new RotateTransition(Duration.millis(600), loadingIndicator);
 
         rotatingAnimation.setByAngle(360);
         rotatingAnimation.setCycleCount(100);
         rotatingAnimation.setInterpolator(Interpolator.LINEAR);
+    }
 
+    public void startRotating() {
         rotatingAnimation.play();
+    }
+
+    public void stopRotating() {
+        rotatingAnimation.stop();
     }
 
     public GridPane getLoadingIndicator() {
