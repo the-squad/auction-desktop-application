@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Auction extends Model<Auction> {
 
@@ -42,7 +43,6 @@ public class Auction extends Model<Auction> {
     private ArrayList<Bid> bids;
     private Item item;
     private Seller seller;
-
     protected Auction() {}
 
     public Auction(int userID, int itemID, int itemQuantity, Date terminationDate, double initialPrice, double bidRate) {
@@ -150,6 +150,14 @@ public class Auction extends Model<Auction> {
     public Item getItemAuction() {
         this.item=Model.find(Item.class, this._itemID);
         return this.item;
+    }
+    
+    public  ArrayList<Buyer> getFollowers()
+    {
+        List<SubscribeAuction> subscribtions = Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
+        String keys = "`ID` in (";
+        keys = subscribtions.stream().map((follower) -> "?,").reduce(keys, String::concat);
+        return new ArrayList<>(Model.find(Buyer.class, keys.replaceFirst(",$", ")"), subscribtions.stream().map(i -> (Object) i.getSubscriberID()).toArray()));
     }
 
     public Seller getSeller() {
