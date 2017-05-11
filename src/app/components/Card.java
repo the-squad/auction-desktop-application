@@ -25,19 +25,26 @@
 package app.components;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import models.ImageUtils;
+
+import java.awt.image.BufferedImage;
 
 public class Card {
 
     BorderPane cardContainer;
+    private BufferedImage photoBytes;
     protected Image photo;
     protected Rectangle photoViewer;
 
     GridPane cardDetails;
 
-    Card() {
+    Card(BufferedImage photoBytes) {
+        this.photoBytes = photoBytes;
         this.render();
     }
 
@@ -49,9 +56,17 @@ public class Card {
         photoViewer.setWidth(250);
         photoViewer.setHeight(175);
 
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(photoBytes, 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
+
         //Card container
         cardContainer = new BorderPane();
         cardContainer.getStyleClass().addAll("card", "small-card");
         cardContainer.setTop(photoViewer);
+    }
+
+    public BorderPane getCard() {
+        return cardContainer;
     }
 }
