@@ -25,14 +25,9 @@
 package app.components;
 
 import javafx.scene.image.Image;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import models.ImageUtils;
-
-import java.awt.image.BufferedImage;
 
 public class Card {
 
@@ -57,10 +52,7 @@ public class Card {
         //Card container
         cardContainer = new BorderPane();
         cardContainer.getStyleClass().addAll("card", "small-card");
+        cardContainer.setStyle("-fx-background-color: white");
         cardContainer.setTop(photoViewer);
-    }
-
-    public BorderPane getCard() {
-        return cardContainer;
     }
 }

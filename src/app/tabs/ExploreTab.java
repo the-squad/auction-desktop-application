@@ -24,13 +24,11 @@
 
 package app.tabs;
 
-import app.components.EmptyState;
 import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.components.CategoriesPanel;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;

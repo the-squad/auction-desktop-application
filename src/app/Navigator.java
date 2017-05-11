@@ -33,8 +33,6 @@ import app.tabs.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import models.Category;
-import models.Inventory;
-import models.Model;
 
 import static app.Partials.*;
 
