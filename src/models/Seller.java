@@ -126,7 +126,7 @@ public class Seller extends User implements IAuctionInterface {
     }
 
     @Override
-    public ArrayList<Auction> getAuction() {
+    public ArrayList<Auction> getAuctions() {
         if (auctions == null) {
             auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
         }
