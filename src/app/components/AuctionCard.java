@@ -164,4 +164,8 @@ public class AuctionCard extends Card {
         //Auction card container
         cardContainer.setBottom(cardDetails);
     }
+
+    public BorderPane getCard() {
+        return cardContainer;
+    }
 }

@@ -59,8 +59,4 @@ public class Card {
         cardContainer.getStyleClass().addAll("card", "small-card");
         cardContainer.setTop(photoViewer);
     }
-
-    public BorderPane getCard() {
-        return cardContainer;
-    }
 }

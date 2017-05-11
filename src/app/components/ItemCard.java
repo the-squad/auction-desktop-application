@@ -99,4 +99,8 @@ public class ItemCard extends Card {
         cardDetails.getChildren().addAll(itemName, itemDescription, itemCategory, itemQuantityContainer);
         cardContainer.setBottom(cardDetails);
     }
+
+    public BorderPane getCard() {
+        return cardContainer;
+    }
 }
