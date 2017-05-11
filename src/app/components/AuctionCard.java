@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package app.components;
 
 import app.Navigator;
@@ -64,7 +63,6 @@ public class AuctionCard extends Card {
 
     private void render() {
         //Item photo
-
         photo = ImageUtils.cropAndConvertImage(auction.getItemAuction().getIamgesItem().get(0).getImage(), 250, 175);
         photoViewer.setFill(new ImagePattern(photo));
 
