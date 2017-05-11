@@ -58,7 +58,7 @@ public class Validation {
     }
 
     public static Boolean validateTime(String time) {
-        String ePattern ="(0[1-9]|1[012]):(0[1-9]|[12345][0-9]|00)(am|pm)"; //hh:mm(am|pm)
+        String ePattern ="(0[0-9]|1[01]):(0[1-9]|[12345][0-9]|00) (am|pm)"; //hh:mm (am|pm) 00:00 -->11:59 am/pm
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(time);
         return m.matches();
@@ -81,5 +81,21 @@ public class Validation {
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(phone);
         return m.matches();
+    }
+    
+    public static String convertTimeTo24Hour(String time)
+    {
+        if (time.contains("pm")) {
+            time=time.replace(" pm", "");
+            int hour = Integer.parseInt(time.charAt(0)+""+time.charAt(1))+12;
+            time=time.replace(time.charAt(0)+""+time.charAt(1), hour+"");
+            return time;
+            
+        }else if (time.contains("am")) {
+            time=time.replace(" am", "");
+            return time;
+        }
+        
+        return null;
     }
 }
