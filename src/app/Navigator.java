@@ -74,7 +74,7 @@ public class Navigator {
                 return FeedTab.getInstance().getFeedTab();
             case 9:
                 if (userType == BUYER) {
-                    //InventoryTab.getInstance().loadCards(currentBuyer.getItems(Model.find(Inventory.class, "SellerID=?", currentBuyer.getId()).get(0)));
+                    InventoryTab.getInstance().loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
                 } else {
                     //InventoryTab.getInstance().loadCards();
                 }
