@@ -37,7 +37,7 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 
 public class ImageUtils {
-    
+
     public static BufferedImage fxImageToBufferedImage(javafx.scene.image.Image image) {
         return SwingFXUtils.fromFXImage(image, null);
     }
@@ -49,7 +49,7 @@ public class ImageUtils {
     public static byte[] bufferedImageToByteArray(BufferedImage BImage) {
         try {
             ByteArrayOutputStream bs = new ByteArrayOutputStream();
-            ImageIO.write(BImage, "PNG", bs);
+            ImageIO.write(BImage, "jpg", bs);
             return bs.toByteArray();
         } catch (IOException ex) {
             Logger.getGlobal().log(Level.SEVERE, ex.getMessage(), ex);
@@ -77,7 +77,7 @@ public class ImageUtils {
             newWidth = Image.getWidth();
             newHeight = newWidth * height / width;
         }
-        BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_3BYTE_BGR);
         int x = Image.getWidth() - newWidth;
         x = x > 0 ? x / 2 : 0;
         int y = Image.getHeight() - newHeight;
