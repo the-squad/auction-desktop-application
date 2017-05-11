@@ -24,6 +24,7 @@
 
 package models;
 
+import app.Validation;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,12 +46,11 @@ public class Seller extends User implements IAuctionInterface {
         if (item.getQuantity() < ItemQuantity) {
             return null;
         }
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            Date startDate = df.parse(StartDate + " " + StartTime);
-            Date terminationDate = df.parse(TerminationDate + " " + TerminationTime);
+            Date startDate = df.parse(StartDate + " " + Validation.convertTimeTo24Hour(StartTime));
+            Date terminationDate = df.parse(TerminationDate + " " + Validation.convertTimeTo24Hour(TerminationTime));
             if (startDate.compareTo(terminationDate) >= 0) {
-                System.out.println("fuck");
                 return null;
             }
             item.setQuantity(item.getQuantity() - ItemQuantity).save();
