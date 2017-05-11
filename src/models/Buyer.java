@@ -35,11 +35,11 @@ import java.util.List;
 public class Buyer extends User implements IAuctionInterface {
 
     public void reportSeller(int sellerId, String complaint) {
-        // TODO
+        new SellerReport(this.getId(), sellerId, complaint).create();
     }
 
     public void reportAuction(int auctionId, String complaint) {
-        // TODO
+        new AuctionReport(this.getId(), auctionId, complaint).create();
     }
 
     public ArrayList<Item> getItems() {
