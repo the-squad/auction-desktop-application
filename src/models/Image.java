@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class Image extends Model<Image>{
+public class Image extends Model<Image> {
 
     private int _id;
     private int _itemID;
@@ -40,9 +40,8 @@ public class Image extends Model<Image>{
     protected Image() {
     }
 
-    public Image(int itemID, byte[] image) {
+    public Image(int itemID) {
         this._itemID = itemID;
-        this._image = image;
     }
 
     public int getId() {
@@ -69,5 +68,11 @@ public class Image extends Model<Image>{
 
     public void setImage(byte[] image) {
         this._image = image;
-    }    
+    }
+
+    public void setImage(BufferedImage photo) {
+        photo = ImageUtils.cropImage(photo, 750, 500);
+        photo = ImageUtils.scale(photo, 750, 500, 750f / photo.getWidth(), 500f / photo.getHeight());
+        this._image = ImageUtils.bufferedImageToByteArray(photo);
+    }
 }
