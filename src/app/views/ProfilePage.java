@@ -24,8 +24,12 @@
 
 package app.views;
 
+import app.Navigator;
+import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,10 +37,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import models.ImageUtils;
+import models.Seller;
 import static app.Partials.*;
 
 public class ProfilePage {
@@ -48,7 +56,8 @@ public class ProfilePage {
 
     private BorderPane coverContainer;
     private GridPane coverGrid;
-    private ImageView userPhoto;
+    private Image photo;
+    private Rectangle photoViewer;
     private BorderPane photoBorder;
 
     private Label userName;
@@ -66,6 +75,7 @@ public class ProfilePage {
     private Button callToAction;
 
     private GridView gridView;
+    private LoadingIndicator loadingIndicator;
 
     private ProfilePage() {
         this.render();
@@ -73,13 +83,12 @@ public class ProfilePage {
 
     private void render() {
         //User photo
-        userPhoto = new ImageView(new Image(getClass().getResourceAsStream("/assets/picture.jpg")));
-        userPhoto.setFitHeight(150);
-        userPhoto.setFitWidth(150);
-        userPhoto.toFront();
+        photoViewer = new Rectangle();
+        photoViewer.setWidth(150);
+        photoViewer.setHeight(150);
 
         photoBorder = new BorderPane();
-        photoBorder.setCenter(userPhoto);
+        photoBorder.setCenter(photoViewer);
         photoBorder.setPadding(new Insets(4));
         photoBorder.setMaxHeight(154);
         photoBorder.setMaxWidth(154);
@@ -87,7 +96,7 @@ public class ProfilePage {
         photoBorder.setTranslateY(60);
 
         //User name
-        userName = new Label("Muhammad Tarek");
+        userName = new Label();
         userName.getStyleClass().add("profile-name");
         userName.setTranslateY(45);
 
@@ -120,6 +129,11 @@ public class ProfilePage {
         //Call to action button
         callToAction = new Button("Follow");
         callToAction.getStyleClass().addAll("btn-primary", "btn-profile");
+
+        callToAction.setOnAction(e -> {
+            if (userType == BUYER)
+                Navigator.switchTab(ACCOUNT_SETTINGS);
+        });
 
         //About user container
         aboutUserContainer = new GridPane();
@@ -178,23 +192,91 @@ public class ProfilePage {
 
         //Grid view
         gridView = new GridView();
-        //gridView.loadAuctionCards(15);
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
 
         //Profile page container
         profilePageContainer = new BorderPane();
         profilePageContainer.setTop(coverContainer);
-        profilePageContainer.setCenter(gridView.getGridView());
 
         //Scroll pane
         profilePageScrollbar = new ScrollView(profilePageContainer);
     }
 
-    public void fillUserData() {
-        // TODO
+    public void fillUserData(Seller seller) {
+        this.clearUserData();
+        loadingIndicator.setLoadingMessage("Getting " + seller.getName() + "'s Auctions");
+        loadingIndicator.startRotating();
+        profilePageContainer.setCenter(loadingIndicator.getLoadingIndicator());
+
+        if (seller.checkFollow(currentBuyer.getId()) && userType == BUYER)
+            callToAction.setText("Following");
+        else if (userType == SELLER)
+            callToAction.setText("Edit Profile");
+        else
+            callToAction.setText("Follow");
+
+        callToAction.setDisable(true);
+
+        //Call to action
+        callToAction.setOnAction(e -> {
+            if (callToAction.getText().equals("Follow")) {
+                currentBuyer.followSeller(seller.getId());
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                callToAction.setText("Following");
+            } else {
+                currentBuyer.unFollowSeller(seller.getId());
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                callToAction.setText("Follow");
+            }
+        });
+
+        //Loading profile info
+        Task<String> loadingProfileData = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                photo = ImageUtils.cropAndConvertImage(seller.getPhoto(), 150, 150);
+                return null;
+            }
+        };
+
+        //Loading profile auctions
+        Task<String> loadingProfileAuctions = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadAuctionCards(seller.getAuctions(), "Getting Seller's Auctions");
+                return null;
+            }
+        };
+
+        Thread onLoadingInfo = new Thread(loadingProfileData);
+        onLoadingInfo.setDaemon(true);
+        onLoadingInfo.start();
+
+        Thread onLoadingCards = new Thread(loadingProfileAuctions);
+        onLoadingCards.setDaemon(true);
+        onLoadingCards.start();
+
+        loadingProfileData.setOnSucceeded((WorkerStateEvent t) -> {
+            photoViewer.setFill(new ImagePattern(photo));
+            userName.setText(seller.getName());
+            auctionsNumber.setText(String.valueOf(seller.getAuctions().size()));
+            followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+        });
+
+        loadingProfileAuctions.setOnSucceeded((WorkerStateEvent t) -> {
+            loadingIndicator.stopRotating();
+            profilePageContainer.setCenter(gridView.getGridView());
+            callToAction.setDisable(false);
+        });
     }
 
     private void clearUserData() {
-        // TODO
+        photoViewer.setFill(Color.rgb(245,248,250));
+        userName.setText("User Name");
+        auctionsNumber.setText("-");
+        followersNumber.setText("-");
     }
 
     public ScrollPane getProfilePage() {

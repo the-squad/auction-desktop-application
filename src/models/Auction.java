@@ -154,7 +154,11 @@ public class Auction extends Model<Auction> {
     
     public  ArrayList<Buyer> getFollowers()
     {
-        List<SubscribeAuction> subscribtions = Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
+        ArrayList<SubscribeAuction> subscribtions =(ArrayList<SubscribeAuction>) Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
+        if(subscribtions.size()==0)
+        {
+            return null;
+        }
         String keys = "`ID` in (";
         keys = subscribtions.stream().map((follower) -> "?,").reduce(keys, String::concat);
         return new ArrayList<>(Model.find(Buyer.class, keys.replaceFirst(",$", ")"), subscribtions.stream().map(i -> (Object) i.getSubscriberID()).toArray()));
@@ -170,6 +174,9 @@ public class Auction extends Model<Auction> {
         return getBids().get(0).getPrice();
     }
     
+    public Auction getAuction(int id){
+        return Model.find(Auction.class, id);
+    }
     
     public String startFinishTimeAuction(){
 

@@ -52,8 +52,8 @@ public class Buyer extends User implements IAuctionInterface {
         return auction.bidAuction(money, this.getId());
     }
 
-    public boolean followSeller(User seller) {
-        return new SubscribeSeller(this.getId(), seller.getId()).create();
+    public boolean followSeller(int sellerID) {
+        return new SubscribeSeller(this.getId(), sellerID).create();
     }
 
     public void unFollowSeller(int sellerID) {
@@ -186,7 +186,7 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     @Override
-    public ArrayList<Auction> getAuction() {
+    public ArrayList<Auction> getAuctions() {
         return null;
         // TODO
     }

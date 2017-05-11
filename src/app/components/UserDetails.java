@@ -48,6 +48,7 @@
 package app.components;
 
 import app.Navigator;
+import app.views.ProfilePage;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -55,6 +56,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import models.ImageUtils;
+import models.Seller;
 
 import java.awt.image.BufferedImage;
 
@@ -104,7 +106,10 @@ public class UserDetails {
             sellerDetailsContainer.setPadding(new Insets(4, 15, 4, 4 ));
         }
 
-        sellerDetailsContainer.setOnMouseClicked(me -> Navigator.viewPage(PROFILE_PAGE, username.getText()));
+        sellerDetailsContainer.setOnMouseClicked(me -> {
+            Navigator.viewPage(PROFILE_PAGE, username.getText());
+            ProfilePage.getInstance().fillUserData(Seller.getSellerData(userId));
+        });
 
         GridPane.setConstraints(photoViewer, 0, 0);
         GridPane.setMargin(photoViewer, new Insets(0, 14, 0, 0));
