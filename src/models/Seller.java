@@ -132,5 +132,9 @@ public class Seller extends User implements IAuctionInterface {
         }
         return auctions;
     }
-
+    
+    public boolean checkFollow(int userId)
+    {
+        return Model.find(SubscribeSeller.class , "SelleID = ? and SubscriberID = ?" ,this.getId() , userId).size() == 1;
+    }
 }
