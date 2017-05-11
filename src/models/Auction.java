@@ -176,17 +176,6 @@ public class Auction extends Model<Auction> {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Date today = new Date();
         
-        
-        /*String string1 = "2017/05/08 11:39:00";
-        this._startDate = dateFormat.parse(string1);
-        String string2 = "2017/05/06 14:40:00";
-        this._terminationDate = dateFormat.parse(string2);*/
-
-        
-        System.out.println(this._startDate);
-        System.out.println(this._terminationDate);
-        System.out.println(today);
-        
         if (this._startDate.compareTo(today) > 0) {
             long diff = this._startDate.getTime() - today.getTime();
             long Minutes = diff / (60 * 1000) % 60;
