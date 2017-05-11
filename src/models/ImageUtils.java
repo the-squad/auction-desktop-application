@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.awt.image.BufferedImage;
@@ -33,9 +32,12 @@ import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.io.File;
 
 public class ImageUtils {
-
+    
     public static BufferedImage fxImageToBufferedImage(javafx.scene.image.Image image) {
         return SwingFXUtils.fromFXImage(image, null);
     }
@@ -86,5 +88,16 @@ public class ImageUtils {
 
     public static Image cropAndConvertImage(BufferedImage Image, int width, int height) {
         return bufferedImageToFXImage(cropImage(Image, width, height), width, height);
+    }
+
+    public static BufferedImage scale(BufferedImage sbi, int dWidth, int dHeight, double fWidth, double fHeight) {
+        BufferedImage dbi = null;
+        if (sbi != null) {
+            dbi = new BufferedImage(dWidth, dHeight, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D g = dbi.createGraphics();
+            AffineTransform at = AffineTransform.getScaleInstance(fWidth, fHeight);
+            g.drawRenderedImage(sbi, at);
+        }
+        return dbi;
     }
 }

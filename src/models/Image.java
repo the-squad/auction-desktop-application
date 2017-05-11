@@ -40,9 +40,8 @@ public class Image extends Model<Image>{
     protected Image() {
     }
 
-    public Image(int itemID, byte[] image) {
+    public Image(int itemID) {
         this._itemID = itemID;
-        this._image = image;
     }
 
     public int getId() {
@@ -69,5 +68,11 @@ public class Image extends Model<Image>{
 
     public void setImage(byte[] image) {
         this._image = image;
-    }    
+    }
+    public void setImage(BufferedImage photo)
+    {
+        photo = ImageUtils.cropImage(photo,750, 500);
+        photo = ImageUtils.scale(photo, 750, 500, photo.getWidth()/750f, photo.getHeight()/500f);
+        this._image = ImageUtils.bufferedImageToByteArray(photo);
+    }
 }
