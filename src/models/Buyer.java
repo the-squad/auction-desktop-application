@@ -68,6 +68,11 @@ public class Buyer extends User implements IAuctionInterface {
         SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID, this.getId());
         SubscribeAuctionObject.create();
     }
+    
+    public void unSubscribeAuction(int auctionID) {
+        int id = Model.find(SubscribeAuction.class, "AuctionID = ? AND SubscriberID = ?", auctionID,this.getId()).get(0).getId();
+        Model.delete(SubscribeAuction.class, id);
+    }
 
     public ArrayList<Auction> getFeed() {
         List<Auction> auctions = new ArrayList<>();
