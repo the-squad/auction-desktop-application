@@ -21,27 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Inventory extends Model<Inventory>{
+public class Inventory extends Model<Inventory> {
 
     private int _id;
     private int _sellerID;
     ArrayList<Item> items;
 
     public Inventory() {
+        items = new ArrayList<>();
     }
 
     public Inventory(int sellerID) {
         this._sellerID = sellerID;
-        items=new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     public int getId() {
@@ -55,15 +51,25 @@ public class Inventory extends Model<Inventory>{
     public void setSellerID(int sellerID) {
         this._sellerID = sellerID;
     }
-    
-    public void deleteItem(int itemID)
-    {
-        Item item =items.stream().filter(a->a.getId()==itemID).findFirst().get();
+
+    public void deleteItem(int itemID) {
+        Item item = items.stream().filter(a -> a.getId() == itemID).findFirst().get();
         items.remove(item);
-        
-        item.delteItem(itemID);
-        
+
+        item.deleteItem(itemID);
+
     }
+
+    public Item createItem(String name, int quantity, Category category, String description) {
+        Item t = new Item()
+                .setCategoryID(category.getId())
+                .setDescription(description)
+                .setInventoryID(this._id)
+                .setName(name)
+                .setQuantity(quantity);
+        return t.create() ? t : null;
+    }
+
     public ArrayList<Item> getItems() {
         if (items == null) {
             items = new ArrayList(Model.find(Item.class, "InventoryID = ?", this.getId()));
