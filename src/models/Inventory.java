@@ -67,7 +67,12 @@ public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
                 .setInventoryID(this._id)
                 .setName(name)
                 .setQuantity(quantity);
-        return t.create() ? t : null;
+        if (t.create())
+        {
+            items.add(t);
+            return  t;
+        }
+        return null;
     }
 
     public ArrayList<Item> getItems() {

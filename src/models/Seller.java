@@ -56,6 +56,7 @@ public class Seller extends User implements IAuctionInterface {
             item.setQuantity(item.getQuantity() - ItemQuantity).save();
             Auction auction = new Auction(this.getId(), item.getId(), ItemQuantity, terminationDate, InitialPrice, BidRate).setStartDate(startDate);
             if (auction.create()) {
+                this.auctions.add(auction);
                 return auction;
             }
         } catch (ParseException e) {
@@ -76,10 +77,10 @@ public class Seller extends User implements IAuctionInterface {
         return false;
     }
 
-    public static void updateAuction(int auctionID , String StartDate, String StartTime,
+    public void updateAuction(int auctionID , String StartDate, String StartTime,
         String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
-
-        Auction auc = Model.find(Auction.class, auctionID);
+        
+        Auction auc = auctions.stream().filter(p -> p.getId() == auctionID).findFirst().get();
         
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
