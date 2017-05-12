@@ -25,6 +25,7 @@
 package app.components;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -54,7 +55,7 @@ public class ItemCard extends Card {
 
     private void render() {
         //Item photo
-        photo = ImageUtils.cropAndConvertImage(item.getIamgesItem().get(0).getImage(), 250, 175);
+        photo = ImageUtils.cropAndConvertImage(item.getItemPhotos().get(0).getImage(), 250, 175);
         photoViewer.setFill(new ImagePattern(photo));
 
         //Item name
@@ -65,7 +66,9 @@ public class ItemCard extends Card {
         itemDescription = new Label(item.getDescription());
         itemDescription.getStyleClass().add("item-description");
         itemDescription.setWrapText(true);
+        itemDescription.setAlignment(Pos.TOP_LEFT);
         itemDescription.setMaxWidth(250);
+        itemDescription.setMinHeight(45);
         itemDescription.setMaxHeight(45);
 
         //Item category
