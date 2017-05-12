@@ -137,17 +137,13 @@ public class Auction extends Model<Auction> {
     }
 
     public boolean bidAuction(double money, int userId) {
-        if (bids == null) {
-            bids = this.getBids();
+        if (this._terminationDate.compareTo(new Date()) <= 0) {
+            return false;
         }
-        if (money > this._bidRate && bids.get(0).getPrice() < money || bids.isEmpty()) {
-            Bid bid = new Bid(userId, this._id, money);
-            if (bid.create()) {
-                bids.add(bid);
-                return true;
-            } else {
-                return false;
-            }
+        Bid bid = new Bid(userId, this._id, money);
+        if (bid.create()) {
+            bids.add(0,bid);
+            return true;
         } else {
             return false;
         }
@@ -182,7 +178,7 @@ public class Auction extends Model<Auction> {
         return getBids().get(0).getPrice();
     }
 
-    public static Auction getAuction(int id){
+    public static Auction getAuction(int id) {
         return Model.find(Auction.class, id);
     }
 

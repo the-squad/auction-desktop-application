@@ -48,6 +48,7 @@ import static app.Partials.*;
 public class AuctionView {
 
     private static AuctionView instance;
+    private Auction auction;
 
     private ScrollView auctionViewContainer;
     private BorderPane auctionCardContainer;
@@ -58,7 +59,6 @@ public class AuctionView {
     private TextFlow priceBlock;
     private Text priceHeadline;
     private Text currentPrice;
-    private Label biddersNumber;
     private GridPane biddingBlock;
     private InputField bidField;
     private Button submitBid;
@@ -80,6 +80,7 @@ public class AuctionView {
         itemDescription = new Label();
         itemDescription.setWrapText(true);
         itemDescription.setMaxWidth(500);
+        itemDescription.setMinHeight(100);
 
         //Price headline
         priceHeadline = new Text();
@@ -91,15 +92,27 @@ public class AuctionView {
 
         priceBlock = new TextFlow(priceHeadline, currentPrice);
 
-        //Number of bidders
-        biddersNumber = new Label();
-        biddersNumber.getStyleClass().add("bidders-number");
-
         //Bidding field
         bidField = new InputField("Enter your bid", NUMBER, SHORT);
 
         submitBid = new Button("Bid");
+        submitBid.setDisable(true);
         submitBid.getStyleClass().add("btn-primary");
+        
+        submitBid.setOnAction(e -> {
+            if (Double.parseDouble(bidField.getValue()) < auction.getHighestPrice())
+                bidField.markAsDanger("Enter a higher number!");
+            else if ((Double.parseDouble(bidField.getValue()) + auction.getBidRate() ) < auction.getHighestPrice())
+                bidField.markAsDanger("Bidding rate is " + auction.getBidRate());
+            else {
+                if (currentBuyer.makeBid(this.auction, Double.parseDouble(bidField.getValue())))
+                    currentPrice.setText(String.valueOf(auction.getHighestPrice()));
+                else {
+                    bidField.markAsDanger("Auction is finished!");
+                    submitBid.setDisable(true);
+                }
+            }
+        });
 
         biddingBlock = new GridPane();
         biddingBlock.setHgap(10);
@@ -150,6 +163,9 @@ public class AuctionView {
     }
 
     public void fillAuctionData(Auction auction) {
+        this.clearAuctionData();
+        this.auction = auction;
+
         //Loading auction details
         Task<String> loadingAuctionData = new Task<String>() {
             String name;
@@ -176,10 +192,11 @@ public class AuctionView {
             protected void succeeded() {
                 super.succeeded();
                 itemName.setText(name);
-                itemDescription.setText(description);
+                itemDescription.setText((description.length() == 0)? "There is no description..." : description);
                 currentPrice.setText(price + "$");
                 userDetails.setUserDetails(sellerName, sellerImage, sellerId);
                 photosViewer.setPhotos(auctionImages);
+                submitBid.setDisable(false);
             }
         };
 
@@ -193,6 +210,8 @@ public class AuctionView {
         itemName.setText("Item");
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
+        submitBid.setDisable(true);
+        photosViewer.resetPhotoView();
     }
 
     public ScrollPane getAuctionView() {
