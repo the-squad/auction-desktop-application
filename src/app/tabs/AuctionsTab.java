@@ -87,7 +87,8 @@ public class AuctionsTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        if (auctionTabThread==null || !auctionTabThread.isAlive()){
+
+        if (auctionTabThread == null || !auctionTabThread.isAlive()) {
             auctionTabThread = new Thread(loadingCards);
             auctionTabThread.start();
         }

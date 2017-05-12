@@ -47,7 +47,7 @@ public class ExploreTab {
     private LoadingIndicator loadingIndicator;
 
     private String loadingMessage;
-    private static Thread exploreThread = null;
+    private static Thread exploreTabThread = null;
 
     private ExploreTab() {
         this.render();
@@ -97,9 +97,10 @@ public class ExploreTab {
                 exploreTabContainer.setCenter(gridView.getGridView());
             }
         };
-        if (exploreThread==null || !exploreThread.isAlive()){
-            exploreThread = new Thread(loadingCards);
-            exploreThread.start();
+
+        if (exploreTabThread == null || !exploreTabThread.isAlive()) {
+            exploreTabThread = new Thread(loadingCards);
+            exploreTabThread.start();
         }
     }
 

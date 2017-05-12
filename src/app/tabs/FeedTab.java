@@ -28,7 +28,6 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Auction;
@@ -45,7 +44,7 @@ public class FeedTab {
     private BorderPane centerPane;
     private GridView gridView;
     private LoadingIndicator loadingIndicator;
-    private static Thread feedThread = null;
+    private static Thread feedTabThread = null;
 
     private FeedTab() {
         this.render();
@@ -85,9 +84,10 @@ public class FeedTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        if (feedThread==null || !feedThread.isAlive()){
-            feedThread = new Thread(loadingCards);
-            feedThread.start();
+
+        if (feedTabThread == null || !feedTabThread.isAlive()) {
+            feedTabThread = new Thread(loadingCards);
+            feedTabThread.start();
         }
     }
 

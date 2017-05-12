@@ -28,15 +28,11 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Item;
 
 import java.util.ArrayList;
-
-import static app.Partials.*;
-import static app.Partials.currentBuyer;
 
 public class InventoryTab {
 
@@ -48,7 +44,7 @@ public class InventoryTab {
 
     private LoadingIndicator loadingIndicator;
     
-    private static Thread inventoryThread = null;
+    private static Thread inventoryTabThread = null;
 
     private InventoryTab() {
         this.render();
@@ -87,9 +83,10 @@ public class InventoryTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        if (inventoryThread==null || !inventoryThread.isAlive()){
-            inventoryThread = new Thread(loadingCards);
-            inventoryThread.start();
+
+        if (inventoryTabThread == null || !inventoryTabThread.isAlive()) {
+            inventoryTabThread = new Thread(loadingCards);
+            inventoryTabThread.start();
         }
     }
 
