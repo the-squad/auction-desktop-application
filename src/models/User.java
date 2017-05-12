@@ -140,6 +140,7 @@ public class User extends Model<User> {
         user.setName(name);
         user.setPassword(password);
         if (user.create()) {
+            new Inventory(user._id).create();
             return user;
         } else {
             return null;
