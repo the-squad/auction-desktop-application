@@ -70,6 +70,8 @@ public class Navigator {
             case 9:
                 if (userType == BUYER)
                     InventoryTab.getInstance().loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
+                else
+                    InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
