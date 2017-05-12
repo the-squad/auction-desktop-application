@@ -28,33 +28,36 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class DropdownField extends Input {
 
     private int inputSize = NORMAL;
 
-    private String []items;
+    private ArrayList<String> items;
     private ComboBox input;
 
-    public DropdownField(String inputName, String ...items) {
+    public DropdownField(String inputName, ArrayList<String> items) {
         super(inputName);
-        this.items = items.clone();
+        this.items = items;
 
         this.render();
     }
 
-    public DropdownField(String inputName, int inputSize, String ...items) {
+    public DropdownField(String inputName, int inputSize, ArrayList<String> items) {
         super(inputName);
-        this.items = items.clone();
+        this.items = items;
         this.inputSize = inputSize;
 
         this.render();
     }
 
-    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage,String ...items) {
+    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage, ArrayList<String> items) {
         super(inputName, hideErrorMessage);
-        this.items = items.clone();
+        this.items = items;
         this.inputSize = inputSize;
 
         this.render();
