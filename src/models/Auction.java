@@ -43,7 +43,9 @@ public class Auction extends Model<Auction> {
     private ArrayList<Bid> bids;
     private Item item;
     private Seller seller;
-    protected Auction() {}
+
+    protected Auction() {
+    }
 
     public Auction(int userID, int itemID, int itemQuantity, Date terminationDate, double initialPrice, double bidRate) {
         this._userID = userID;
@@ -126,15 +128,14 @@ public class Auction extends Model<Auction> {
         this._bidRate = bidRate;
         return this;
     }
-    
+
     public ArrayList<Bid> getBids() {
-        if(bids == null)
-        {
+        if (bids == null) {
             bids = new ArrayList(Model.find(Bid.class, "AuctionID = ? ORDER BY Price DESC", this._id));
         }
         return bids;
     }
-    
+
     public boolean bidAuction(double money, int userId) {
         if (bids == null) {
             bids = this.getBids();
@@ -144,24 +145,22 @@ public class Auction extends Model<Auction> {
             if (bid.create()) {
                 bids.add(bid);
                 return true;
-            }
-            else
+            } else {
                 return false;
+            }
         } else {
             return false;
         }
     }
-    
+
     public Item getItemAuction() {
-        this.item=Model.find(Item.class, this._itemID);
+        this.item = Model.find(Item.class, this._itemID);
         return this.item;
     }
-    
-    public  ArrayList<Buyer> getFollowers()
-    {
-        ArrayList<SubscribeAuction> subscribtions =(ArrayList<SubscribeAuction>) Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
-        if(subscribtions.size()==0)
-        {
+
+    public ArrayList<Buyer> getFollowers() {
+        ArrayList<SubscribeAuction> subscribtions = (ArrayList<SubscribeAuction>) Model.find(SubscribeAuction.class, "AuctionID = ?", this._id);
+        if (subscribtions.size() == 0) {
             return null;
         }
         String keys = "`ID` in (";
@@ -170,26 +169,28 @@ public class Auction extends Model<Auction> {
     }
 
     public Seller getSeller() {
-        if (seller == null)
+        if (seller == null) {
             seller = Model.find(Seller.class, this._userID);
+        }
         return seller;
     }
-    
+
     public double getHighestPrice() {
-        if (getBids().size() == 0)
+        if (getBids().size() == 0) {
             return this.getInitialPrice();
+        }
         return getBids().get(0).getPrice();
     }
-    
-    public Auction getAuction(int id){
+
+    public static Auction getAuction(int id) {
         return Model.find(Auction.class, id);
     }
-    
-    public String startFinishTimeAuction(){
+
+    public String startFinishTimeAuction() {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Date today = new Date();
-        
+
         if (this._startDate.compareTo(today) > 0) {
             long diff = this._startDate.getTime() - today.getTime();
             long Minutes = diff / (60 * 1000) % 60;
@@ -213,6 +214,16 @@ public class Auction extends Model<Auction> {
         }
 
     }
-    
-    
+
+    public static Boolean checkAuctionStatus(int id) {
+        Date today = new Date();
+        if (getAuction(id) == null) {
+            return false;
+        } else if ((getAuction(id)._startDate).compareTo(today) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
