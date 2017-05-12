@@ -84,8 +84,8 @@ public class Seller extends User implements IAuctionInterface {
         return inventory.createItem(name, quantity, Model.find(Category.class, "Name=?", category).get(0), description);
     }
 
-    public void deleteItemFromInventory() {
-        // TODO
+    public void deleteItemFromInventory(Inventory inventory , int itemID) {
+        inventory.deleteItem(itemID);
     }
 
     public void updateItemInInventory() {
