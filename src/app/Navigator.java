@@ -129,19 +129,15 @@ public class Navigator {
     }
 
     public static void refreshView() {
-        HomePage homePage = HomePage.getInstance();
-        homePage.destory();
+        HomePage.getInstance().destory();
+        InventoryTab.getInstance().destroy();
+        Header.getInstance().destroy();
 
-        AuctionsTab auctionsTab = AuctionsTab.getInstance();
-        auctionsTab.destroy();
-
-        ExploreTab exploreTab = ExploreTab.getInstance();
-        exploreTab.destroy();
-
-        FeedTab feedTab = FeedTab.getInstance();
-        feedTab.destroy();
-
-        InventoryTab inventoryTab = InventoryTab.getInstance();
-        inventoryTab.destroy();
+        if (userType == BUYER) {
+            ExploreTab.getInstance().destroy();
+            FeedTab.getInstance().destroy();
+        } else {
+            AuctionsTab.getInstance().destroy();
+        }
     }
 }

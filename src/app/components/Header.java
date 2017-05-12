@@ -303,6 +303,10 @@ public class Header extends BorderPane {
         navigationTabsContainer.setBottom(activeTabIndicator);
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public static Header getInstance() {
         if (instance == null) {
             instance = new Header();
