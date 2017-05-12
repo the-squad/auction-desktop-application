@@ -140,6 +140,10 @@ public class Auction extends Model<Auction> {
         if (bids == null) {
             bids = this.getBids();
         }
+        if(this._terminationDate.compareTo(new Date()) <= 0)
+        {
+            return false;
+        }
         if (money > this._bidRate && bids.get(0).getPrice() < money || bids.isEmpty()) {
             Bid bid = new Bid(userId, this._id, money);
             if (bid.create()) {
