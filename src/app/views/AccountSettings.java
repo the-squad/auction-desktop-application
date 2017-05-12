@@ -221,7 +221,7 @@ public class AccountSettings {
 
         //File choose
         fileChooser = new FileChooser();
-        fileChooser.setTitle("Upload Your Photo!");
+        fileChooser.setTitle("Upload new photo!");
 
         FileChooser.ExtensionFilter fileExtensions =
                 new FileChooser.ExtensionFilter(

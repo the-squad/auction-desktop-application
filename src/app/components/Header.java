@@ -283,10 +283,6 @@ public class Header extends BorderPane {
         Navigator.switchTab(tabId);
     }
 
-    public void setUserPhoto() {
-        //TODO change the photo placeholder
-    }
-
     public void setPageTitle(String title) {
         pageTitle.setText(title);
     }

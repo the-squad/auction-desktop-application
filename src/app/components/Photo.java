@@ -41,7 +41,7 @@ public class Photo {
 
     public void render() {
         photo = new Rectangle();
-        photo.setFill(Color.BEIGE); // TODO
+        photo.setFill(Color.rgb(245,248,250));
         photo.setArcWidth(4);
         photo.setArcHeight(4);
         photo.setHeight(size);

@@ -51,7 +51,7 @@ public class Filter {
 
         //Filter fields
         priceField = new InputField("Maximum price", TEXT, SHORT, HIDE_ERROR_MESSAGE);
-        auctionStatusField = new DropdownField("Auction Status", SHORT, HIDE_ERROR_MESSAGE, "All", "Active", "Not started");
+        //auctionStatusField = new DropdownField("Auction Status", SHORT, HIDE_ERROR_MESSAGE, "All", "Active", "Not started");
         auctionStatusField.setDefaultSelect();
         numberOfBidsField = new InputField("Number of bidders", NUMBER, SHORT, HIDE_ERROR_MESSAGE);
 

@@ -34,9 +34,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import models.Image;
 import models.ImageUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,8 +58,11 @@ public class PhotosViewer {
     private GridPane photosContainer;
     private HashMap<Photo, javafx.scene.image.Image> photosMap = new HashMap<>();
     private ArrayList<Photo> photoViewers = new ArrayList<>();
+    private ArrayList<BufferedImage> uploadedImages = new ArrayList<>();
     private Button addPhoto;
     private Label errorMessage;
+    private FileChooser fileChooser;
+    private File choosenFile;
 
     private static Thread photosLoadingThread = null;
 
@@ -79,7 +87,13 @@ public class PhotosViewer {
             addPhoto.setMinHeight(SIZE);
             addPhoto.setMaxHeight(SIZE);
 
-            addPhoto.setOnAction(e -> this.addPhoto());
+            addPhoto.setOnAction(e -> {
+                try {
+                    this.addPhoto();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            });
 
             errorMessage = new Label("Please upload at least 1 photo");
             errorMessage.getStyleClass().add("error-message");
@@ -109,6 +123,18 @@ public class PhotosViewer {
         photosViewerContainer.setStyle("-fx-max-height: 250px");
         photosViewerContainer.setCenter(currentPhotoViewer);
         photosViewerContainer.setBottom(photosScroll.getScrollView());
+
+        //File  choose
+        if (viewMode == EDIT_MODE) {
+            fileChooser = new FileChooser();
+            fileChooser.setTitle("Upload new photo!");
+
+            FileChooser.ExtensionFilter fileExtensions =
+                    new FileChooser.ExtensionFilter(
+                            "Photos", "*.png", "*.jpg", "*.jpeg", "*.gif");
+
+            fileChooser.getExtensionFilters().add(fileExtensions);
+        }
     }
 
     public void setPhotos(ArrayList<Image> images) {
@@ -154,19 +180,55 @@ public class PhotosViewer {
         }
     }
 
+    public ArrayList<BufferedImage> getUploadedImages() {
+        return uploadedImages;
+    }
+
     public void resetPhotoView() {
         currentPhotoViewer.setFill(Color.rgb(245,248,250));
         photoViewers.clear();
         photosContainer.getChildren().clear();
     }
 
-    private void addPhoto() {
+    private void addPhoto() throws IOException {
         photosContainer.getChildren().remove(errorMessage);
-        Photo newPhoto = new Photo(SIZE);
-        photoViewers.add(newPhoto);
-        GridPane.setConstraints(newPhoto.getPhotoView(), photoViewers.size(), 0);
-        GridPane.setConstraints(addPhoto, photoViewers.size() + 1, 0);
-        photosContainer.getChildren().add(newPhoto.getPhotoView());
+        choosenFile = fileChooser.showOpenDialog(null);
+
+        if (choosenFile != null) {
+            BufferedImage currentImage = ImageIO.read(choosenFile);
+            Photo newPhoto = new Photo(SIZE);
+
+            float ratio;
+            if (currentImage.getWidth() > 8000 || currentImage.getHeight() > 8000) {
+                ratio = 8;
+            } else if (currentImage.getWidth() > 4000 || currentImage.getHeight() > 4000) {
+                ratio = 3;
+            } else if (currentImage.getWidth() > 2000 || currentImage.getHeight() > 2000) {
+                ratio = 2;
+            } else {
+                ratio = 1;
+            }
+
+            currentImage = ImageUtils.scale(currentImage, (int)(currentImage.getWidth() / ratio),
+                    (int) (currentImage.getHeight() / ratio),
+                    1 / ratio,
+                    1 / ratio);
+
+            newPhoto.setPhoto(ImageUtils.cropAndConvertImage(currentImage, SIZE, SIZE));
+
+            photoViewers.add(newPhoto);
+            photosMap.put(newPhoto, ImageUtils.cropAndConvertImage(currentImage, 375, 250));
+            currentPhotoViewer.setFill(new ImagePattern(photosMap.get(newPhoto)));
+            uploadedImages.add(currentImage);
+
+            newPhoto.getPhotoView().setOnMouseClicked(e -> {
+                currentPhotoViewer.setFill(new ImagePattern(photosMap.get(newPhoto)));
+            });
+
+            GridPane.setConstraints(newPhoto.getPhotoView(), photoViewers.size(), 0);
+            GridPane.setConstraints(addPhoto, photoViewers.size() + 1, 0);
+            photosContainer.getChildren().add(newPhoto.getPhotoView());
+        }
     }
 
     public void markAsDanger() {

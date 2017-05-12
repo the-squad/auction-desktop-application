@@ -34,6 +34,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import models.Category;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import static app.Partials.*;
 
 public class ItemDetails {
@@ -41,7 +46,7 @@ public class ItemDetails {
     private static ItemDetails instance;
 
     private BorderPane itemDetailsContainer;
-    private GridPane parentConatiner;
+    private GridPane parentContainer;
     private GridPane itemDetailsForm;
     private InputField itemNameField;
     private ParagraphField itemDescription;
@@ -58,14 +63,16 @@ public class ItemDetails {
         //Form fields
         itemNameField = new InputField("Item Name", TEXT);
         itemDescription = new ParagraphField("Item Description");
-        itemCategoryField = new DropdownField("Item Category", "Tech", "Cars");
+        itemCategoryField = new DropdownField("Item Category", new ArrayList<String>(Category.getCategories().stream().map(Category::getName).collect(Collectors.toList())));
         itemQuantityField = new InputField("Item Quantity", NUMBER);
 
         createItem = new Button("Create Item");
         createItem.getStyleClass().add("btn-primary");
         createItem.setTranslateX(275);
 
-        createItem.setOnAction(e -> Navigator.hidePage());
+        createItem.setOnAction(e -> {
+            Navigator.hidePage();
+        });
 
         //Item photosViewer
         photosViewer = new PhotosViewer(EDIT_MODE);
@@ -85,23 +92,23 @@ public class ItemDetails {
                                              itemQuantityField.getInputField());
 
         //Parent container
-        parentConatiner = new GridPane();
-        parentConatiner.getStyleClass().add("card");
-        parentConatiner.setHgap(40);
-        parentConatiner.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
-        parentConatiner.setMaxWidth(CARD_WIDTH + 200);
-        parentConatiner.setAlignment(Pos.CENTER);
+        parentContainer = new GridPane();
+        parentContainer.getStyleClass().add("card");
+        parentContainer.setHgap(40);
+        parentContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
+        parentContainer.setMaxWidth(CARD_WIDTH + 200);
+        parentContainer.setAlignment(Pos.CENTER);
 
         GridPane.setConstraints(itemDetailsForm, 0, 0);
         GridPane.setConstraints(photosViewer.getPhotos(), 1, 0);
         GridPane.setConstraints(createItem, 0, 1);
 
-        parentConatiner.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), createItem);
+        parentContainer.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), createItem);
 
         //Item details container
         itemDetailsContainer = new BorderPane();
         itemDetailsContainer.setPadding(new Insets(20));
-        itemDetailsContainer.setCenter(parentConatiner);
+        itemDetailsContainer.setCenter(parentContainer);
     }
 
     public BorderPane getItemDetails() {

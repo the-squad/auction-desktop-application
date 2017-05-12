@@ -33,6 +33,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class AuctionDetails {
@@ -58,7 +60,7 @@ public class AuctionDetails {
 
     private void render() {
         //Form fields
-        auctionItemField = new DropdownField("Item", "Moto 360", "Nexus 7");
+        //auctionItemField = new DropdownField();
         itemQuantityField = new InputField("Quantity", NUMBER);
         startingPriceField = new InputField("Starting price", NUMBER);
         biddingRangeField = new InputField("Bidding Range", NUMBER);
