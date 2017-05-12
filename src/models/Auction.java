@@ -182,7 +182,7 @@ public class Auction extends Model<Auction> {
         return getBids().get(0).getPrice();
     }
 
-    public static Auction getAuction(int id) {
+    public Auction getAuction(int id) {
         return Model.find(Auction.class, id);
     }
 
@@ -215,7 +215,7 @@ public class Auction extends Model<Auction> {
 
     }
 
-    public static Boolean checkAuctionStatus(int id) {
+    public Boolean checkAuctionStatus(int id) {
         Date today = new Date();
         if (getAuction(id) == null) {
             return false;
