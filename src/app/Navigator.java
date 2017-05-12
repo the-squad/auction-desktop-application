@@ -62,20 +62,12 @@ public class Navigator {
             case 5:
                 return AuctionView.getInstance().getAuctionView();
             case 6:
-                ExploreTab.getInstance().loadCards(Category.getCategories().get(0));
                 return ExploreTab.getInstance().getExploreTab();
             case 7:
-                AuctionsTab.getInstance().loadCards(currentSeller.getAuctions());
                 return AuctionsTab.getInstance().getAuctionsTab();
             case 8:
-                FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
-                if (userType == BUYER) {
-                    InventoryTab.getInstance().loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
-                } else {
-                    //InventoryTab.getInstance().loadCards();
-                }
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();

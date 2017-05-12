@@ -35,7 +35,8 @@ import models.Item;
 
 import java.util.ArrayList;
 
-import static app.Partials.SCROLLING_SPEED;
+import static app.Partials.*;
+import static app.Partials.currentBuyer;
 
 public class InventoryTab {
 
@@ -63,6 +64,10 @@ public class InventoryTab {
         //Loading indicator
         loadingIndicator = new LoadingIndicator();
         loadingIndicator.setLoadingMessage("Getting Your Inventory Items");
+
+        //Loading cards on the first time
+        if (userType == BUYER)
+            this.loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
     }
 
     public void loadCards(ArrayList<Item> items) {

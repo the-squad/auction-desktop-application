@@ -36,6 +36,7 @@ import models.Auction;
 import java.util.ArrayList;
 
 import static app.Partials.SCROLLING_SPEED;
+import static app.Partials.currentSeller;
 
 public class AuctionsTab {
 
@@ -63,6 +64,9 @@ public class AuctionsTab {
         //Loading indicator
         loadingIndicator = new LoadingIndicator();
         loadingIndicator.setLoadingMessage("Getting Your Auctions");
+
+        //Loading cards on the first time
+        this.loadCards(currentSeller.getAuctions());
     }
 
     public void loadCards(ArrayList<Auction> auctions) {

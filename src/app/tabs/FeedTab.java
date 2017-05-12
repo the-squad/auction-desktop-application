@@ -63,6 +63,9 @@ public class FeedTab {
 
         //Scroll pane
         scrollView = new ScrollView(centerPane);
+
+        //Loading cards
+        this.loadCards(currentBuyer.getFeed());
     }
 
     public void loadCards(ArrayList<Auction> auctions) {
