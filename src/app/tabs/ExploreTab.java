@@ -34,9 +34,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Category;
 
-import static app.Partials.currentBuyer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static app.Partials.*;
 
 public class ExploreTab {
 
@@ -88,7 +86,7 @@ public class ExploreTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName());
+                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName(), userType);
                 return null;
             }
 

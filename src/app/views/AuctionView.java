@@ -25,16 +25,19 @@
 package app.views;
 
 import app.components.InputField;
+import app.components.PhotosViewer;
 import app.components.UserDetails;
 import app.layouts.ScrollView;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
+import models.Auction;
 import static app.Partials.*;
 
 public class AuctionView {
@@ -42,6 +45,8 @@ public class AuctionView {
     private static AuctionView instance;
 
     private ScrollView auctionViewContainer;
+    private BorderPane auctionCardContainer;
+    private GridPane parentContainer;
     private GridPane auctionDetailsContainer;
     private Label itemName;
     private Label itemDescription;
@@ -53,6 +58,7 @@ public class AuctionView {
     private InputField bidField;
     private Button submitBid;
     private UserDetails userDetails;
+    private PhotosViewer photosViewer;
 
     private AuctionView() {
         this.render();
@@ -83,13 +89,13 @@ public class AuctionView {
         biddersNumber.getStyleClass().add("bidders-number");
 
         //Bidding field
-        bidField = new InputField("Enter your bid", NUMBER);
+        bidField = new InputField("Enter your bid", NUMBER, SHORT);
 
-        submitBid = new Button();
+        submitBid = new Button("Bid");
         submitBid.getStyleClass().add("btn-primary");
 
         biddingBlock = new GridPane();
-        biddingBlock.setHgap(25);
+        biddingBlock.setHgap(10);
 
         GridPane.setConstraints(bidField.getInputField(), 0, 0);
         GridPane.setConstraints(submitBid, 1, 0);
@@ -97,12 +103,13 @@ public class AuctionView {
         biddingBlock.getChildren().addAll(bidField.getInputField(), submitBid);
 
         //Seller details
-        // TODO userDetails = new UserDetails(FIT_DATA);
+        userDetails = new UserDetails(FIT_DATA);
+
+        //Photo viewer
+        photosViewer = new PhotosViewer(VIEW_MODE);
 
         //Auction Details container
         auctionDetailsContainer = new GridPane();
-        auctionDetailsContainer.getStyleClass().add("card");
-        auctionDetailsContainer.setPadding(new Insets(35, 50, 35, 50));
         auctionDetailsContainer.setVgap(10);
 
         GridPane.setConstraints(itemName, 0 ,0);
@@ -117,12 +124,32 @@ public class AuctionView {
                                                      biddingBlock,
                                                      userDetails.getUserDetails());
 
+        //Parent container
+        parentContainer = new GridPane();
+        parentContainer.setAlignment(Pos.TOP_CENTER);
+        parentContainer.setMaxWidth(CARD_WIDTH + 250);
+        parentContainer.setHgap(70);
+        parentContainer.getStyleClass().add("card");
+        parentContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT, TOP_DOWN, RIGHT_LEFT));
+
+        GridPane.setConstraints(auctionDetailsContainer, 0, 0);
+        GridPane.setConstraints(photosViewer.getPhotos(), 1, 0);
+        parentContainer.getChildren().addAll(auctionDetailsContainer, photosViewer.getPhotos());
+
+        //Card container
+        auctionCardContainer = new BorderPane();
+        auctionCardContainer.setCenter(parentContainer);
+
         //Auction view scrollbar
-        auctionViewContainer = new ScrollView(auctionDetailsContainer);
+        auctionViewContainer = new ScrollView(auctionCardContainer);
+        auctionViewContainer.getScrollView().setPadding(new Insets(20));
     }
 
-    public void fillAuctionData() {
-        // TODO
+    public void fillAuctionData(Auction auction) {
+        itemName.setText(auction.getItemAuction().getName());
+        itemDescription.setText(auction.getItemAuction().getDescription());
+        currentPrice.setText(String.valueOf(auction.getHighestPrice()));
+        userDetails.setUserDetails(auction.getSeller().getName(), auction.getSeller().getPhoto(), auction.getUserID());
     }
 
     private void clearAuctionData() {

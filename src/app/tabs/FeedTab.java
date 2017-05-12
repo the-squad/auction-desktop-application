@@ -74,7 +74,7 @@ public class FeedTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(auctions, "There is no auctions from people you follow");
+                gridView.loadAuctionCards(auctions, "There is no auctions from people you follow", userType);
                 return null;
             }
 

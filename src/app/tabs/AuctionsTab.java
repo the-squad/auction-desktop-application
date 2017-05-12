@@ -37,6 +37,7 @@ import java.util.ArrayList;
 
 import static app.Partials.SCROLLING_SPEED;
 import static app.Partials.currentSeller;
+import static app.Partials.userType;
 
 public class AuctionsTab {
 
@@ -75,7 +76,7 @@ public class AuctionsTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions");
+                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions", userType);
                 return null;
             }
 
