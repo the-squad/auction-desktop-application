@@ -39,26 +39,16 @@ public class DropdownField extends Input {
 
     private ArrayList<String> items;
     private ComboBox input;
+    private int index;
+
+    public DropdownField(String inputName) {
+        super(inputName);
+        this.render();
+    }
 
     public DropdownField(String inputName, ArrayList<String> items) {
         super(inputName);
         this.items = items;
-
-        this.render();
-    }
-
-    public DropdownField(String inputName, int inputSize, ArrayList<String> items) {
-        super(inputName);
-        this.items = items;
-        this.inputSize = inputSize;
-
-        this.render();
-    }
-
-    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage, ArrayList<String> items) {
-        super(inputName, hideErrorMessage);
-        this.items = items;
-        this.inputSize = inputSize;
 
         this.render();
     }
@@ -87,9 +77,8 @@ public class DropdownField extends Input {
         });
 
         //Loading dropdown menu items
-        for (String item : items) {
-            input.getItems().add(item);
-        }
+        if (items != null)
+            this.addItems(items);
 
         //Checking if the user selecting an item or not
         this.input.focusedProperty().addListener(
@@ -123,6 +112,17 @@ public class DropdownField extends Input {
 
     public void setDefaultSelect() {
         input.getSelectionModel().selectFirst();
+    }
+
+    public void addItems(ArrayList<String> items) {
+        this.clearItems();
+        for (String item : items) {
+            input.getItems().add(item);
+        }
+    }
+
+    public int getSelectedItemIndex() {
+        return input.getSelectionModel().getSelectedIndex();
     }
 
     public void clearItems() {

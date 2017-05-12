@@ -25,6 +25,7 @@
 package app.views;
 
 import app.Navigator;
+import app.components.AuctionCard;
 import app.components.InputField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -146,6 +147,7 @@ public class AdditionPage {
                 Navigator.viewPage(ITEM_DETAILS, "Create new item");
             } else {
                 Navigator.viewPage(AUCTION_DETAILS, "Create new auction");
+                AuctionDetails.getInstance().fillSellerItems();
             }
         });
 
