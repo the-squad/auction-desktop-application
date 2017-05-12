@@ -31,6 +31,7 @@ import app.components.ParagraphField;
 import app.components.PhotosViewer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -71,7 +72,14 @@ public class ItemDetails {
         createItem.setTranslateX(275);
 
         createItem.setOnAction(e -> {
-            Navigator.hidePage();
+            if (photosViewer.getUploadedImages().size() == 0)
+                photosViewer.markAsDanger();
+            else {
+                for (Node inputField : itemDetailsForm.getChildren()) {
+                    if (inputField.getStyleClass().contains("input-field--danger"))
+                        return;
+                }
+            }
         });
 
         //Item photosViewer
