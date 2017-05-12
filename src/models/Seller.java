@@ -56,6 +56,7 @@ public class Seller extends User implements IAuctionInterface {
             item.setQuantity(item.getQuantity() - ItemQuantity).save();
             Auction auction = new Auction(this.getId(), item.getId(), ItemQuantity, terminationDate, InitialPrice, BidRate).setStartDate(startDate);
             if (auction.create()) {
+                this.auctions.add(auction);
                 return auction;
             }
         } catch (ParseException e) {

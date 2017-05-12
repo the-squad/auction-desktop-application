@@ -88,7 +88,7 @@ public class AuctionDetails {
                     return;
             }
 
-            if (Validation.validateAuctionTime(startingDateField.getValue(), startingTimeField.getValue(),
+            if (!Validation.validateAuctionTime(startingDateField.getValue(), startingTimeField.getValue(),
                     endingDateField.getValue(), endingTimeField.getValue())) {
                 endingDateField.markAsDanger("Ending date must be after starting date");
                 endingTimeField.markAsDanger("Ending time must be after starting time");
