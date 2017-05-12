@@ -24,6 +24,7 @@
 
 package models;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Item extends Model<Item>{
@@ -101,11 +102,12 @@ public class Item extends Model<Item>{
         Model.delete(Item.class, itemID);
     }
     
-    public ArrayList<Image> getIamgesItem()
-    {
+    public ArrayList<Image> getItemPhotos() {
         this.images = new ArrayList<>(Model.find(Image.class, "itemID = ?", this._id));
         return this.images;
     }
     
-
+    public void setItemPhotos(ArrayList<BufferedImage> photos) {
+        photos.forEach(photo -> new Image(this._id).setImage(photo).create());
+    }
 }

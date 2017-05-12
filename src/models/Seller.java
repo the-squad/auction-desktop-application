@@ -80,8 +80,8 @@ public class Seller extends User implements IAuctionInterface {
         // TODO
     }
 
-    public void addItemToInventory(Inventory inventory , String name, int quantity, Category category, String description) {
-        inventory.createItem(name, quantity, category, description);
+    public Item addItemToInventory(Inventory inventory , String name, int quantity, String category, String description) {
+        return inventory.createItem(name, quantity, Model.find(Category.class, "Name=?", category).get(0), description);
     }
 
     public void deleteItemFromInventory() {
@@ -116,7 +116,7 @@ public class Seller extends User implements IAuctionInterface {
                 auctionObject.setStartDate(resultSet.getDate("StartDate"));
                 auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
                 auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
-                auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                auctionObject.setBiddingRate(resultSet.getDouble("BidRate"));
                 auctions.add(auctionObject);
             }
         } catch (SQLException e) {

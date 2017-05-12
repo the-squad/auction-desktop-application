@@ -47,8 +47,8 @@ public class Buyer extends User implements IAuctionInterface {
         return inventory.getItems();
     }
 
-    public boolean makeBid(Auction auction, double money) {
-        return auction.bidAuction(money, this.getId());
+    public boolean bidOnAuction(Auction auction, double money) {
+        return auction.bidOnAuction(money, this.getId());
     }
 
     public boolean followSeller(int sellerID) {
@@ -64,12 +64,12 @@ public class Buyer extends User implements IAuctionInterface {
         }
     }
 
-    public void subscribeAuction(int auctionID) {
+    public void subscribeToAuction(int auctionID) {
         SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID, this.getId());
         SubscribeAuctionObject.create();
     }
 
-    public void unSubscribeAuction(int auctionID) {
+    public void unSubscribeFromAuction(int auctionID) {
         int id = Model.find(SubscribeAuction.class, "AuctionID = ? AND SubscriberID = ?", auctionID, this.getId()).get(0).getId();
         Model.delete(SubscribeAuction.class, id);
     }
@@ -97,7 +97,7 @@ public class Buyer extends User implements IAuctionInterface {
                         auctionObject.setStartDate(resultSet.getDate("StartDate"));
                         auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
                         auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
-                        auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                        auctionObject.setBiddingRate(resultSet.getDouble("BidRate"));
                         auctions.add(auctionObject);
                     }
                 }
@@ -176,7 +176,7 @@ public class Buyer extends User implements IAuctionInterface {
                     auctionObject.setStartDate(resultSet.getDate("StartDate"));
                     auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
                     auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
-                    auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                    auctionObject.setBiddingRate(resultSet.getDouble("BidRate"));
                     auctions.add(auctionObject);
                 }
             } catch (SQLException e) {
@@ -187,9 +187,9 @@ public class Buyer extends User implements IAuctionInterface {
         if (Name == null || Name.equals("")) {
             return auctions;
         } else if (price == -1 && status == -1 && numberOfBidders == -1 && Name != null) {
-            return (ArrayList<Auction>)Model.find(Auction.class).stream().filter(b -> b.getItemAuction().getName().contains(Name)).collect(Collectors.toList());
+            return (ArrayList<Auction>)Model.find(Auction.class).stream().filter(b -> b.getItem().getName().contains(Name)).collect(Collectors.toList());
         } else {
-            return new ArrayList<>(auctions.stream().filter(b -> b.getItemAuction().getName().contains(Name)).collect(Collectors.toList())); 
+            return new ArrayList<>(auctions.stream().filter(b -> b.getItem().getName().contains(Name)).collect(Collectors.toList()));
         }
 
     }

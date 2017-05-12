@@ -120,11 +120,11 @@ public class Auction extends Model<Auction> {
         return this;
     }
 
-    public double getBidRate() {
+    public double getBiddingRate() {
         return _bidRate;
     }
 
-    public Auction setBidRate(double bidRate) {
+    public Auction setBiddingRate(double bidRate) {
         this._bidRate = bidRate;
         return this;
     }
@@ -136,7 +136,7 @@ public class Auction extends Model<Auction> {
         return bids;
     }
 
-    public boolean bidAuction(double money, int userId) {
+    public boolean bidOnAuction(double money, int userId) {
         if (this._terminationDate.compareTo(new Date()) <= 0) {
             return false;
         }
@@ -149,7 +149,7 @@ public class Auction extends Model<Auction> {
         }
     }
 
-    public Item getItemAuction() {
+    public Item getItem() {
         this.item = Model.find(Item.class, this._itemID);
         return this.item;
     }
@@ -182,7 +182,7 @@ public class Auction extends Model<Auction> {
         return Model.find(Auction.class, id);
     }
 
-    public String startFinishTimeAuction() {
+    public String getAuctionStatus() {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Date today = new Date();

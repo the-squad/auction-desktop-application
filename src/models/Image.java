@@ -70,9 +70,10 @@ public class Image extends Model<Image> {
         this._image = image;
     }
 
-    public void setImage(BufferedImage photo) {
-        photo = ImageUtils.cropImage(photo, 750, 500);
-        photo = ImageUtils.scale(photo, 1125, 750, 1125f / photo.getWidth(), 750f / photo.getHeight());
+    public Image setImage(BufferedImage photo) {
+        /*photo = ImageUtils.cropImage(photo, 750, 500);
+        photo = ImageUtils.scale(photo, 1125, 750, 1125f / photo.getWidth(), 750f / photo.getHeight());*/
         this._image = ImageUtils.bufferedImageToByteArray(photo);
+        return this;
     }
 }
