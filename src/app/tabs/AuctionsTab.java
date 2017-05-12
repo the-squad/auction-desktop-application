@@ -47,6 +47,7 @@ public class AuctionsTab {
     private GridView gridView;
 
     private LoadingIndicator loadingIndicator;
+    private static Thread auctionTabThread = null;
 
     private AuctionsTab() {
         this.render();
@@ -85,7 +86,10 @@ public class AuctionsTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        new Thread(loadingCards).start();
+        if (auctionTabThread==null || !auctionTabThread.isAlive()){
+            auctionTabThread = new Thread(loadingCards);
+            auctionTabThread.start();
+        }
     }
 
     public ScrollPane getAuctionsTab() {
