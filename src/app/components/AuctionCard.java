@@ -24,6 +24,7 @@
 package app.components;
 
 import app.Navigator;
+import app.views.AuctionView;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -32,9 +33,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
-import models.Auction;
-import models.Buyer;
-import models.ImageUtils;
+import models.*;
 
 import java.awt.image.BufferedImage;
 
@@ -75,7 +74,10 @@ public class AuctionCard extends Card {
         itemName = new Label(auction.getItemAuction().getName());
         itemName.getStyleClass().add("item-name");
 
-        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName()));
+        itemName.setOnMouseClicked(e -> {
+            Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName());
+            AuctionView.getInstance().fillAuctionData(Auction.getAuction(auction.getId()));
+        });
 
         //Subscribe button
         if (viewType == BUYER) {

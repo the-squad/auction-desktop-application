@@ -35,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import models.Category;
 
 import static app.Partials.currentBuyer;
+import static app.Partials.userType;
 
 public class ExploreTab {
 
@@ -85,7 +86,7 @@ public class ExploreTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName());
+                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName(), userType);
                 return null;
             }
 
