@@ -69,9 +69,6 @@ public class ExploreTab {
 
         //Scroll pane
         scrollView = new ScrollView(exploreTabContainer);
-
-        //Loading cards on the first time
-        this.loadCards(Category.getCategories().get(0));
     }
 
     public void loadCards(Category category) {

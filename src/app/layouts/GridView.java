@@ -72,8 +72,6 @@ public class GridView {
 
     public void loadAuctionCards(ArrayList<Auction> auctions, String emptyStateMessage) {
         cardsContainer.getChildren().clear();
-        for (AuctionCard card : auctionCards)
-            card = null;
         auctionCards.clear();
 
         if (auctions == null || auctions.size() == 0) {

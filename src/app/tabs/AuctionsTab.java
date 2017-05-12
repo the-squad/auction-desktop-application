@@ -64,9 +64,6 @@ public class AuctionsTab {
         //Loading indicator
         loadingIndicator = new LoadingIndicator();
         loadingIndicator.setLoadingMessage("Getting Your Auctions");
-
-        //Loading cards on the first time
-        this.loadCards(currentSeller.getAuctions());
     }
 
     public void loadCards(ArrayList<Auction> auctions) {
