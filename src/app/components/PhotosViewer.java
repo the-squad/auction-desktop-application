@@ -68,7 +68,7 @@ public class PhotosViewer {
         currentPhotoViewer = new Rectangle(375, 250);
         currentPhotoViewer.setArcHeight(5);
         currentPhotoViewer.setArcWidth(5);
-        currentPhotoViewer.setFill(Color.GREY);
+        currentPhotoViewer.setFill(Color.rgb(245,248,250));
 
         //Add photo button
         if (viewMode == EDIT_MODE) {
@@ -112,9 +112,6 @@ public class PhotosViewer {
     }
 
     public void setPhotos(ArrayList<Image> images) {
-        photoViewers.clear();
-        photosContainer.getChildren().clear();
-
         //Loading photos
         Task<String> loadingPhotos = new Task<String>() {
             @Override
@@ -157,8 +154,10 @@ public class PhotosViewer {
         }
     }
 
-    private void setMainPhoto() {
-        // TODO
+    public void resetPhotoView() {
+        currentPhotoViewer.setFill(Color.rgb(245,248,250));
+        photoViewers.clear();
+        photosContainer.getChildren().clear();
     }
 
     private void addPhoto() {
