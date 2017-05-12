@@ -36,6 +36,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import models.Category;
+import models.Item;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -55,6 +56,8 @@ public class ItemDetails {
     private InputField itemQuantityField;
     private PhotosViewer photosViewer;
     private Button createItem;
+
+    private Item newItem;
 
     private ItemDetails() {
         this.render();
@@ -79,6 +82,15 @@ public class ItemDetails {
                     if (inputField.getStyleClass().contains("input-field--danger"))
                         return;
                 }
+
+                newItem = currentSeller.addItemToInventory(currentSeller.getInventory(),
+                                                            itemNameField.getValue(),
+                                                            Integer.parseInt(itemQuantityField.getValue()),
+                                                            itemCategoryField.getValue(),
+                                                            itemDescription.getValue());
+
+                newItem.setItemPhotos(photosViewer.getUploadedImages());
+                Navigator.hidePage();
             }
         });
 

@@ -35,10 +35,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import models.*;
 
-import java.awt.image.BufferedImage;
-
 import static app.Partials.*;
-import java.util.ArrayList;
+
 import java.util.Objects;
 
 import models.Buyer;
@@ -67,15 +65,15 @@ public class AuctionCard extends Card {
 
     private void render() {
         //Item photo
-        photo = ImageUtils.cropAndConvertImage(auction.getItemAuction().getIamgesItem().get(0).getImage(), 250, 175);
+        photo = ImageUtils.cropAndConvertImage(auction.getItem().getItemPhotos().get(0).getImage(), 250, 175);
         photoViewer.setFill(new ImagePattern(photo));
 
         //Item name
-        itemName = new Label(auction.getItemAuction().getName());
+        itemName = new Label(auction.getItem().getName());
         itemName.getStyleClass().add("item-name");
 
         itemName.setOnMouseClicked(e -> {
-            Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName());
+            Navigator.viewPage(AUCTION_VIEW, auction.getItem().getName());
             AuctionView.getInstance().fillAuctionData(Auction.getAuction(auction.getId()));
         });
 
@@ -97,11 +95,11 @@ public class AuctionCard extends Card {
             subscribeButton.setOnAction(e -> {
                 if (userSubscribed) {
                     subscribeButton.getStyleClass().remove("subscribe-btn--active");
-                    currentBuyer.unSubscribeAuction(auction.getId());
+                    currentBuyer.unSubscribeFromAuction(auction.getId());
                     userSubscribed = false;
                 } else {
                     subscribeButton.getStyleClass().add("subscribe-btn--active");
-                    currentBuyer.subscribeAuction(auction.getId());
+                    currentBuyer.subscribeToAuction(auction.getId());
                     userSubscribed = true;
                 }
             });
@@ -133,7 +131,7 @@ public class AuctionCard extends Card {
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
-        auctionStatus = new Label(auction.startFinishTimeAuction().toUpperCase());
+        auctionStatus = new Label(auction.getAuctionStatus().toUpperCase());
         auctionStatus.getStyleClass().add("auction-status");
 
         //If is the card for the buyer show seller info
