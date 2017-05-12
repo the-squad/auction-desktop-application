@@ -80,8 +80,8 @@ public class Seller extends User implements IAuctionInterface {
         // TODO
     }
 
-    public void addItemToInventory() {
-        // TODO
+    public void addItemToInventory(Inventory inventory , String name, int quantity, Category category, String description) {
+        inventory.createItem(name, quantity, category, description);
     }
 
     public void deleteItemFromInventory() {
