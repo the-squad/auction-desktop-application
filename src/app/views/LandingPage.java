@@ -502,7 +502,6 @@ public class LandingPage extends GridPane {
             @Override
             protected String call() throws Exception {
                 homePage = HomePage.getInstance();
-                homePage.setUserPhoto();
                 return null;
             }
 

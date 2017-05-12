@@ -79,11 +79,6 @@ public class HomePage extends BorderPane {
         } else {
             // TODO
         }
-
-    }
-
-    public void setUserPhoto() {
-        header.setUserPhoto();
     }
 
     public void destory() {
