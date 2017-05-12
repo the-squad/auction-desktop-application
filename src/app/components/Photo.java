@@ -24,7 +24,9 @@
 
 package app.components;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class Photo {
@@ -37,7 +39,7 @@ public class Photo {
         this.render();
     }
 
-    private void render() {
+    public void render() {
         photo = new Rectangle();
         photo.setFill(Color.BEIGE); // TODO
         photo.setArcWidth(4);
@@ -45,6 +47,10 @@ public class Photo {
         photo.setHeight(size);
         photo.setWidth(size);
         photo.setStyle("-fx-cursor: hand");
+    }
+
+    public void setPhoto(Image image) {
+        photo.setFill(new ImagePattern(image));
     }
 
     public Rectangle getPhotoView() {

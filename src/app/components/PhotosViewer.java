@@ -31,9 +31,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import models.Image;
+import models.ImageUtils;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import static app.Partials.*;
 
 public class PhotosViewer {
@@ -45,6 +51,7 @@ public class PhotosViewer {
     private Rectangle currentPhotoViewer;
     private ScrollView photosScroll;
     private GridPane photosContainer;
+    private HashMap<Photo, BufferedImage> photosMap = new HashMap<>();
     private ArrayList<Photo> photoViewers = new ArrayList<>();
     private Button addPhoto;
     private Label errorMessage;
@@ -93,7 +100,10 @@ public class PhotosViewer {
         photosScroll.getScrollView().setMaxWidth(375);
         photosScroll.getScrollView().setMinHeight(SIZE + 15);
         photosScroll.getScrollView().setMaxHeight(SIZE + 15);
-        photosScroll.getScrollView().setTranslateY(-20);
+        if (viewMode == EDIT_MODE)
+            photosScroll.getScrollView().setTranslateY(-20);
+        else
+            photosScroll.getScrollView().setTranslateY(5);
 
         //Photo container
         photosViewerContainer = new BorderPane();
@@ -101,20 +111,26 @@ public class PhotosViewer {
         photosViewerContainer.setBottom(photosScroll.getScrollView());
     }
 
-    public void setPhotos() {
-        photoViewers = new ArrayList<>(5);
+    public void setPhotos(ArrayList<Image> images) {
+        int counter =0;
+        for (Image image : images) {
+            Photo photo = new Photo(SIZE);
+            photo.setPhoto(ImageUtils.cropAndConvertImage(image.getImage(), SIZE, SIZE));
 
-        for (int counter = 0; counter < 5; counter++) {
-            photoViewers.add(new Photo(SIZE));
-        }
+            photosMap.put(photo, image.getImage());
 
-        int counter = 0;
-        for (Photo photo : photoViewers) {
+            photo.getPhotoView().setOnMouseClicked(e -> {
+                currentPhotoViewer.setFill(new ImagePattern(ImageUtils.cropAndConvertImage(photosMap.get(photo), 375, 250)));
+            });
+            photoViewers.add(photo);
+
             GridPane.setConstraints(photo.getPhotoView(), counter, 0);
             photosContainer.getChildren().add(photo.getPhotoView());
             counter++;
         }
-        GridPane.setConstraints(addPhoto, counter + 1, 0);
+
+        if (viewMode == EDIT_MODE)
+            GridPane.setConstraints(addPhoto, counter + 1, 0);
     }
 
     private void setMainPhoto() {
