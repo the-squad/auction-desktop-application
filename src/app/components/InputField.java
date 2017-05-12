@@ -117,10 +117,10 @@ public class InputField extends Input {
                 errorMessage = "Email isn't valid";
             } else if (inputType == DATE) {
                 validationResult = Validation.validateDate(this.getValue());
-                errorMessage = "Date format should be ..."; //TODO
+                errorMessage = "Date format should be DD/MM/YYYY";
             } else if (inputType == TIME) {
                 validationResult = Validation.validateTime(this.getValue());
-                errorMessage = "Time format should be ..."; //TODO
+                errorMessage = "Time format should be HH:MM AM/PM";
             } else {
                 validationResult = Validation.validateNumber(this.getValue());
                 errorMessage = "Letters and special characters aren't allowed";
