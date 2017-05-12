@@ -42,6 +42,8 @@ import javafx.util.Duration;
 import models.ImageUtils;
 import models.Seller;
 
+import java.awt.image.BufferedImage;
+
 import static app.Partials.*;
 
 public class Header extends BorderPane {
@@ -301,6 +303,10 @@ public class Header extends BorderPane {
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);
+    }
+
+    public void updateUserBlock() {
+        userInfo.setUserDetails(currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
     }
 
     public void destroy() {
