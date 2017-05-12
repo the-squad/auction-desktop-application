@@ -257,7 +257,7 @@ public class ProfilePage {
         Task<String> loadingProfileAuctions = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(seller.getAuctions(), (userType == BUYER)? "This Seller Doesn't Have Auctions" : "You Don't Have Any Auctions");
+                gridView.loadAuctionCards(seller.getAuctions(), (userType == BUYER)? "This Seller Doesn't Have Auctions" : "You Don't Have Any Auctions", SELLER);
                 return null;
             }
 
