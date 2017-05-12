@@ -45,6 +45,7 @@ public class FeedTab {
     private BorderPane centerPane;
     private GridView gridView;
     private LoadingIndicator loadingIndicator;
+    private static Thread feedThread = null;
 
     private FeedTab() {
         this.render();
@@ -84,7 +85,10 @@ public class FeedTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        new Thread(loadingCards).start();
+        if (feedThread==null || !feedThread.isAlive()){
+            feedThread = new Thread(loadingCards);
+            feedThread.start();
+        }
     }
 
     public void destroy() {

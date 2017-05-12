@@ -36,6 +36,7 @@ import models.Auction;
 import java.util.ArrayList;
 
 import static app.Partials.SCROLLING_SPEED;
+import static app.Partials.currentSeller;
 
 public class AuctionsTab {
 
@@ -46,6 +47,7 @@ public class AuctionsTab {
     private GridView gridView;
 
     private LoadingIndicator loadingIndicator;
+    private static Thread auctionTabThread = null;
 
     private AuctionsTab() {
         this.render();
@@ -73,7 +75,7 @@ public class AuctionsTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions Yet");
+                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions");
                 return null;
             }
 
@@ -84,7 +86,10 @@ public class AuctionsTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        new Thread(loadingCards).start();
+        if (auctionTabThread==null || !auctionTabThread.isAlive()){
+            auctionTabThread = new Thread(loadingCards);
+            auctionTabThread.start();
+        }
     }
 
     public ScrollPane getAuctionsTab() {

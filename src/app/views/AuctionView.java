@@ -51,7 +51,7 @@ public class AuctionView {
     private Label biddersNumber;
     private GridPane biddingBlock;
     private InputField bidField;
-    private Button sumbitBid;
+    private Button submitBid;
     private UserDetails userDetails;
 
     private AuctionView() {
@@ -60,44 +60,41 @@ public class AuctionView {
 
     private void render() {
         //Auction name
-        itemName = new Label("Moto 360");
+        itemName = new Label();
         itemName.getStyleClass().add("auction-item-name");
 
         //Item description
-        itemDescription = new Label("Motorola Moto 360 46mm (2nd gen) - user opinions and reviews. ... Motorola " +
-                "00820NARTL 2nd Gen Smart Watch Smartwatch Moto 360 Cognac 46mm. ... Motorola Moto 360 2nd Gen Mens " +
-                "46mm SmartWatch Black Stainless Steel Android.");
-        itemDescription.getStyleClass().add("auction-item-description");
+        itemDescription = new Label();
         itemDescription.setWrapText(true);
         itemDescription.setMaxWidth(500);
 
         //Price headline
-        priceHeadline = new Text("Current Bid");
+        priceHeadline = new Text();
         priceHeadline.getStyleClass().add("price-headline");
 
         //Current bid
-        currentPrice = new Text("1,000$");
+        currentPrice = new Text();
         currentPrice.getStyleClass().add("auction-bid");
 
         priceBlock = new TextFlow(priceHeadline, currentPrice);
 
         //Number of bidders
-        biddersNumber = new Label("15 bidder");
+        biddersNumber = new Label();
         biddersNumber.getStyleClass().add("bidders-number");
 
         //Bidding field
         bidField = new InputField("Enter your bid", NUMBER);
 
-        sumbitBid = new Button("Bid");
-        sumbitBid.getStyleClass().add("btn-primary");
+        submitBid = new Button();
+        submitBid.getStyleClass().add("btn-primary");
 
         biddingBlock = new GridPane();
         biddingBlock.setHgap(25);
 
         GridPane.setConstraints(bidField.getInputField(), 0, 0);
-        GridPane.setConstraints(sumbitBid, 1, 0);
+        GridPane.setConstraints(submitBid, 1, 0);
 
-        biddingBlock.getChildren().addAll(bidField.getInputField(), sumbitBid);
+        biddingBlock.getChildren().addAll(bidField.getInputField(), submitBid);
 
         //Seller details
         // TODO userDetails = new UserDetails(FIT_DATA);

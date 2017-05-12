@@ -25,9 +25,6 @@
 package app;
 
 import app.components.Header;
-import app.views.AccountSettings;
-import app.views.AuctionDetails;
-import app.views.ItemDetails;
 import app.views.*;
 import app.tabs.*;
 import javafx.scene.layout.BorderPane;
@@ -71,11 +68,8 @@ public class Navigator {
                 FeedTab.getInstance().loadCards(currentBuyer.getFeed());
                 return FeedTab.getInstance().getFeedTab();
             case 9:
-                if (userType == BUYER) {
+                if (userType == BUYER)
                     InventoryTab.getInstance().loadCards(currentBuyer.getItems(currentBuyer.getInventory()));
-                } else {
-                    //InventoryTab.getInstance().loadCards();
-                }
                 return InventoryTab.getInstance().getInventoryTab();
             case 10:
                 return AccountSettings.getInstance().getAccountSettingsPage();
@@ -137,19 +131,15 @@ public class Navigator {
     }
 
     public static void refreshView() {
-        HomePage homePage = HomePage.getInstance();
-        homePage.destory();
+        HomePage.getInstance().destory();
+        InventoryTab.getInstance().destroy();
+        Header.getInstance().destroy();
 
-        AuctionsTab auctionsTab = AuctionsTab.getInstance();
-        auctionsTab.destroy();
-
-        ExploreTab exploreTab = ExploreTab.getInstance();
-        exploreTab.destroy();
-
-        FeedTab feedTab = FeedTab.getInstance();
-        feedTab.destroy();
-
-        InventoryTab inventoryTab = InventoryTab.getInstance();
-        inventoryTab.destroy();
+        if (userType == BUYER) {
+            ExploreTab.getInstance().destroy();
+            FeedTab.getInstance().destroy();
+        } else {
+            AuctionsTab.getInstance().destroy();
+        }
     }
 }

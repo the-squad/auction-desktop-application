@@ -57,3 +57,7 @@
 .btn-profile {
     -fx-padding: 5px 15px;
 }
+
+.btn-profile:disabled {
+    -fx-text-fill: #fff;
+}

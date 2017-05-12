@@ -35,6 +35,8 @@ import javafx.scene.layout.BorderPane;
 import models.Category;
 
 import static app.Partials.currentBuyer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExploreTab {
 
@@ -47,6 +49,7 @@ public class ExploreTab {
     private LoadingIndicator loadingIndicator;
 
     private String loadingMessage;
+    private static Thread exploreThread = null;
 
     private ExploreTab() {
         this.render();
@@ -69,7 +72,6 @@ public class ExploreTab {
 
         //Scroll pane
         scrollView = new ScrollView(exploreTabContainer);
-        this.loadCards(Category.getCategories().get(0));
     }
 
     public void loadCards(Category category) {
@@ -97,7 +99,10 @@ public class ExploreTab {
                 exploreTabContainer.setCenter(gridView.getGridView());
             }
         };
-        new Thread(loadingCards).start();
+        if (exploreThread==null || !exploreThread.isAlive()){
+            exploreThread = new Thread(loadingCards);
+            exploreThread.start();
+        }
     }
 
     public void destroy() {

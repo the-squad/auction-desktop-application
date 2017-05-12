@@ -35,7 +35,8 @@ import models.Item;
 
 import java.util.ArrayList;
 
-import static app.Partials.SCROLLING_SPEED;
+import static app.Partials.*;
+import static app.Partials.currentBuyer;
 
 public class InventoryTab {
 
@@ -46,6 +47,8 @@ public class InventoryTab {
     private GridView gridView;
 
     private LoadingIndicator loadingIndicator;
+    
+    private static Thread inventoryThread = null;
 
     private InventoryTab() {
         this.render();
@@ -84,7 +87,10 @@ public class InventoryTab {
                 centerPane.setCenter(gridView.getGridView());
             }
         };
-        new Thread(loadingCards).start();
+        if (inventoryThread==null || !inventoryThread.isAlive()){
+            inventoryThread = new Thread(loadingCards);
+            inventoryThread.start();
+        }
     }
 
     public ScrollPane getInventoryTab() {
