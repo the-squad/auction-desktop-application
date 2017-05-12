@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import java.sql.PreparedStatement;
@@ -32,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Buyer extends User implements IAuctionInterface {
 
@@ -68,9 +68,9 @@ public class Buyer extends User implements IAuctionInterface {
         SubscribeAuction SubscribeAuctionObject = new SubscribeAuction(auctionID, this.getId());
         SubscribeAuctionObject.create();
     }
-    
+
     public void unSubscribeAuction(int auctionID) {
-        int id = Model.find(SubscribeAuction.class, "AuctionID = ? AND SubscriberID = ?", auctionID,this.getId()).get(0).getId();
+        int id = Model.find(SubscribeAuction.class, "AuctionID = ? AND SubscriberID = ?", auctionID, this.getId()).get(0).getId();
         Model.delete(SubscribeAuction.class, id);
     }
 
@@ -109,18 +109,21 @@ public class Buyer extends User implements IAuctionInterface {
     }
 
     public ArrayList<Auction> exploreAuctions(Category category) {
-        if (category.getName().equals("All"))
+        if (category.getName().equals("All")) {
             return new ArrayList<>(Model.find(Auction.class));
+        }
 
         List<Item> items = Model.find(Item.class, "CategoryID = ?", category.getId());
-        if (items.size() == 0) return null;
+        if (items.size() == 0) {
+            return null;
+        }
         String keys = "`ItemID` in (";
         keys = items.stream().map((item) -> "?,").reduce(keys, String::concat);
         return new ArrayList<>(Model.find(Auction.class, keys.replaceFirst(",$", ")"), items.stream().map(i -> (Object) i.getId()).toArray()));
     }
 
-    public ArrayList<Auction> search(double price, int status, int numberOfBidders) {
-        List<Auction> auctions = new ArrayList<>();
+    public ArrayList<Auction> search(double price, int status, int numberOfBidders, String Name) {
+        ArrayList<Auction> auctions = new ArrayList<>();
         PreparedStatement statement = null;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date today = new Date();
@@ -134,13 +137,13 @@ public class Buyer extends User implements IAuctionInterface {
 
         } else if (price != -1 && status == -1 && numberOfBidders == -1) // search with price only
         {
-            auctions = Model.find(Auction.class, "InitialPrice <= ?", price);
+            auctions =(ArrayList<Auction>) Model.find(Auction.class, "InitialPrice <= ?", price);
         } else if (price != -1 && status != -1 && numberOfBidders == -1) // search with price , status
         {
             if (status == 1) {
-                auctions = Model.find(Auction.class, "InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
+                auctions = (ArrayList<Auction>)Model.find(Auction.class, "InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
             } else {
-                auctions = Model.find(Auction.class, "InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
+                auctions = (ArrayList<Auction>)Model.find(Auction.class, "InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
             }
         } else if (price != -1 && status == -1 && numberOfBidders != -1) // search with price , bidders
         {
@@ -153,9 +156,9 @@ public class Buyer extends User implements IAuctionInterface {
         } else if (price == -1 && status != -1 && numberOfBidders == -1) // search with status only
         {
             if (status == 1) {
-                auctions = Model.find(Auction.class, "? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
+                auctions =(ArrayList<Auction>) Model.find(Auction.class, "? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
             } else {
-                auctions = Model.find(Auction.class, "? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
+                auctions = (ArrayList<Auction>)Model.find(Auction.class, "? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
             }
         } else if (price == -1 && status == -1 && numberOfBidders != -1) // search with bidders only
         {
@@ -181,7 +184,14 @@ public class Buyer extends User implements IAuctionInterface {
             }
         }
 
-        return (ArrayList<Auction>) auctions;
+        if (Name == null || Name.equals("")) {
+            return auctions;
+        } else if (price == -1 && status == -1 && numberOfBidders == -1 && Name != null) {
+            return (ArrayList<Auction>)Model.find(Auction.class).stream().filter(b -> b.getItemAuction().getName().contains(Name)).collect(Collectors.toList());
+        } else {
+            return new ArrayList<>(auctions.stream().filter(b -> b.getItemAuction().getName().contains(Name)).collect(Collectors.toList())); 
+        }
+
     }
 
     @Override
