@@ -25,6 +25,7 @@
 package app.components;
 
 import app.Navigator;
+import app.views.ProfilePage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -39,6 +40,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import models.ImageUtils;
+import models.Seller;
 
 import static app.Partials.*;
 
@@ -184,6 +186,7 @@ public class Header extends BorderPane {
         userInfo.getUserDetails().setOnMouseClicked(e -> {
             if (userType == SELLER) {
                 Navigator.viewPage(PROFILE_PAGE, currentUser.getName());
+                ProfilePage.getInstance().fillUserData(currentSeller);
             } else {
                 Navigator.viewPage(ACCOUNT_SETTINGS, currentUser.getName());
             }
