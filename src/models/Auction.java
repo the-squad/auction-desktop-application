@@ -142,7 +142,7 @@ public class Auction extends Model<Auction> {
         }
         Bid bid = new Bid(userId, this._id, money);
         if (bid.create()) {
-            bids.add(bid);
+            bids.add(0,bid);
             return true;
         } else {
             return false;
