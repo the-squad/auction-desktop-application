@@ -70,7 +70,7 @@ public class GridView {
         extraSpace.setMinHeight(1);
     }
 
-    public void loadAuctionCards(ArrayList<Auction> auctions, String emptyStateMessage) {
+    public void loadAuctionCards(ArrayList<Auction> auctions, String emptyStateMessage, int viewType) {
         cardsContainer.getChildren().clear();
         auctionCards.clear();
 
@@ -78,7 +78,7 @@ public class GridView {
             this.viewEmptyState(emptyStateMessage);
         } else {
             for (Auction auction : auctions)
-                auctionCards.add(new AuctionCard(userType, auction));
+                auctionCards.add(new AuctionCard(viewType, auction));
 
             int counter = 0;
             for (AuctionCard auctionCard : auctionCards) {
