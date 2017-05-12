@@ -30,6 +30,7 @@ import app.components.UserDetails;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -79,6 +80,7 @@ public class AuctionView {
         //Item description
         itemDescription = new Label();
         itemDescription.setWrapText(true);
+        itemDescription.setAlignment(Pos.TOP_LEFT);
         itemDescription.setMaxWidth(500);
         itemDescription.setMinHeight(100);
 
@@ -102,10 +104,10 @@ public class AuctionView {
         submitBid.setOnAction(e -> {
             if (Double.parseDouble(bidField.getValue()) < auction.getHighestPrice())
                 bidField.markAsDanger("Enter a higher number!");
-            else if ((Double.parseDouble(bidField.getValue()) + auction.getBidRate() ) < auction.getHighestPrice())
-                bidField.markAsDanger("Bidding rate is " + auction.getBidRate());
+            else if ((Double.parseDouble(bidField.getValue()) + auction.getBiddingRate() ) < auction.getHighestPrice())
+                bidField.markAsDanger("Bidding rate is " + auction.getBiddingRate());
             else {
-                if (currentBuyer.makeBid(this.auction, Double.parseDouble(bidField.getValue())))
+                if (currentBuyer.bidOnAuction(this.auction, Double.parseDouble(bidField.getValue())))
                     currentPrice.setText(String.valueOf(auction.getHighestPrice()));
                 else {
                     bidField.markAsDanger("Auction is finished!");
@@ -178,13 +180,13 @@ public class AuctionView {
 
             @Override
             protected String call() throws Exception {
-                name = auction.getItemAuction().getName();
-                description = auction.getItemAuction().getDescription();
+                name = auction.getItem().getName();
+                description = auction.getItem().getDescription();
                 price = String.valueOf(auction.getHighestPrice());
                 sellerName = auction.getSeller().getName();
                 sellerImage = auction.getSeller().getPhoto();
                 sellerId = auction.getUserID();
-                auctionImages = auction.getItemAuction().getIamgesItem();
+                auctionImages = auction.getItem().getItemPhotos();
                 return null;
             }
 
