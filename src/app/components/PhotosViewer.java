@@ -25,6 +25,7 @@
 package app.components;
 
 import app.layouts.ScrollView;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,7 +37,6 @@ import javafx.scene.shape.Rectangle;
 import models.Image;
 import models.ImageUtils;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,10 +51,12 @@ public class PhotosViewer {
     private Rectangle currentPhotoViewer;
     private ScrollView photosScroll;
     private GridPane photosContainer;
-    private HashMap<Photo, BufferedImage> photosMap = new HashMap<>();
+    private HashMap<Photo, javafx.scene.image.Image> photosMap = new HashMap<>();
     private ArrayList<Photo> photoViewers = new ArrayList<>();
     private Button addPhoto;
     private Label errorMessage;
+
+    private static Thread photosLoadingThread = null;
 
     public PhotosViewer(int viewMode) {
         this.viewMode = viewMode;
@@ -100,37 +102,59 @@ public class PhotosViewer {
         photosScroll.getScrollView().setMaxWidth(375);
         photosScroll.getScrollView().setMinHeight(SIZE + 15);
         photosScroll.getScrollView().setMaxHeight(SIZE + 15);
-        if (viewMode == EDIT_MODE)
-            photosScroll.getScrollView().setTranslateY(-20);
-        else
-            photosScroll.getScrollView().setTranslateY(5);
+        photosScroll.getScrollView().setTranslateY(5);
 
         //Photo container
         photosViewerContainer = new BorderPane();
+        photosViewerContainer.setStyle("-fx-max-height: 250px");
         photosViewerContainer.setCenter(currentPhotoViewer);
         photosViewerContainer.setBottom(photosScroll.getScrollView());
     }
 
     public void setPhotos(ArrayList<Image> images) {
-        int counter =0;
-        for (Image image : images) {
-            Photo photo = new Photo(SIZE);
-            photo.setPhoto(ImageUtils.cropAndConvertImage(image.getImage(), SIZE, SIZE));
+        photoViewers.clear();
+        photosContainer.getChildren().clear();
 
-            photosMap.put(photo, image.getImage());
+        //Loading photos
+        Task<String> loadingPhotos = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                for (Image image : images) {
+                    Photo photo = new Photo(SIZE);
+                    photo.setPhoto(ImageUtils.cropAndConvertImage(image.getImage(), SIZE * 2, SIZE * 2));
 
-            photo.getPhotoView().setOnMouseClicked(e -> {
-                currentPhotoViewer.setFill(new ImagePattern(ImageUtils.cropAndConvertImage(photosMap.get(photo), 375, 250)));
-            });
-            photoViewers.add(photo);
+                    photosMap.put(photo, ImageUtils.cropAndConvertImage(image.getImage(), 375, 250));
 
-            GridPane.setConstraints(photo.getPhotoView(), counter, 0);
-            photosContainer.getChildren().add(photo.getPhotoView());
-            counter++;
+                    photo.getPhotoView().setOnMouseClicked(e -> {
+                        currentPhotoViewer.setFill(new ImagePattern(photosMap.get(photo)));
+                    });
+                    photoViewers.add(photo);
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                int counter =0;
+                for (Photo photo : photoViewers) {
+                    GridPane.setConstraints(photo.getPhotoView(), counter, 0);
+                    photosContainer.getChildren().add(photo.getPhotoView());
+
+                    if (counter == 0)
+                        currentPhotoViewer.setFill(new ImagePattern(photosMap.get(photo)));
+                    counter++;
+                }
+
+                if (viewMode == EDIT_MODE)
+                    GridPane.setConstraints(addPhoto, counter + 1, 0);
+            }
+        };
+
+        if (photosLoadingThread == null || !photosLoadingThread.isAlive()) {
+            photosLoadingThread = new Thread(loadingPhotos);
+            photosLoadingThread.start();
         }
-
-        if (viewMode == EDIT_MODE)
-            GridPane.setConstraints(addPhoto, counter + 1, 0);
     }
 
     private void setMainPhoto() {

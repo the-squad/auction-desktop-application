@@ -53,6 +53,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import models.ImageUtils;
@@ -76,6 +77,7 @@ public class UserDetails {
 
     public UserDetails(int paddingType) {
         this.paddingType = paddingType;
+        this.userName = "Seller Name";
         this.render();
     }
 
@@ -92,6 +94,8 @@ public class UserDetails {
         photoViewer = new Rectangle(30, 30);
         if (photo != null)
             photoViewer.setFill(new ImagePattern(photo));
+        else
+            photoViewer.setFill(Color.rgb(245,248,250));
         photoViewer.setArcHeight(4);
         photoViewer.setArcWidth(4);
         photoViewer.getStyleClass().add("user-picture");
