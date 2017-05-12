@@ -110,8 +110,8 @@ public class User extends Model<User> {
     }
 
     public User setPhoto(BufferedImage photo) {
-        photo = ImageUtils.cropImage(photo,300, 300);
-        photo = ImageUtils.scale(photo, 300, 300, 300f/photo.getHeight(), 300f/photo.getHeight());
+        photo = ImageUtils.cropImage(photo,1, 1);
+        photo = ImageUtils.scale(photo, 600, 600, 600f/photo.getHeight(), 600f/photo.getHeight());
         this._photo = ImageUtils.bufferedImageToByteArray(photo);
         return this;
     }

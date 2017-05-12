@@ -80,7 +80,7 @@ public class AuctionView {
         itemDescription = new Label();
         itemDescription.setWrapText(true);
         itemDescription.setMaxWidth(500);
-        itemDescription.setMinHeight(200);
+        itemDescription.setMinHeight(100);
 
         //Price headline
         priceHeadline = new Text();

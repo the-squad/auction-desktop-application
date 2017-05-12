@@ -72,7 +72,7 @@ public class Image extends Model<Image> {
 
     public void setImage(BufferedImage photo) {
         photo = ImageUtils.cropImage(photo, 750, 500);
-        photo = ImageUtils.scale(photo, 750, 500, 750f / photo.getWidth(), 500f / photo.getHeight());
+        photo = ImageUtils.scale(photo, 1125, 750, 1125f / photo.getWidth(), 750f / photo.getHeight());
         this._image = ImageUtils.bufferedImageToByteArray(photo);
     }
 }
