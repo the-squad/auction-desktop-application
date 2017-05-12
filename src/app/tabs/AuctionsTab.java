@@ -73,7 +73,7 @@ public class AuctionsTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions Yet");
+                gridView.loadAuctionCards(auctions, "You Don't Have Active Auctions");
                 return null;
             }
 
