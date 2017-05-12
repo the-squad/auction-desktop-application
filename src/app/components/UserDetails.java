@@ -67,12 +67,17 @@ public class UserDetails {
 
     private final int paddingType;
     private String userName = "User name";
-    private Image photo;
+    private Image photo = null;
     private int userId;
 
     private GridPane sellerDetailsContainer;
     private Rectangle photoViewer;
     private Label username;
+
+    public UserDetails(int paddingType) {
+        this.paddingType = paddingType;
+        this.render();
+    }
 
     public UserDetails(int paddingType, String userName, BufferedImage photo, int userId) {
         this.paddingType = paddingType;
@@ -85,7 +90,8 @@ public class UserDetails {
     private void render() {
         //User picture
         photoViewer = new Rectangle(30, 30);
-        photoViewer.setFill(new ImagePattern(photo));
+        if (photo != null)
+            photoViewer.setFill(new ImagePattern(photo));
         photoViewer.setArcHeight(4);
         photoViewer.setArcWidth(4);
         photoViewer.getStyleClass().add("user-picture");
@@ -117,6 +123,12 @@ public class UserDetails {
         GridPane.setConstraints(username, 1, 0);
 
         sellerDetailsContainer.getChildren().addAll(photoViewer, username);
+    }
+
+    public void setUserDetails(String userName, BufferedImage photo, int userId) {
+        username.setText(userName);
+        photoViewer.setFill(new ImagePattern(ImageUtils.cropAndConvertImage(photo, 30, 30)));
+        this.userId = userId;
     }
 
     public GridPane getUserDetails() {
