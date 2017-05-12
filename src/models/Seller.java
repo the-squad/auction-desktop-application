@@ -76,8 +76,22 @@ public class Seller extends User implements IAuctionInterface {
         return false;
     }
 
-    public void updateAuction() {
-        // TODO
+    public static void updateAuction(int auctionID , String StartDate, String StartTime,
+        String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+
+        Auction auc = Model.find(Auction.class, auctionID);
+        
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date start_Date = df.parse(StartDate + " " + Validation.convertTimeTo24Hour(StartTime));
+            Date terminate_Date = df.parse(TerminationDate + " " + Validation.convertTimeTo24Hour(TerminationTime));
+            auc.setStartDate(start_Date).setTerminationDate(terminate_Date).setInitialPrice(InitialPrice).setBiddingRate(BidRate);
+
+            auc.save();
+        } catch (ParseException e) {
+             Logger.getGlobal().log(Level.WARNING, e.getMessage(), e);
+        }
+
     }
 
     public Item addItemToInventory(Inventory inventory , String name, int quantity, String category, String description) {
