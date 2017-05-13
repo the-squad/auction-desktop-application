@@ -28,35 +28,35 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class DropdownField extends Input {
 
     private int inputSize = NORMAL;
 
-    private String []items;
+    private ArrayList<String> items;
     private ComboBox input;
+    private int index;
 
-    public DropdownField(String inputName, String ...items) {
-        super(inputName);
-        this.items = items.clone();
+    public DropdownField(String inputName) {
+        super(inputName, NORMAL);
+        this.render();
+    }
+
+    public DropdownField(String inputName, ArrayList<String> items) {
+        super(inputName, NORMAL);
+        this.items = items;
 
         this.render();
     }
 
-    public DropdownField(String inputName, int inputSize, String ...items) {
-        super(inputName);
-        this.items = items.clone();
-        this.inputSize = inputSize;
-
-        this.render();
-    }
-
-    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage,String ...items) {
+    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage, ArrayList<String> items) {
         super(inputName, hideErrorMessage);
-        this.items = items.clone();
+        this.items = items;
         this.inputSize = inputSize;
-
         this.render();
     }
 
@@ -84,9 +84,8 @@ public class DropdownField extends Input {
         });
 
         //Loading dropdown menu items
-        for (String item : items) {
-            input.getItems().add(item);
-        }
+        if (items != null)
+            this.addItems(items);
 
         //Checking if the user selecting an item or not
         this.input.focusedProperty().addListener(
@@ -118,8 +117,31 @@ public class DropdownField extends Input {
         return (String) input.getValue();
     }
 
+    public void setValue(String value) {
+        input.setValue(value);
+    }
+
+    public void clear() {
+        input.setValue("");
+    }
+
+    public void disable(Boolean disable) {
+        input.setDisable(disable);
+    }
+
     public void setDefaultSelect() {
         input.getSelectionModel().selectFirst();
+    }
+
+    public void addItems(ArrayList<String> items) {
+        this.clearItems();
+        for (String item : items) {
+            input.getItems().add(item);
+        }
+    }
+
+    public int getSelectedItemIndex() {
+        return input.getSelectionModel().getSelectedIndex();
     }
 
     public void clearItems() {

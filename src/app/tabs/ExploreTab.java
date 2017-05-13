@@ -24,19 +24,17 @@
 
 package app.tabs;
 
-import app.components.EmptyState;
 import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.components.CategoriesPanel;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Category;
 
-import static app.Partials.currentBuyer;
+import static app.Partials.*;
 
 public class ExploreTab {
 
@@ -49,6 +47,7 @@ public class ExploreTab {
     private LoadingIndicator loadingIndicator;
 
     private String loadingMessage;
+    private static Thread exploreTabThread = null;
 
     private ExploreTab() {
         this.render();
@@ -71,15 +70,14 @@ public class ExploreTab {
 
         //Scroll pane
         scrollView = new ScrollView(exploreTabContainer);
-        this.loadCards(Category.getCategories().get(0));
     }
 
     public void loadCards(Category category) {
         loadingIndicator.startRotating();
         if (category.getName().equals("All"))
-            loadingMessage = "Getting To You Every Auctions We Know";
+            loadingMessage = "Getting All Auctions";
         else
-            loadingMessage = "Getting To You Auctions in " + category.getName();
+            loadingMessage = "Getting Auctions in " + category.getName();
 
         loadingIndicator.setLoadingMessage(loadingMessage);
         exploreTabContainer.setCenter(loadingIndicator.getLoadingIndicator());
@@ -88,21 +86,22 @@ public class ExploreTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName());
+                gridView.loadAuctionCards(currentBuyer.exploreAuctions(category), "We Couldn't Find Auctions In " + category.getName(), userType);
                 return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                exploreTabContainer.setCenter(gridView.getGridView());
             }
         };
 
-        //Creating a thread that triggered when the home page is rendered
-        Thread onLoadingCards = new Thread(loadingCards);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
-            //View auctions cards
-            loadingIndicator.stopRotating();
-            exploreTabContainer.setCenter(gridView.getGridView());
-        });
+        if (exploreTabThread == null || !exploreTabThread.isAlive()) {
+            exploreTabThread = new Thread(loadingCards);
+            exploreTabThread.start();
+        }
     }
 
     public void destroy() {

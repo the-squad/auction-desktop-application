@@ -24,10 +24,14 @@
 
 package app.views;
 
+import app.components.Header;
 import app.components.InputField;
 import app.layouts.ScrollView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -36,7 +40,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import models.ImageUtils;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static app.Partials.*;
 
@@ -58,11 +69,16 @@ public class AccountSettings {
     private InputField passwordField;
     private InputField repeatPasswordField;
     private InputField addressField;
+    private InputField phoneField;
 
     private GridPane buttonAndNotifierContainer;
     private Button updateAccountButton;
     private Label updateActionNotifier;
     private Label extraSpace;
+
+    private FileChooser fileChooser;
+    private BufferedImage uploadedImage;
+    private Timeline hideSuccessMessage;
 
     private AccountSettings() {
         this.render();
@@ -82,6 +98,18 @@ public class AccountSettings {
         changePhotoButton.getStyleClass().add("btn-secondary");
         changePhotoButton.setMinWidth(200);
 
+        changePhotoButton.setOnAction(e -> {
+            File userPhoto = fileChooser.showOpenDialog(null);
+            if (userPhoto != null) {
+                try {
+                    uploadedImage = ImageIO.read(userPhoto);
+                    photoClipper.setFill(new ImagePattern(ImageUtils.cropAndConvertImage(uploadedImage, 200, 200)));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         //Account data fields
         nameField = new InputField("Name", TEXT, LONG);
         nameField.setValue(currentUser.getName());
@@ -93,15 +121,36 @@ public class AccountSettings {
         passwordField.setValue(currentUser.getPassword());
 
         repeatPasswordField = new InputField("Repeat Password", PASSWORD, LONG);
-        addressField = new InputField("Address", ADDRESS, LONG);
+
+        addressField = new InputField("Address", TEXT, LONG);
         addressField.setValue(currentUser.getAddress());
+
+        phoneField = new InputField("Phone Number", PHONE_NUMBER, LONG);
+        phoneField.setValue(currentUser.getPhone());
 
         updateAccountButton = new Button("Update");
         updateAccountButton.getStyleClass().add("btn-primary");
 
         updateAccountButton.setOnAction(e -> {
+            for (Node inputField : formDataContainer.getChildren()) {
+                if (inputField.getStyleClass().contains("input-field--danger")) {
+                    return;
+                }
+            }
+
+            if (uploadedImage != null)
+                currentUser.setPhoto(uploadedImage);
+
+            currentUser.setName(nameField.getValue())
+                    .setEmail(emailField.getValue())
+                    .setPassword(passwordField.getValue())
+                    .setAddress(addressField.getValue())
+                    .setPhone(phoneField.getValue());
+            currentUser.save();
+
+            Header.getInstance().updateUserBlock();
             updateActionNotifier.setVisible(true);
-            //TODO
+            hideSuccessMessage.play();
         });
 
         updateActionNotifier = new Label("Account updated successfully");
@@ -137,13 +186,15 @@ public class AccountSettings {
         GridPane.setConstraints(passwordField.getInputField(), 1, 2);
         GridPane.setConstraints(repeatPasswordField.getInputField(), 1, 3);
         GridPane.setConstraints(addressField.getInputField(), 1, 4);
-        GridPane.setConstraints(buttonAndNotifierContainer, 1, 5);
+        GridPane.setConstraints(phoneField.getInputField(), 1, 5);
+        GridPane.setConstraints(buttonAndNotifierContainer, 1, 6);
 
         formDataContainer.getChildren().addAll(nameField.getInputField(),
                                                             emailField.getInputField(),
                                                             passwordField.getInputField(),
                                                             repeatPasswordField.getInputField(),
                                                             addressField.getInputField(),
+                                                            phoneField.getInputField(),
                                                             buttonAndNotifierContainer);
 
         //Card Container
@@ -168,8 +219,24 @@ public class AccountSettings {
 
         cardParent.setBottom(extraSpace);
 
+        //File choose
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Upload new photo!");
+
+        FileChooser.ExtensionFilter fileExtensions =
+                new FileChooser.ExtensionFilter(
+                        "Photos", "*.png", "*.jpg", "*.jpeg", "*.gif");
+
+        fileChooser.getExtensionFilters().add(fileExtensions);
+
         //Account settings page container
         accountSettingsPageContainer = new ScrollView(cardParent);
+
+        //Hide success message
+        //Resting form
+        hideSuccessMessage = new Timeline(new KeyFrame(Duration.millis(10000), a -> {
+            updateActionNotifier.setVisible(false);
+        }));
     }
 
     public ScrollPane getAccountSettingsPage() {

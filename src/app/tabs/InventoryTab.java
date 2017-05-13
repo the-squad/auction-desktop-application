@@ -28,14 +28,11 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Item;
 
 import java.util.ArrayList;
-
-import static app.Partials.SCROLLING_SPEED;
 
 public class InventoryTab {
 
@@ -46,6 +43,8 @@ public class InventoryTab {
     private GridView gridView;
 
     private LoadingIndicator loadingIndicator;
+    
+    private static Thread inventoryTabThread = null;
 
     private InventoryTab() {
         this.render();
@@ -76,18 +75,19 @@ public class InventoryTab {
                 gridView.loadItemCards(items, "Your Inventory Is Empty");
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                centerPane.setCenter(gridView.getGridView());
+            }
         };
 
-        //Creating a thread that triggered when the home page is rendered
-        Thread onLoadingCards = new Thread(loadingCards);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
-            //View auctions cards
-            loadingIndicator.stopRotating();
-            centerPane.setCenter(gridView.getGridView());
-        });
+        if (inventoryTabThread == null || !inventoryTabThread.isAlive()) {
+            inventoryTabThread = new Thread(loadingCards);
+            inventoryTabThread.start();
+        }
     }
 
     public ScrollPane getInventoryTab() {

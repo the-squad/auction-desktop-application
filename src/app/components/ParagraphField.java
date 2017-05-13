@@ -40,12 +40,12 @@ public class ParagraphField extends Input {
     private TextArea input;
 
     public ParagraphField(String inputName) {
-        super(inputName);
+        super(inputName, NORMAL);
         this.render();
     }
 
     public ParagraphField(String inputName, int inputSize) {
-        super(inputName);
+        super(inputName, inputSize);
         this.inputSize = inputSize;
         this.render();
     }
@@ -81,6 +81,10 @@ public class ParagraphField extends Input {
 
     public void setValue(String value) {
         input.setText(value);
+    }
+
+    public void clear() {
+        input.setText("");
     }
 
     /*

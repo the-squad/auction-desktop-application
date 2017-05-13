@@ -21,9 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
 import app.Navigator;
+import app.views.AuctionView;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -32,14 +34,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
-import models.Auction;
-import models.Buyer;
-import models.ImageUtils;
-
-import java.awt.image.BufferedImage;
+import models.*;
 
 import static app.Partials.*;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+
 import java.util.Objects;
 
 import models.Buyer;
@@ -51,54 +50,47 @@ public class AuctionCard extends Card {
 
     private GridPane itemNameAndButtonContainer;
     private Label itemName;
-    private Button subscribeButton;
+    private SubscribeButton subscribeButton;
     private Label currentBid;
     private Label auctionStatus;
 
     private UserDetails userDetails;
 
     private Boolean userSubscribed;
+    private DecimalFormat decimalFormat;
 
     public AuctionCard(int viewType, Auction auction) {
-        super(auction.getItemAuction().getIamgesItem().get(0).getImage());
+        super();
         this.viewType = viewType;
         this.auction = auction;
         this.render();
     }
 
     private void render() {
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(auction.getItem().getItemPhotos().get(0).getImage(), 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
+
         //Item name
-        itemName = new Label(auction.getItemAuction().getName());
+        itemName = new Label(auction.getItem().getName());
         itemName.getStyleClass().add("item-name");
 
-        itemName.setOnMouseClicked(e -> Navigator.viewPage(AUCTION_VIEW, auction.getItemAuction().getName()));
+        itemName.setOnMouseClicked(e -> {
+            Navigator.viewPage(AUCTION_VIEW, auction.getItem().getName());
+            AuctionView.getInstance().fillAuctionData(Auction.getAuction(auction.getId()));
+        });
 
         //Subscribe button
         if (viewType == BUYER) {
-            subscribeButton = new Button();
-            subscribeButton.getStyleClass().add("subscribe-btn");
-            userSubscribed = false;
+            subscribeButton = new SubscribeButton(auction.getId());
 
             if (auction.getFollowers() != null) {
                 for (Buyer buyer : auction.getFollowers()) {
                     if (Objects.equals(buyer.getId(), currentBuyer.getId())) {
-                        userSubscribed = true;
-                        subscribeButton.getStyleClass().add("subscribe-btn--active");
+                        subscribeButton.markAsSubscribed();
                     }
                 }
             }
-
-            subscribeButton.setOnAction(e -> {
-                if (userSubscribed) {
-                    subscribeButton.getStyleClass().remove("subscribe-btn--active");
-                    currentBuyer.unSubscribeAuction(auction.getId());
-                    userSubscribed = false;
-                } else {
-                    subscribeButton.getStyleClass().add("subscribe-btn--active");
-                    currentBuyer.subscribeAuction(auction.getId());
-                    userSubscribed = true;
-                }
-            });
         }
 
         //Item and button container
@@ -118,16 +110,18 @@ public class AuctionCard extends Card {
         itemNameAndButtonContainer.getChildren().add(itemName);
 
         if (viewType == BUYER) {
-            GridPane.setConstraints(subscribeButton, 1, 0);
-            itemNameAndButtonContainer.getChildren().add(subscribeButton);
+            GridPane.setConstraints(subscribeButton.getSubscribeButton(), 1, 0);
+            itemNameAndButtonContainer.getChildren().add(subscribeButton.getSubscribeButton());
         }
 
         //Current bid
-        currentBid = new Label(Double.toString(auction.getHighestPrice()));
+        decimalFormat = new DecimalFormat("#");
+        decimalFormat.setMaximumFractionDigits(2);
+        currentBid = new Label(decimalFormat.format(auction.getHighestPrice()) + "$");
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
-        auctionStatus = new Label(auction.startFinishTimeAuction().toUpperCase());
+        auctionStatus = new Label(auction.getAuctionStatus().toUpperCase());
         auctionStatus.getStyleClass().add("auction-status");
 
         //If is the card for the buyer show seller info
@@ -159,5 +153,9 @@ public class AuctionCard extends Card {
 
         //Auction card container
         cardContainer.setBottom(cardDetails);
+    }
+
+    public BorderPane getCard() {
+        return cardContainer;
     }
 }

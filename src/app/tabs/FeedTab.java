@@ -28,7 +28,6 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import models.Auction;
@@ -45,6 +44,7 @@ public class FeedTab {
     private BorderPane centerPane;
     private GridView gridView;
     private LoadingIndicator loadingIndicator;
+    private static Thread feedTabThread = null;
 
     private FeedTab() {
         this.render();
@@ -73,21 +73,22 @@ public class FeedTab {
         Task<String> loadingCards = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(auctions, "There is no auctions from people you follow");
+                gridView.loadAuctionCards(auctions, "There is no auctions from people you follow", userType);
                 return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                centerPane.setCenter(gridView.getGridView());
             }
         };
 
-        //Creating a thread that triggered when the home page is rendered
-        Thread onLoadingCards = new Thread(loadingCards);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingCards.setOnSucceeded((WorkerStateEvent t) -> {
-            //View auctions cards
-            loadingIndicator.stopRotating();
-            centerPane.setCenter(gridView.getGridView());
-        });
+        if (feedTabThread == null || !feedTabThread.isAlive()) {
+            feedTabThread = new Thread(loadingCards);
+            feedTabThread.start();
+        }
     }
 
     public void destroy() {

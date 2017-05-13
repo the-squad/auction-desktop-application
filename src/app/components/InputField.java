@@ -41,13 +41,13 @@ public class InputField extends Input {
     private TextField input;
 
     public InputField(String inputName, int inputType) {
-        super(inputName);
+        super(inputName, NORMAL);
         this.inputType = inputType;
         this.render();
     }
 
     public InputField(String inputName, int inputType, int inputSize) {
-        super(inputName);
+        super(inputName, inputSize);
         this.inputType = inputType;
         this.inputSize = inputSize;
         this.render();
@@ -117,13 +117,19 @@ public class InputField extends Input {
                 errorMessage = "Email isn't valid";
             } else if (inputType == DATE) {
                 validationResult = Validation.validateDate(this.getValue());
-                errorMessage = "Date format should be ..."; //TODO
+                errorMessage = "Date format should be DD/MM/YYYY";
             } else if (inputType == TIME) {
                 validationResult = Validation.validateTime(this.getValue());
-                errorMessage = "Time format should be ..."; //TODO
+                errorMessage = "Time format should be HH:MM AM/PM";
+            } else if (inputType == PHONE_NUMBER){
+                validationResult = Validation.validatePhone(this.getValue());
+                errorMessage = "Only numbers allowed";
+            } else if (inputType == DECIMAL_NUMBER){
+                validationResult = Validation.validatDecimalNumber(this.getValue());
+                errorMessage = "Only numbers and dot are allowed";
             } else {
-                validationResult = Validation.validateNumber(this.getValue());
-                errorMessage = "Letters and special characters aren't allowed";
+                validationResult = Validation.validateIntegerNumber(this.getValue());
+                errorMessage = "Only integer numbers allowed";
             }
         }
 

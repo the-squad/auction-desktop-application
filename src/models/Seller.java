@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import app.Validation;
@@ -76,20 +75,34 @@ public class Seller extends User implements IAuctionInterface {
         return false;
     }
 
-    public void updateAuction() {
-        // TODO
+    public void updateAuction(int auctionID, String StartDate, String StartTime,
+            String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+
+        Auction auc = auctions.stream().filter(p -> p.getId() == auctionID).findFirst().get();
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            Date start_Date = df.parse(StartDate + " " + Validation.convertTimeTo24Hour(StartTime));
+            Date terminate_Date = df.parse(TerminationDate + " " + Validation.convertTimeTo24Hour(TerminationTime));
+            auc.setStartDate(start_Date).setTerminationDate(terminate_Date).setInitialPrice(InitialPrice).setBiddingRate(BidRate);
+
+            auc.save();
+        } catch (ParseException e) {
+            Logger.getGlobal().log(Level.WARNING, e.getMessage(), e);
+        }
+
     }
 
-    public void addItemToInventory() {
-        // TODO
+    public Item addItemToInventory(Inventory inventory, String name, int quantity, String category, String description) {
+        return inventory.createItem(name, quantity, Model.find(Category.class, "Name=?", category).get(0), description);
     }
 
-    public void deleteItemFromInventory() {
-        // TODO
+    public void deleteItemFromInventory(Inventory inventory, int itemID) {
+        inventory.deleteItem(itemID);
     }
 
-    public void updateItemInInventory() {
-        // TODO
+    public Item updateItemInInventory(Inventory inv, int itemId, String name, int quantity, String description) {
+        return inv.updateItem(itemId, name, quantity, description);
     }
 
     public int getFollowersNumber() {
@@ -116,7 +129,7 @@ public class Seller extends User implements IAuctionInterface {
                 auctionObject.setStartDate(resultSet.getDate("StartDate"));
                 auctionObject.setTerminationDate(resultSet.getDate("TerminationDate"));
                 auctionObject.setInitialPrice(resultSet.getDouble("InitialPrice"));
-                auctionObject.setBidRate(resultSet.getDouble("BidRate"));
+                auctionObject.setBiddingRate(resultSet.getDouble("BidRate"));
                 auctions.add(auctionObject);
             }
         } catch (SQLException e) {
@@ -127,14 +140,15 @@ public class Seller extends User implements IAuctionInterface {
 
     @Override
     public ArrayList<Auction> getAuctions() {
-        if (auctions == null) {
-            auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
-        }
+        auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
         return auctions;
     }
-    
-    public boolean checkFollow(int userId)
-    {
-        return Model.find(SubscribeSeller.class , "SelleID = ? and SubscriberID = ?" ,this.getId() , userId).size() == 1;
+
+    public ArrayList<Item> getItems(Inventory inventory) {
+        return inventory.getItems();
+    }
+
+    public boolean checkFollow(int userId) {
+        return Model.find(SubscribeSeller.class, "SelleID = ? and SubscriberID = ?", this.getId(), userId).size() == 1;
     }
 }

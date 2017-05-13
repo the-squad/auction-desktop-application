@@ -71,22 +71,6 @@
     -fx-padding: 0 0 0 10;
 }
 
-.subscribe-btn {
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-min-height: 26px;
-    -fx-min-width: 26px;
-    -fx-background-image: url("../../assets/subscribe.png");
-    -fx-background-size: 24px;
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-}
-
-.subscribe-btn--active {
-    -fx-background-image: url("../../assets/subscribe-active.png");
-}
-
 .item-bid {
     -fx-text-fill: -fx-primary-color;
     -fx-font-weight: 700;

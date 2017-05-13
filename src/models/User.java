@@ -110,8 +110,8 @@ public class User extends Model<User> {
     }
 
     public User setPhoto(BufferedImage photo) {
-        photo = ImageUtils.cropImage(photo,300, 300);
-        photo = ImageUtils.scale(photo, 300, 300, 300f/photo.getHeight(), 300f/photo.getHeight());
+        photo = ImageUtils.cropImage(photo,1, 1);
+        photo = ImageUtils.scale(photo, 600, 600, 600f/photo.getHeight(), 600f/photo.getHeight());
         this._photo = ImageUtils.bufferedImageToByteArray(photo);
         return this;
     }
@@ -140,6 +140,7 @@ public class User extends Model<User> {
         user.setName(name);
         user.setPassword(password);
         if (user.create()) {
+            new Inventory(user._id).create();
             return user;
         } else {
             return null;
@@ -166,5 +167,8 @@ public class User extends Model<User> {
         } else {
             return 1;
         }
+    }
+    public Inventory getInventory() {
+        return Model.find(Inventory.class, "SellerID = ?",this.getId()).get(0);
     }
 }

@@ -24,13 +24,19 @@
 
 package app.views;
 
+import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.components.Filter;
 import app.layouts.ScrollView;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import models.Auction;
+
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class SearchResultsPage {
@@ -41,6 +47,9 @@ public class SearchResultsPage {
     private BorderPane searchResultsPageContainer;
     private Filter filter;
     private GridView gridView;
+    private LoadingIndicator loadingIndicator;
+
+    private static Thread searchPageThread;
 
     private SearchResultsPage() {
         this.render();
@@ -52,7 +61,6 @@ public class SearchResultsPage {
 
         //Grid view
         gridView = new GridView();
-        //gridView.loadAuctionCards(25);
 
         //Search results container
         searchResultsPageContainer = new BorderPane();
@@ -66,6 +74,35 @@ public class SearchResultsPage {
 
         //Scroll pane
         searchResultsPageScrollbar = new ScrollView(searchResultsPageContainer);
+
+        //Loading indicator
+        loadingIndicator = new LoadingIndicator();
+        loadingIndicator.setLoadingMessage("Getting Auctions...");
+    }
+
+    public void loadCards(ArrayList<Auction> cards) {
+        searchResultsPageContainer.setCenter(loadingIndicator.getLoadingIndicator());
+        loadingIndicator.startRotating();
+
+        Task<String> loadCards = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                gridView.loadAuctionCards(cards, "We Couldn't Find Matching Results", userType);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                searchResultsPageContainer.setCenter(gridView.getGridView());
+                loadingIndicator.stopRotating();
+            }
+        };
+
+        if (searchPageThread == null || !searchPageThread.isAlive()) {
+            searchPageThread = new Thread(loadCards);
+            searchPageThread.start();
+        }
     }
 
     public ScrollPane getSearchResultsPage() {

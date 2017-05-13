@@ -25,6 +25,7 @@
 package app.views;
 
 import app.Navigator;
+import app.components.Filter;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -73,7 +74,15 @@ public class SearchPage {
         searchButton = new Button("Search");
         searchButton.getStyleClass().add("btn-primary");
 
-        searchButton.setOnAction(e -> Navigator.viewPage(SEARCH_RESULTS_PAGE, "Search Results"));
+        searchButton.setOnAction(e -> {
+            if (userType == BUYER) {
+                SearchResultsPage.getInstance().loadCards(currentBuyer.search(-1, -1, -1, searchField.getText()));
+            } else {
+                SearchResultsPage.getInstance().loadCards(currentSeller.search(searchField.getText()));
+            }
+            Navigator.viewPage(SEARCH_RESULTS_PAGE, "Search Results: " + searchField.getText());
+            Filter.getInstance().setSearchKeyword(searchField.getText());
+        });
 
         //Help text
         firstPart = new Text("Press");

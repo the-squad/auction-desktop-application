@@ -26,12 +26,9 @@ package app.views;
 
 import app.Navigator;
 import app.components.Header;
-import app.tabs.AuctionsTab;
 import app.tabs.ExploreTab;
-import app.tabs.FeedTab;
 import app.tabs.InventoryTab;
 import javafx.scene.layout.BorderPane;
-import models.Category;
 
 import static app.Partials.*;
 
@@ -43,9 +40,7 @@ public class HomePage extends BorderPane {
     private Header header;
 
     private ExploreTab explore;
-    private FeedTab feed;
     private InventoryTab inventory;
-    private AuctionsTab auctions;
 
     private HomePage() {
         this.render();
@@ -55,35 +50,22 @@ public class HomePage extends BorderPane {
         //Importing the header component
         header = Header.getInstance();
 
-        if (userType == BUYER) {
-            //Creating the explore tab
-            explore = ExploreTab.getInstance();
-        } else if (userType == SELLER) {
-            //Creating the inventory page
-            inventory = InventoryTab.getInstance();
-        } else { // FUTURE TODO
-            // TODO
-        }
-
         //Home page container
         homePageContainer = new BorderPane();
         homePageContainer.setTop(header.getHeader());
         homePageContainer.getStyleClass().add("home-page");
 
         if (userType == BUYER) {
+            //Creating the explore tab
+            explore = ExploreTab.getInstance();
             homePageContainer.setCenter(explore.getExploreTab());
             Navigator.setCurrentTab(EXPLORE_TAB);
         } else if (userType == SELLER) {
+            //Creating the inventory page
+            inventory = InventoryTab.getInstance();
             homePageContainer.setCenter(inventory.getInventoryTab());
             Navigator.setCurrentTab(INVENTORY_TAB);
-        } else {
-            // TODO
         }
-
-    }
-
-    public void setUserPhoto() {
-        header.setUserPhoto();
     }
 
     public void destory() {

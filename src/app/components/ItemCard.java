@@ -24,13 +24,19 @@
 
 package app.components;
 
+import app.Navigator;
+import app.views.ItemDetails;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import models.Category;
+import models.ImageUtils;
 import models.Item;
 import models.Model;
+import static app.Partials.*;
 
 public class ItemCard extends Card {
 
@@ -45,21 +51,32 @@ public class ItemCard extends Card {
     private Label itemQuantity;
 
     public ItemCard(Item item) {
-        super(item.getIamgesItem().get(0).getImage());
+        super();
         this.item = item;
         this.render();
     }
 
     private void render() {
+        //Item photo
+        photo = ImageUtils.cropAndConvertImage(item.getItemPhotos().get(0).getImage(), 250, 175);
+        photoViewer.setFill(new ImagePattern(photo));
+
         //Item name
         itemName = new Label(item.getName());
         itemName.getStyleClass().add("item-name");
+
+        itemName.setOnMouseClicked(e -> {
+            ItemDetails.getInstance().fillData(item);
+            Navigator.viewPage(ITEM_DETAILS, itemName.getText());
+        });
 
         //Item Description
         itemDescription = new Label(item.getDescription());
         itemDescription.getStyleClass().add("item-description");
         itemDescription.setWrapText(true);
+        itemDescription.setAlignment(Pos.TOP_LEFT);
         itemDescription.setMaxWidth(250);
+        itemDescription.setMinHeight(45);
         itemDescription.setMaxHeight(45);
 
         //Item category
@@ -92,5 +109,9 @@ public class ItemCard extends Card {
 
         cardDetails.getChildren().addAll(itemName, itemDescription, itemCategory, itemQuantityContainer);
         cardContainer.setBottom(cardDetails);
+    }
+
+    public BorderPane getCard() {
+        return cardContainer;
     }
 }

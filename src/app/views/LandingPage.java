@@ -502,21 +502,17 @@ public class LandingPage extends GridPane {
             @Override
             protected String call() throws Exception {
                 homePage = HomePage.getInstance();
-                homePage.setUserPhoto();
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
+                resetForms.play();
+            }
         };
-
-        //Creating a thread that triggered when the home page is rendered
-        Thread switchToHomePage = new Thread(initializingHomePage);
-        switchToHomePage.setDaemon(true);
-        switchToHomePage.start();
-
-        initializingHomePage.setOnSucceeded((WorkerStateEvent t) -> {
-            //Switching to the home page
-            Navigator.switchPage(LANDING_PAGE, HOME_PAGE);
-            resetForms.play();
-        });
+        new Thread(initializingHomePage).start();
     }
 
     public static LandingPage getInstance() {

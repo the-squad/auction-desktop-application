@@ -25,6 +25,7 @@
 package app.views;
 
 import app.Navigator;
+import app.components.AuctionCard;
 import app.components.InputField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -143,9 +144,12 @@ public class AdditionPage {
 
         selectButton.setOnAction(e -> {
             if (Objects.equals(hiddenField.getValue(), "Item")) {
+                ItemDetails.getInstance().clearDetails();
                 Navigator.viewPage(ITEM_DETAILS, "Create new item");
             } else {
                 Navigator.viewPage(AUCTION_DETAILS, "Create new auction");
+                AuctionDetails.getInstance().fillSellerItems();
+                AuctionDetails.getInstance().clearAuctionData();
             }
         });
 

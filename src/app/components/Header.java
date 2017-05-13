@@ -25,6 +25,8 @@
 package app.components;
 
 import app.Navigator;
+import app.views.NotificationsPage;
+import app.views.ProfilePage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -39,6 +41,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import models.ImageUtils;
+import models.Notification;
+import models.Seller;
+
+import java.awt.image.BufferedImage;
 
 import static app.Partials.*;
 
@@ -176,7 +182,10 @@ public class Header extends BorderPane {
         notificationsButton = new Button();
         notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
 
-        // TODO notification action
+        notificationsButton.setOnAction(e -> {
+            NotificationsPage.getInstance().fillNotifications(Notification.getUserNotifications(currentUser.getId()));
+            Navigator.viewPage(NOTIFICATIONS_PAGE, "Notifications");
+        });
 
         //Profile picture
         userInfo = new UserDetails(FIT_DATA, currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
@@ -184,6 +193,7 @@ public class Header extends BorderPane {
         userInfo.getUserDetails().setOnMouseClicked(e -> {
             if (userType == SELLER) {
                 Navigator.viewPage(PROFILE_PAGE, currentUser.getName());
+                ProfilePage.getInstance().fillUserData(currentSeller);
             } else {
                 Navigator.viewPage(ACCOUNT_SETTINGS, currentUser.getName());
             }
@@ -278,8 +288,14 @@ public class Header extends BorderPane {
         Navigator.switchTab(tabId);
     }
 
-    public void setUserPhoto() {
-        //TODO change the photo placeholder
+    public void switchTab(int tabId) {
+        Label selectedLabel;
+        if (tabId == INVENTORY_TAB)
+            selectedLabel = inventoryTab;
+        else
+            selectedLabel = auctionsTab;
+
+        this.switchTab(selectedLabel, tabId);
     }
 
     public void setPageTitle(String title) {
@@ -298,6 +314,14 @@ public class Header extends BorderPane {
         navigationTabsContainer.setCenter(null);
         navigationTabsContainer.setTop(tabsContainer);
         navigationTabsContainer.setBottom(activeTabIndicator);
+    }
+
+    public void updateUserBlock() {
+        userInfo.setUserDetails(currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
+    }
+
+    public void destroy() {
+        instance = null;
     }
 
     public static Header getInstance() {

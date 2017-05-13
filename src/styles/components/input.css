@@ -130,7 +130,7 @@
 .text-area {
     -fx-background-insets: 0;
     -fx-background-color: transparent, white, transparent, white;
-    -fx-padding: 0 0 0 10px !important;
+    -fx-padding: 0 !important;
 }
 
 .input-field--danger .text-area {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Contributors.
+ * Copyright 2017 Muhammad.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,14 @@
  * THE SOFTWARE.
  */
 
-package app.components;
+.notification {
+    -fx-padding: 10px;
+    -fx-text-fill: -fx-darker-gray-color;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
-
-public class Photo {
-
-    private Rectangle photo;
-    private int size;
-
-    public Photo(int size) {
-        this.size = size;
-        this.render();
-    }
-
-    public void render() {
-        photo = new Rectangle();
-        photo.setFill(Color.rgb(245,248,250));
-        photo.setArcWidth(4);
-        photo.setArcHeight(4);
-        photo.setHeight(size);
-        photo.setWidth(size);
-        photo.setStyle("-fx-cursor: hand");
-    }
-
-    public void setPhoto(Image image) {
-        photo.setFill(new ImagePattern(image));
-    }
-
-    public Rectangle getPhotoView() {
-        return photo;
-    }
+.notification:hover {
+    -fx-background-color: rgba(77,137,251, 0.2);
+    -fx-background-radius: 2px;
 }

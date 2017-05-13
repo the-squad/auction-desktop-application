@@ -29,7 +29,6 @@ import app.components.LoadingIndicator;
 import app.layouts.GridView;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -84,6 +83,7 @@ public class ProfilePage {
     private void render() {
         //User photo
         photoViewer = new Rectangle();
+        photoViewer.setFill(Color.rgb(245,248,250));
         photoViewer.setWidth(150);
         photoViewer.setHeight(150);
 
@@ -104,7 +104,7 @@ public class ProfilePage {
         auctionsHeadline = new Label("Auctions".toUpperCase());
         auctionsHeadline.getStyleClass().add("profile-headline");
 
-        auctionsNumber = new Label("50");
+        auctionsNumber = new Label("-");
         auctionsNumber.getStyleClass().add("profile-number");
 
         auctionContainer = new GridPane();
@@ -117,7 +117,7 @@ public class ProfilePage {
         followersHeadline = new Label("Followers".toUpperCase());
         followersHeadline.getStyleClass().add("profile-headline");
 
-        followersNumber = new Label("150");
+        followersNumber = new Label("-");
         followersNumber.getStyleClass().add("profile-number");
 
         followerContainer = new GridPane();
@@ -128,12 +128,8 @@ public class ProfilePage {
 
         //Call to action button
         callToAction = new Button("Follow");
+        callToAction.setDisable(true);
         callToAction.getStyleClass().addAll("btn-primary", "btn-profile");
-
-        callToAction.setOnAction(e -> {
-            if (userType == BUYER)
-                Navigator.switchTab(ACCOUNT_SETTINGS);
-        });
 
         //About user container
         aboutUserContainer = new GridPane();
@@ -210,25 +206,31 @@ public class ProfilePage {
         loadingIndicator.startRotating();
         profilePageContainer.setCenter(loadingIndicator.getLoadingIndicator());
 
-        if (seller.checkFollow(currentBuyer.getId()) && userType == BUYER)
-            callToAction.setText("Following");
-        else if (userType == SELLER)
+        if (userType == BUYER) {
+            if (seller.checkFollow(currentBuyer.getId()))
+                callToAction.setText("Following");
+            else
+                callToAction.setText("Follow");
+        } else {
             callToAction.setText("Edit Profile");
-        else
-            callToAction.setText("Follow");
+        }
 
         callToAction.setDisable(true);
 
         //Call to action
         callToAction.setOnAction(e -> {
-            if (callToAction.getText().equals("Follow")) {
-                currentBuyer.followSeller(seller.getId());
-                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
-                callToAction.setText("Following");
+            if (userType == BUYER) {
+                if (callToAction.getText().equals("Follow")) {
+                    currentBuyer.followSeller(seller.getId());
+                    followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                    callToAction.setText("Following");
+                } else {
+                    currentBuyer.unFollowSeller(seller.getId());
+                    followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+                    callToAction.setText("Follow");
+                }
             } else {
-                currentBuyer.unFollowSeller(seller.getId());
-                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
-                callToAction.setText("Follow");
+                Navigator.switchTab(ACCOUNT_SETTINGS);
             }
         });
 
@@ -239,37 +241,35 @@ public class ProfilePage {
                 photo = ImageUtils.cropAndConvertImage(seller.getPhoto(), 150, 150);
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                photoViewer.setFill(new ImagePattern(photo));
+                userName.setText(seller.getName());
+                auctionsNumber.setText(String.valueOf(seller.getAuctions().size()));
+                followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
+            }
         };
+        new Thread(loadingProfileData).start();
 
         //Loading profile auctions
         Task<String> loadingProfileAuctions = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                gridView.loadAuctionCards(seller.getAuctions(), "Getting Seller's Auctions");
+                gridView.loadAuctionCards(seller.getAuctions(), (userType == BUYER)? "This Seller Doesn't Have Auctions" : "You Don't Have Any Auctions", SELLER);
                 return null;
             }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                loadingIndicator.stopRotating();
+                profilePageContainer.setCenter(gridView.getGridView());
+                callToAction.setDisable(false);
+            }
         };
-
-        Thread onLoadingInfo = new Thread(loadingProfileData);
-        onLoadingInfo.setDaemon(true);
-        onLoadingInfo.start();
-
-        Thread onLoadingCards = new Thread(loadingProfileAuctions);
-        onLoadingCards.setDaemon(true);
-        onLoadingCards.start();
-
-        loadingProfileData.setOnSucceeded((WorkerStateEvent t) -> {
-            photoViewer.setFill(new ImagePattern(photo));
-            userName.setText(seller.getName());
-            auctionsNumber.setText(String.valueOf(seller.getAuctions().size()));
-            followersNumber.setText(String.valueOf(seller.getFollowersNumber()));
-        });
-
-        loadingProfileAuctions.setOnSucceeded((WorkerStateEvent t) -> {
-            loadingIndicator.stopRotating();
-            profilePageContainer.setCenter(gridView.getGridView());
-            callToAction.setDisable(false);
-        });
+        new Thread(loadingProfileAuctions).start();
     }
 
     private void clearUserData() {
