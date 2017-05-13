@@ -103,7 +103,7 @@ public class Seller extends User implements IAuctionInterface {
         inventory.deleteItem(itemID);
     }
 
-    public Item updateItemInInventory(Inventory inv ,int itemId,String name, int quantity, Category category, String description) {
+    public Item updateItemInInventory(Inventory inv ,int itemId,String name, int quantity, String description) {
         return inv.updateItem(itemId, name, quantity , description);
     }
 

@@ -63,6 +63,7 @@ public class ItemDetails {
 
     private Item newItem;
     private static Thread loadingItemThread;
+    private int itemId;
 
     private ItemDetails() {
         this.render();
@@ -94,12 +95,17 @@ public class ItemDetails {
                             Integer.parseInt(itemQuantityField.getValue()),
                             itemCategoryField.getValue(),
                             itemDescription.getValue());
-
-                    newItem.setItemPhotos(photosViewer.getUploadedImages());
                 } else {
-                    // TODO
+                    newItem = currentSeller.updateItemInInventory(currentSeller.getInventory(),
+                            itemId,
+                            itemNameField.getValue(),
+                            Integer.parseInt(itemQuantityField.getValue()),
+                            itemDescription.getValue());
+
+                    newItem.DeleteAllImages();
                 }
 
+                newItem.setItemPhotos(photosViewer.getUploadedImages());
                 InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
             }
@@ -110,7 +116,9 @@ public class ItemDetails {
         deleteItem.getStyleClass().addAll("btn-primary", "delete-btn");
 
         deleteItem.setOnAction(e -> {
-            // TODO
+            currentSeller.deleteItemFromInventory(currentSeller.getInventory(), itemId);
+            InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
+            Navigator.hidePage();
         });
 
         //Item photosViewer
@@ -178,6 +186,7 @@ public class ItemDetails {
                 category = Category.getCategories().get(item.getCategoryID()).getName();
                 quantity = String.valueOf(item.getQuantity());
                 itemImages = item.getItemPhotos();
+                itemId = item.getId();
                 return null;
             }
 
