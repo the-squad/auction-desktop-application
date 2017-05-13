@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package app.views;
 
 import app.Navigator;
@@ -45,6 +44,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static app.Partials.*;
+import models.Inventory;
 
 public class ItemDetails {
 
@@ -81,34 +81,37 @@ public class ItemDetails {
         createItem.setTranslateX(275);
 
         createItem.setOnAction(e -> {
-            if (photosViewer.getUploadedImages().size() == 0)
-                photosViewer.markAsDanger();
-            else {
-                for (Node inputField : itemDetailsForm.getChildren()) {
-                    if (inputField.getStyleClass().contains("input-field--danger"))
+            for (Node inputField : itemDetailsForm.getChildren()) {
+                    if (inputField.getStyleClass().contains("input-field--danger")) {
                         return;
+                    }
+                }
+            Inventory sellerInventory = currentSeller.getInventory();
+            sellerInventory.getItems();
+            if (createItem.getText().contains("Create")) {
+                if (photosViewer.getUploadedImages().size() == 0) {
+
+                    photosViewer.markAsDanger();
+                    return;
                 }
 
-                if (createItem.getText().contains("Create")) {
-                    newItem = currentSeller.addItemToInventory(currentSeller.getInventory(),
-                            itemNameField.getValue(),
-                            Integer.parseInt(itemQuantityField.getValue()),
-                            itemCategoryField.getValue(),
-                            itemDescription.getValue());
-                } else {
-                    newItem = currentSeller.updateItemInInventory(currentSeller.getInventory(),
+                newItem = currentSeller.addItemToInventory(sellerInventory,
+                        itemNameField.getValue(),
+                        Integer.parseInt(itemQuantityField.getValue()),
+                        itemCategoryField.getValue(),
+                        itemDescription.getValue());
+            } else {
+                    newItem = currentSeller.updateItemInInventory(sellerInventory,
                             itemId,
                             itemNameField.getValue(),
                             Integer.parseInt(itemQuantityField.getValue()),
                             itemDescription.getValue());
-
-                    newItem.DeleteAllImages();
                 }
 
                 newItem.setItemPhotos(photosViewer.getUploadedImages());
                 InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
-            }
+            
         });
 
         //Delete button
@@ -116,7 +119,9 @@ public class ItemDetails {
         deleteItem.getStyleClass().addAll("btn-primary", "delete-btn");
 
         deleteItem.setOnAction(e -> {
-            currentSeller.deleteItemFromInventory(currentSeller.getInventory(), itemId);
+            Inventory sellerInventory = currentSeller.getInventory();
+            sellerInventory.getItems();
+            currentSeller.deleteItemFromInventory(sellerInventory, itemId);
             InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
             Navigator.hidePage();
         });
@@ -128,21 +133,21 @@ public class ItemDetails {
         itemDetailsForm = new GridPane();
         itemDetailsForm.setVgap(5);
 
-        GridPane.setConstraints(itemNameField.getInputField(), 0 , 0);
-        GridPane.setConstraints(itemDescription.getParagraphField(), 0 , 1);
+        GridPane.setConstraints(itemNameField.getInputField(), 0, 0);
+        GridPane.setConstraints(itemDescription.getParagraphField(), 0, 1);
         GridPane.setConstraints(itemCategoryField.getDropdownField(), 0, 2);
         GridPane.setConstraints(itemQuantityField.getInputField(), 0, 3);
 
         itemDetailsForm.getChildren().addAll(itemNameField.getInputField(),
-                                             itemDescription.getParagraphField(),
-                                             itemCategoryField.getDropdownField(),
-                                             itemQuantityField.getInputField());
+                itemDescription.getParagraphField(),
+                itemCategoryField.getDropdownField(),
+                itemQuantityField.getInputField());
 
         //Parent container
         parentContainer = new GridPane();
         parentContainer.getStyleClass().add("card");
         parentContainer.setHgap(40);
-        parentContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT , TOP_DOWN, RIGHT_LEFT));
+        parentContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT, TOP_DOWN, RIGHT_LEFT));
         parentContainer.setMaxWidth(CARD_WIDTH + 200);
         parentContainer.setAlignment(Pos.CENTER);
 
