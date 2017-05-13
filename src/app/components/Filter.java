@@ -24,10 +24,15 @@
 
 package app.components;
 
+import app.views.SearchResultsPage;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+
 import static app.Partials.*;
 
 public class Filter {
@@ -40,6 +45,13 @@ public class Filter {
     private DropdownField auctionStatusField;
     private InputField numberOfBidsField;
 
+    private ArrayList<String> statusFieldItems;
+
+    private Double price;
+    private int auctionStatus;
+    private int bidsNumber;
+    private String searchKeyword;
+
     private Filter() {
         this.render();
     }
@@ -51,9 +63,36 @@ public class Filter {
 
         //Filter fields
         priceField = new InputField("Maximum price", TEXT, SHORT, HIDE_ERROR_MESSAGE);
-        //auctionStatusField = new DropdownField("Auction Status", SHORT, HIDE_ERROR_MESSAGE, "All", "Active", "Not started");
+
+        priceField.getInputField().getChildren().get(1).focusedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (!newValue) {
+                        this.filterSearchResults();
+                    }
+                });
+
+        statusFieldItems = new ArrayList<>();
+        statusFieldItems.add("All");
+        statusFieldItems.add("Active");
+        statusFieldItems.add("Not Active");
+        auctionStatusField = new DropdownField("Auction Status", SHORT, HIDE_ERROR_MESSAGE, statusFieldItems);
         auctionStatusField.setDefaultSelect();
+
+        auctionStatusField.getDropdownField().getChildren().get(1).focusedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (!newValue) {
+                        this.filterSearchResults();
+                    }
+                });
+
         numberOfBidsField = new InputField("Number of bidders", NUMBER, SHORT, HIDE_ERROR_MESSAGE);
+
+        numberOfBidsField.getInputField().getChildren().get(1).focusedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                    if (!newValue) {
+                        this.filterSearchResults();
+                    }
+                });
 
         //Filter container
         filterContainer = new GridPane();
@@ -71,6 +110,21 @@ public class Filter {
                                              priceField.getInputField(),
                                              auctionStatusField.getDropdownField(),
                                              numberOfBidsField.getInputField());
+    }
+
+    private void filterSearchResults() {
+        price = (priceField.getValue().length() == 0) ? -1 : Double.parseDouble(priceField.getValue());
+        auctionStatus = (auctionStatusField.getSelectedItemIndex());
+        bidsNumber = (numberOfBidsField.getValue().length() == 0) ? -1 : Integer.parseInt(numberOfBidsField.getValue());
+
+        SearchResultsPage.getInstance().loadCards(currentBuyer.search(price,
+                auctionStatus,
+                bidsNumber,
+                searchKeyword));
+    }
+
+    public void setSearchKeyword(String keyword) {
+        this.searchKeyword = keyword;
     }
 
     public GridPane getFilter() {
