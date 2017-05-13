@@ -108,7 +108,7 @@ public class AuctionView {
                 bidField.markAsDanger("Bidding rate is " + auction.getBiddingRate());
             else {
                 if (currentBuyer.bidOnAuction(this.auction, Double.parseDouble(bidField.getValue())))
-                    currentPrice.setText(String.valueOf(auction.getHighestPrice()));
+                    currentPrice.setText(String.valueOf(auction.getHighestPrice()) + "$");
                 else {
                     bidField.markAsDanger("Auction is finished!");
                     submitBid.setDisable(true);
