@@ -166,6 +166,7 @@ public class ItemDetails {
         itemNameField.clear();
         itemDescription.clear();
         itemCategoryField.clear();
+        itemCategoryField.disable(false);
         itemQuantityField.clear();
         photosViewer.resetPhotoView(EDIT_MODE);
         parentContainer.getChildren().remove(deleteItem);
@@ -199,7 +200,7 @@ public class ItemDetails {
                 itemNameField.setValue(name);
                 itemDescription.setValue(description);
                 itemCategoryField.setValue(category);
-                itemCategoryField.disable();
+                itemCategoryField.disable(true);
                 itemQuantityField.setValue(quantity);
                 photosViewer.setPhotos(itemImages);
                 parentContainer.getChildren().add(deleteItem);
