@@ -138,6 +138,7 @@ public class PhotosViewer {
     }
 
     public void setPhotos(ArrayList<Image> images) {
+        photosContainer.getChildren().remove(errorMessage);
         //Loading photos
         Task<String> loadingPhotos = new Task<String>() {
             @Override
@@ -189,10 +190,10 @@ public class PhotosViewer {
         photoViewers.clear();
         uploadedImages.clear();
         photosContainer.getChildren().clear();
+        GridPane.setConstraints(addPhoto, 0, 0);
+        GridPane.setConstraints(errorMessage, 1, 0);
         if (mode == EDIT_MODE) {
             errorMessage.setVisible(false);
-            GridPane.setConstraints(addPhoto, 0, 0);
-            GridPane.setConstraints(errorMessage, 1, 0);
             photosContainer.getChildren().addAll(addPhoto, errorMessage);
         }
     }
