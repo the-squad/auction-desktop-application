@@ -24,6 +24,7 @@
 
 package app.views;
 
+import app.components.EmptyState;
 import app.components.InputField;
 import app.components.PhotosViewer;
 import app.components.UserDetails;
@@ -65,6 +66,8 @@ public class AuctionView {
     private Button submitBid;
     private UserDetails userDetails;
     private PhotosViewer photosViewer;
+
+    private EmptyState emptyState;
 
     private static Thread loadingAuctionDataThread = null;
 
@@ -162,49 +165,64 @@ public class AuctionView {
         //Auction view scrollbar
         auctionViewContainer = new ScrollView(auctionCardContainer);
         auctionViewContainer.getScrollView().setPadding(new Insets(20));
+
+        //Empty state
+        emptyState = new EmptyState();
+        emptyState.setEmptyMessage("This Auction has been deleted or terminated");
     }
 
     public void fillAuctionData(Auction auction) {
-        this.clearAuctionData();
-        this.auction = auction;
-
-        //Loading auction details
-        Task<String> loadingAuctionData = new Task<String>() {
-            String name;
-            String description;
-            String price;
-            String sellerName;
-            BufferedImage sellerImage;
-            int sellerId;
-            ArrayList<Image> auctionImages;
-
-            @Override
-            protected String call() throws Exception {
-                name = auction.getItem().getName();
-                description = auction.getItem().getDescription();
-                price = String.valueOf(auction.getHighestPrice());
-                sellerName = auction.getSeller().getName();
-                sellerImage = auction.getSeller().getPhoto();
-                sellerId = auction.getUserID();
-                auctionImages = auction.getItem().getItemPhotos();
-                return null;
+        if (auction == null) {
+            parentContainer.setCenter(emptyState.getEmptyState());
+            parentContainer.setLeft(null);
+            parentContainer.setRight(null);
+        } else {
+            if (parentContainer.getLeft() != null || parentContainer.getRight() != null) {
+                parentContainer.setLeft(auctionDetailsContainer);
+                parentContainer.setRight(photosViewer.getPhotos());
             }
 
-            @Override
-            protected void succeeded() {
-                super.succeeded();
-                itemName.setText(name);
-                itemDescription.setText((description.length() == 0)? "There is no description..." : description);
-                currentPrice.setText(price + "$");
-                userDetails.setUserDetails(sellerName, sellerImage, sellerId);
-                photosViewer.setPhotos(auctionImages);
-                submitBid.setDisable(false);
-            }
-        };
+            this.clearAuctionData();
+            this.auction = auction;
 
-        if (loadingAuctionDataThread == null || !loadingAuctionDataThread.isAlive()) {
-            loadingAuctionDataThread = new Thread(loadingAuctionData);
-            loadingAuctionDataThread.start();
+            //Loading auction details
+            Task<String> loadingAuctionData = new Task<String>() {
+                String name;
+                String description;
+                String price;
+                String sellerName;
+                BufferedImage sellerImage;
+                int sellerId;
+                ArrayList<Image> auctionImages;
+
+                @Override
+                protected String call() throws Exception {
+                    name = auction.getItem().getName();
+                    description = auction.getItem().getDescription();
+                    price = String.valueOf(auction.getHighestPrice());
+                    sellerName = auction.getSeller().getName();
+                    sellerImage = auction.getSeller().getPhoto();
+                    sellerId = auction.getUserID();
+                    auctionImages = auction.getItem().getItemPhotos();
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                    super.succeeded();
+                    itemName.setText(name);
+                    itemDescription.setText((description.length() == 0)? "There is no description..." : description);
+                    currentPrice.setText(price + "$");
+                    userDetails.setUserDetails(sellerName, sellerImage, sellerId);
+                    photosViewer.setPhotos(auctionImages);
+                    submitBid.setDisable(false);
+                }
+            };
+
+            if (loadingAuctionDataThread == null || !loadingAuctionDataThread.isAlive()) {
+                loadingAuctionDataThread = new Thread(loadingAuctionData);
+                loadingAuctionDataThread.start();
+            }
         }
     }
 
