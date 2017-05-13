@@ -53,6 +53,13 @@ public class DropdownField extends Input {
         this.render();
     }
 
+    public DropdownField(String inputName, int inputSize, Boolean hideErrorMessage, ArrayList<String> items) {
+        super(inputName, hideErrorMessage);
+        this.items = items;
+        this.inputSize = inputSize;
+        this.render();
+    }
+
     public void render() {
         //Dropdown field
         input = new ComboBox();
