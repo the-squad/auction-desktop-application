@@ -107,6 +107,14 @@ public class Item extends Model<Item>{
         return this.images;
     }
     
+    public void DeleteAllImages() {
+        this.images = new ArrayList<>(Model.find(Image.class, "itemID = ?", this._id));
+        for (Image image : images) {
+            Model.delete(Image.class, image.getId());
+            images.remove(image);
+        }
+    }
+    
     public void setItemPhotos(ArrayList<BufferedImage> photos) {
         photos.forEach(photo -> new Image(this._id).setImage(photo).create());
     }

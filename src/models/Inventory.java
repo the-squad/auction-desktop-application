@@ -75,11 +75,13 @@ public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
         return null;
     }
     
-    public void updateItem(int itemId,String name, int quantity, Category category, String description)
+    public Item updateItem(int itemId,String name, int quantity , String description)
     {
         Item item = items.stream().filter(a -> a.getId() == itemId).findFirst().get();
-        item.setName(name).setQuantity(quantity).setCategoryID(category.getId()).setDescription(description);
-        item.save();
+        item.setName(name).setQuantity(quantity).setDescription(description);
+        if (item.save())
+            return item;
+        return null;
     }
 
     public ArrayList<Item> getItems() {
