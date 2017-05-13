@@ -190,9 +190,9 @@ public class PhotosViewer {
         photoViewers.clear();
         uploadedImages.clear();
         photosContainer.getChildren().clear();
-        GridPane.setConstraints(addPhoto, 0, 0);
-        GridPane.setConstraints(errorMessage, 1, 0);
         if (mode == EDIT_MODE) {
+            GridPane.setConstraints(addPhoto, 0, 0);
+            GridPane.setConstraints(errorMessage, 1, 0);
             errorMessage.setVisible(false);
             photosContainer.getChildren().addAll(addPhoto, errorMessage);
         }
