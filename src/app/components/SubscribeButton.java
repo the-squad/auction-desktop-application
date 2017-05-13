@@ -34,6 +34,10 @@ public class SubscribeButton {
     private Button subscribeButton;
     private Boolean userSubscribed = false;
 
+    public SubscribeButton() {
+        this.render();
+    }
+
     public SubscribeButton(int auctionId) {
         this.auctionId = auctionId;
         this.render();
@@ -59,6 +63,10 @@ public class SubscribeButton {
     public void markAsSubscribed() {
         userSubscribed = true;
         subscribeButton.getStyleClass().add("subscribe-btn--active");
+    }
+
+    public void setAuctionId(int auctionId) {
+        this.auctionId = auctionId;
     }
 
     public Button getSubscribeButton() {
