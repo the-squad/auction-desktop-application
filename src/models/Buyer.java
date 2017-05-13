@@ -129,9 +129,14 @@ public class Buyer extends User implements IAuctionInterface {
         Date today = new Date();
         if (price != -1 && status != -1 && numberOfBidders != -1) // search with all options
         {
-            if (status == 1) {
+            if (status == 0)
+            {
+                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", price,numberOfBidders);
+            }
+            else if (status == 1) {
                 statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", price, dateFormat.format(today), numberOfBidders);
-            } else {
+            }
+            else if(status == 2) {
                 statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", price, dateFormat.format(today), numberOfBidders);
             }
 
@@ -140,24 +145,27 @@ public class Buyer extends User implements IAuctionInterface {
             auctions =(ArrayList<Auction>) Model.find(Auction.class, "InitialPrice <= ?", price);
         } else if (price != -1 && status != -1 && numberOfBidders == -1) // search with price , status
         {
-            if (status == 1) {
+            if (status == 0)
+            {
+                auctions = (ArrayList<Auction>)Model.find(Auction.class, "InitialPrice <= ?", price);
+            }
+            else if (status == 1) {
                 auctions = (ArrayList<Auction>)Model.find(Auction.class, "InitialPrice <= ? AND ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
-            } else {
+            } else if(status == 2) {
                 auctions = (ArrayList<Auction>)Model.find(Auction.class, "InitialPrice <= ? AND ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", price, dateFormat.format(today));
             }
         } else if (price != -1 && status == -1 && numberOfBidders != -1) // search with price , bidders
         {
-            if (status == 1) {
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", dateFormat.format(today), numberOfBidders);
-            } else {
-                statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID where ? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate) GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", dateFormat.format(today), numberOfBidders);
-            }
-
+            statement = Model.generateQuery("SELECT * from auctions JOIN bids on auctions.ID = bids.AuctionID GROUP BY bids.UserID having COUNT(DISTINCT bids.UserID) <= ?", numberOfBidders);
         } else if (price == -1 && status != -1 && numberOfBidders == -1) // search with status only
         {
-            if (status == 1) {
+            if (status == 0)
+            {
+                auctions =(ArrayList<Auction>) Model.find(Auction.class);
+            }
+            else if (status == 1) {
                 auctions =(ArrayList<Auction>) Model.find(Auction.class, "? BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
-            } else {
+            } else if(status == 2) {
                 auctions = (ArrayList<Auction>)Model.find(Auction.class, "? NOT BETWEEN timestamp(StartDate) AND timestamp(TerminationDate)", dateFormat.format(today));
             }
         } else if (price == -1 && status == -1 && numberOfBidders != -1) // search with bidders only
