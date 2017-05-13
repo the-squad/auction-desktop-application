@@ -26,7 +26,9 @@ package app;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +66,7 @@ public class Validation {
     }
 
     public static Boolean validateTime(String time) {
-        String ePattern = "(0[0-9]|1[01]):(0[1-9]|[12345][0-9]|00) (am|pm)"; //hh:mm (am|pm) 00:00 -->11:59 am/pm
+        String ePattern = "(0[0-9]|1[01]):(0[1-9]|[12345][0-9]|00) (am|pm|AM|PM)"; //hh:mm (am|pm|AM|PM) 00:00 -->11:59 am/pm
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(time);
         return m.matches();
@@ -89,6 +91,7 @@ public class Validation {
     }
 
     public static String convertTimeTo24Hour(String time) {
+        time=time.toLowerCase();
         if (time.contains("pm")) {
             time = time.replace(" pm", "");
             int hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1)) + 12;
@@ -103,6 +106,27 @@ public class Validation {
         return null;
     }
 
+    public static ArrayList<String> convertDateToString(Date date){
+        ArrayList<String>arr=new ArrayList<>();
+        
+        SimpleDateFormat localTimeFormat = new SimpleDateFormat("hh:mm a", Locale.US);
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        
+        String startTime = localTimeFormat.format(date);
+        String startDate = localDateFormat.format(date);
+        
+        if (startTime.contains("12:")) {
+           startTime= startTime.replace("12:", "00:");
+        }
+        
+        
+        arr.add(startDate);
+        arr.add(startTime);
+        
+        
+        return arr;
+    }
+    
     public static Boolean validateAuctionTime(String StartDate, String StartTime, String TerminationDate, String TerminationTime) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
