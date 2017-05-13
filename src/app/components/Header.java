@@ -180,7 +180,9 @@ public class Header extends BorderPane {
         notificationsButton = new Button();
         notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
 
-        // TODO notification action
+        notificationsButton.setOnAction(e -> {
+            Navigator.viewPage(NOTIFICATIONS_PAGE, "Notifications");
+        });
 
         //Profile picture
         userInfo = new UserDetails(FIT_DATA, currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
