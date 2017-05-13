@@ -34,10 +34,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import models.Auction;
+import models.Notification;
+
 import static app.Partials.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class NotificationsPage {
 
@@ -47,8 +49,7 @@ public class NotificationsPage {
     private BorderPane notificationsCardContainer;
     private GridPane notificationsContainer;
     private Label headline;
-    private HashMap<Label, Integer> notificationsMap = new HashMap<>();
-    private ArrayList<Label> notifications = new ArrayList<>();
+    private ArrayList<Label> notificationsLabels = new ArrayList<>();
     private ArrayList<Rectangle> dividers = new ArrayList<>();
 
     private NotificationsPage() {
@@ -68,45 +69,57 @@ public class NotificationsPage {
         notificationsContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT, TOP_DOWN, RIGHT_LEFT));
         notificationsContainer.setMaxWidth(CARD_WIDTH);
         notificationsContainer.setTranslateY(20);
+        notificationsContainer.setStyle("-fx-max-height: 150px");
 
         GridPane.setConstraints(headline, 0, 0);
+        GridPane.setMargin(headline, new Insets(0, 0, 20, 0));
         notificationsContainer.getChildren().add(headline);
 
         //Notifications card container
         notificationsCardContainer = new BorderPane();
         notificationsCardContainer.setPadding(new Insets(0, 0, 20, 0));
         notificationsCardContainer.setCenter(notificationsContainer);
+        BorderPane.setAlignment(notificationsContainer, Pos.TOP_CENTER);
 
         notificationsPageContainer = new ScrollView(notificationsCardContainer);
-        this.fillNotifications();
     }
 
-    public void fillNotifications() {
+    public void fillNotifications(ArrayList<Notification> notifications) {
         notificationsContainer.getChildren().clear();
+        notificationsContainer.getChildren().add(headline);
 
-        for (int counter = 1; counter < 20; counter+=2) {
-            Label notification = new Label("Notification Testing");
-            notification.getStyleClass().add("notification");
-            notification.setMinWidth(CARD_WIDTH);
+        int counter = 1;
+        for (Notification notification : notifications) {
+            Label notificationLabel = new Label(notification.getNotification());
+            notificationLabel.getStyleClass().add("notification");
+            notificationLabel.setMinWidth(CARD_WIDTH);
 
             Rectangle divider = new Rectangle();
             divider.setHeight(1);
             divider.setWidth(CARD_WIDTH);
             divider.setFill(Color.rgb(144,146,165, 0.5));
 
-            //notificationsMap.put(notification, auctionId);
+            notificationLabel.setOnMouseClicked(e -> {
+                if (notification.getAuctionId() != 0) {
+                    AuctionView.getInstance().fillAuctionData(Auction.getAuction(notification.getAuctionId()));
+                    Navigator.viewPage(AUCTION_VIEW, Auction.getAuction(notification.getAuctionId()).getItem().getName());
+                } else {
+                    AuctionView.getInstance().fillAuctionData(null);
+                    Navigator.viewPage(AUCTION_VIEW, "Finished Auction");
+                }
 
-            notification.setOnMouseClicked(e -> {
-                //AuctionView.getInstance().fillAuctionData();
-                //Navigator.viewPage(AUCTION_VIEW, "");
             });
 
-            notifications.add(notification);
+            notificationsLabels.add(notificationLabel);
             dividers.add(divider);
-            GridPane.setConstraints(notification, 0, counter);
-            GridPane.setMargin(headline, new Insets(0, 0, 20, 0));
-            GridPane.setConstraints(divider, 0, counter + 1);
-            notificationsContainer.getChildren().addAll(notification, divider);
+            GridPane.setConstraints(notificationLabel, 0, counter);
+            notificationsContainer.getChildren().add(notificationLabel);
+            if (counter <= notifications.size()) {
+                GridPane.setConstraints(divider, 0, counter + 1);
+                notificationsContainer.getChildren().add(divider);
+            }
+
+            counter+=2;
         }
     }
 

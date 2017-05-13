@@ -25,6 +25,7 @@
 package app.components;
 
 import app.Navigator;
+import app.views.NotificationsPage;
 import app.views.ProfilePage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -40,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import models.ImageUtils;
+import models.Notification;
 import models.Seller;
 
 import java.awt.image.BufferedImage;
@@ -181,6 +183,7 @@ public class Header extends BorderPane {
         notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
 
         notificationsButton.setOnAction(e -> {
+            NotificationsPage.getInstance().fillNotifications(Notification.getUserNotifications(currentUser.getId()));
             Navigator.viewPage(NOTIFICATIONS_PAGE, "Notifications");
         });
 
