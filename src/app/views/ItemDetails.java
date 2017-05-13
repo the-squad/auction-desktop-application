@@ -114,7 +114,6 @@ public class ItemDetails {
                 newItem.setItemPhotos(photosViewer.getUploadedImages());
                 InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
-            
         });
 
         //Delete button
