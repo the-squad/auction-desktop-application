@@ -134,7 +134,7 @@ public class AuctionView {
         priceBlock = new TextFlow(priceHeadline, currentPrice);
 
         //Bidding field
-        bidField = new InputField("Enter your bid", NUMBER, 200);
+        bidField = new InputField("Enter your bid", DECIMAL_NUMBER, 200);
 
         submitBid = new Button("Bid");
         submitBid.setDisable(true);
@@ -175,7 +175,7 @@ public class AuctionView {
             editAuction.setTranslateY(20);
 
             editAuction.setOnAction(e -> {
-                if (Auction.checkAuctionStatus(auction.getId())) {
+                if (!Auction.checkAuctionStatus(auction.getId())) {
                     editAuction.setDisable(true);
                     editAuction.setText("Auction already started!");
                 } else {
@@ -266,7 +266,7 @@ public class AuctionView {
             Task<String> loadingAuctionData = new Task<String>() {
                 String name;
                 String description;
-                double price;
+                int price;
                 String sellerName;
                 BufferedImage sellerImage;
                 int sellerId;
@@ -276,7 +276,7 @@ public class AuctionView {
                 protected String call() throws Exception {
                     name = auction.getItem().getName();
                     description = auction.getItem().getDescription().replaceAll("\\n\\n+", "\n");
-                    price = auction.getHighestPrice();
+                    price = (int) auction.getHighestPrice();
                     sellerName = auction.getSeller().getName();
                     sellerImage = auction.getSeller().getPhoto();
                     sellerId = auction.getUserID();
@@ -311,6 +311,8 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
+        editAuction.setDisable(false);
+        editAuction.setText("Update Auction");
         photosViewer.resetPhotoView(VIEW_MODE);
     }
 
