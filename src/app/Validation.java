@@ -72,8 +72,15 @@ public class Validation {
         return m.matches();
     }
 
-    public static Boolean validateNumber(String number) {
+    public static Boolean validateIntegerNumber(String number) {
         String ePattern = "[0-9]*";  //"[1-9][0-9]*" to avoid 0 in right if we need.  
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(number);
+        return m.matches();
+    }
+
+    public static Boolean validatDecimalNumber(String number) {
+        String ePattern = "[0-9]*|[0-9]*.[0-9]*";  //"[1-9][0-9]*" to avoid 0 in right if we need.
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(number);
         return m.matches();
@@ -130,8 +137,6 @@ public class Validation {
     public static Boolean validateAuctionTime(String StartDate, String StartTime, String TerminationDate, String TerminationTime) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            System.out.println(StartDate);
-            System.out.println(TerminationDate);
             Date Start_Date = df.parse(StartDate + " " + convertTimeTo24Hour(StartTime));
             Date terminate_Date = df.parse(TerminationDate + " " +convertTimeTo24Hour(TerminationTime));
             Date today=new Date();
