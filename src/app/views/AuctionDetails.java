@@ -28,7 +28,9 @@ import app.Navigator;
 import app.Validation;
 import app.components.DropdownField;
 import app.components.EmptyState;
+import app.components.Header;
 import app.components.InputField;
+import app.tabs.AuctionsTab;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -76,9 +78,9 @@ public class AuctionDetails {
     private void render() {
         //Form fields
         auctionItemField = new DropdownField("Choose an item");
-        itemQuantityField = new InputField("Quantity", NUMBER);
-        startingPriceField = new InputField("Starting price", NUMBER);
-        biddingRangeField = new InputField("Bidding Range", NUMBER);
+        itemQuantityField = new InputField("Quantity", INTERGET_NUMBER);
+        startingPriceField = new InputField("Starting price", DECIMAL_NUMBER);
+        biddingRangeField = new InputField("Bidding Range", DECIMAL_NUMBER);
         startingDateField = new InputField("Starting day", DATE);
         startingTimeField = new InputField("Starting hour", TIME);
         endingDateField = new InputField("Ending day", DATE);
@@ -89,18 +91,21 @@ public class AuctionDetails {
         controlAuction.setTranslateX(250);
 
         controlAuction.setOnAction(e -> {
+            if (!Validation.validateAuctionTime(startingDateField.getValue(), startingTimeField.getValue(),
+                    endingDateField.getValue(), endingTimeField.getValue())) {
+                endingDateField.markAsDanger("Ending date must be after starting date");
+                endingTimeField.markAsDanger("Ending time must be after starting time");
+            } else if (controlAuction.getText().contains("Create")) {
+                if (items.get(auctionItemField.getSelectedItemIndex()).getQuantity() < Integer.parseInt(itemQuantityField.getValue()))
+                    itemQuantityField.markAsDanger("You only have " + items.get(auctionItemField.getSelectedItemIndex()).getQuantity());
+            }
+
             for (Node inputField : auctionFormContainer.getChildren()) {
                 if (inputField.getStyleClass().contains("input-field--danger"))
                     return;
             }
 
-            if (!Validation.validateAuctionTime(startingDateField.getValue(), startingTimeField.getValue(),
-                    endingDateField.getValue(), endingTimeField.getValue())) {
-                endingDateField.markAsDanger("Ending date must be after starting date");
-                endingTimeField.markAsDanger("Ending time must be after starting time");
-            } else if (items.get(auctionItemField.getSelectedItemIndex()).getQuantity() < Integer.parseInt(itemQuantityField.getValue())) {
-                itemQuantityField.markAsDanger("You only have " + items.get(auctionItemField.getSelectedItemIndex()).getQuantity());
-            } else {
+            if (controlAuction.getText().contains("Create")) {
                 currentSeller.createAuction(items.get(auctionItemField.getSelectedItemIndex()),
                         Integer.parseInt(itemQuantityField.getValue()),
                         startingDateField.getValue(),
@@ -109,8 +114,25 @@ public class AuctionDetails {
                         endingTimeField.getValue(),
                         Double.parseDouble(startingPriceField.getValue()),
                         Double.parseDouble(biddingRangeField.getValue()));
-                Navigator.hidePage();
+            } else{
+                if (!Auction.checkAuctionStatus(auction.getId())) {
+                    controlAuction.setText("Auction has started");
+                    deleteAuction.setDisable(true);
+                    controlAuction.setDisable(true);
+                } else {
+                    currentSeller.updateAuction(auction.getId(),
+                            startingDateField.getValue(),
+                            startingTimeField.getValue(),
+                            endingDateField.getValue(),
+                            endingTimeField.getValue(),
+                            Double.parseDouble(startingPriceField.getValue()),
+                            Double.parseDouble(biddingRangeField.getValue()));
+                }
             }
+
+            AuctionsTab.getInstance().loadCards(currentSeller.getAuctions());
+            Navigator.hidePage();
+            Header.getInstance().switchTab(AUCTIONS_TAB);
         });
 
         //Delete auction
@@ -119,12 +141,15 @@ public class AuctionDetails {
         deleteAuction.setTranslateX(-10);
 
         deleteAuction.setOnAction(e  -> {
-            if (Auction.checkAuctionStatus(auction.getId())) {
+            if (!Auction.checkAuctionStatus(auction.getId())) {
                 deleteAuction.setText("Auction has started");
                 deleteAuction.setDisable(true);
                 controlAuction.setDisable(true);
             } else {
-                // TODO
+                currentSeller.deleteAuction(auction.getId());
+                AuctionsTab.getInstance().loadCards(currentSeller.getAuctions());
+                Navigator.hidePage();
+                Header.getInstance().switchTab(AUCTIONS_TAB);
             }
         });
 
@@ -210,6 +235,7 @@ public class AuctionDetails {
     }
 
     public void fillAuctionData(Auction auction) {
+        clearAuctionData();
         controlAuction.setTranslateX(210);
         controlAuction.setText("Update");
         auctionFormContainer.getChildren().add(deleteAuction);
@@ -233,10 +259,10 @@ public class AuctionDetails {
                 quantity = auction.getItemQuantity();
                 price = auction.getInitialPrice();
                 biddingRate = auction.getBiddingRate();
-                startingDate = String.valueOf(auction.getStartDate());
-                //startingTime = auction.
-                endingDate = String.valueOf(auction.getTerminationDate());
-                //endingTime
+                startingDate = String.valueOf(Validation.convertDateToString(auction.getStartDate()).get(0));
+                startingTime = String.valueOf(Validation.convertDateToString(auction.getStartDate()).get(1));
+                endingDate = String.valueOf(Validation.convertDateToString(auction.getTerminationDate()).get(0));
+                endingTime = String.valueOf(Validation.convertDateToString(auction.getTerminationDate()).get(1));
                 return null;
             }
 
@@ -247,10 +273,10 @@ public class AuctionDetails {
                 itemQuantityField.setValue(String.valueOf(quantity));
                 startingPriceField.setValue(String.valueOf(price));
                 biddingRangeField.setValue(String.valueOf(biddingRate));
-                startingDateField.setValue("");
-                startingTimeField.setValue("");
-                endingDateField.setValue("");
-                endingTimeField.setValue("");
+                startingDateField.setValue(startingDate);
+                startingTimeField.setValue(startingTime);
+                endingDateField.setValue(endingDate);
+                endingTimeField.setValue(endingTime);
             }
         };
 
