@@ -105,6 +105,12 @@ public class AuctionDetails {
                     return;
             }
 
+            if (auctionItemField.getValue().length() == 0 || itemQuantityField.getValue().length() == 0 ||
+                    startingPriceField.getValue().length() == 0 || startingDateField.getValue().length() == 0 ||
+                    startingTimeField.getValue().length() == 0 || endingDateField.getValue().length() == 0 ||
+                    endingTimeField.getValue().length() == 0 || biddingRangeField.getValue().length() == 0)
+                return;
+
             if (controlAuction.getText().contains("Create")) {
                 currentSeller.createAuction(items.get(auctionItemField.getSelectedItemIndex()),
                         Integer.parseInt(itemQuantityField.getValue()),
