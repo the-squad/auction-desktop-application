@@ -42,7 +42,7 @@ public class Seller extends User implements IAuctionInterface {
     private ArrayList<Auction> auctions;
 
     public Auction createAuction(Item item, int ItemQuantity, String StartDate, String StartTime,
-            String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+                                 String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
         if (item.getQuantity() < ItemQuantity) {
             return null;
         }
@@ -56,7 +56,6 @@ public class Seller extends User implements IAuctionInterface {
             item.setQuantity(item.getQuantity() - ItemQuantity).save();
             Auction auction = new Auction(this.getId(), item.getId(), ItemQuantity, terminationDate, InitialPrice, BidRate).setStartDate(startDate);
             if (auction.create()) {
-                this.auctions.add(auction);
                 return auction;
             }
         } catch (ParseException e) {
@@ -78,10 +77,10 @@ public class Seller extends User implements IAuctionInterface {
     }
 
     public void updateAuction(int auctionID , String StartDate, String StartTime,
-        String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
-        
+                              String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+
         Auction auc = auctions.stream().filter(p -> p.getId() == auctionID).findFirst().get();
-        
+
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
             Date start_Date = df.parse(StartDate + " " + Validation.convertTimeTo24Hour(StartTime));
@@ -90,7 +89,7 @@ public class Seller extends User implements IAuctionInterface {
 
             auc.save();
         } catch (ParseException e) {
-             Logger.getGlobal().log(Level.WARNING, e.getMessage(), e);
+            Logger.getGlobal().log(Level.WARNING, e.getMessage(), e);
         }
 
     }
@@ -147,12 +146,12 @@ public class Seller extends User implements IAuctionInterface {
         }
         return auctions;
     }
-    
+
     public ArrayList<Item> getItems(Inventory inventory)
     {
         return inventory.getItems();
     }
-    
+
     public boolean checkFollow(int userId)
     {
         return Model.find(SubscribeSeller.class , "SelleID = ? and SubscriberID = ?" ,this.getId() , userId).size() == 1;
