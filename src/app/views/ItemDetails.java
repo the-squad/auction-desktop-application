@@ -93,7 +93,6 @@ public class ItemDetails {
 
             if (createItem.getText().contains("Create")) {
                 if (photosViewer.getUploadedImages().size() == 0) {
-
                     photosViewer.markAsDanger();
                     return;
                 }

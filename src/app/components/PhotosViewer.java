@@ -190,12 +190,14 @@ public class PhotosViewer {
         uploadedImages.clear();
         photosContainer.getChildren().clear();
         if (mode == EDIT_MODE) {
-            photosContainer.getChildren().add(addPhoto);
+            errorMessage.setVisible(false);
+            GridPane.setConstraints(addPhoto, 0, 0);
+            GridPane.setConstraints(errorMessage, 1, 0);
+            photosContainer.getChildren().addAll(addPhoto, errorMessage);
         }
     }
 
     private void addPhoto() throws IOException {
-        photosContainer.getChildren().remove(errorMessage);
         choosenFile = fileChooser.showOpenDialog(null);
 
         if (choosenFile != null) {
@@ -232,6 +234,7 @@ public class PhotosViewer {
             GridPane.setConstraints(newPhoto.getPhotoView(), photoViewers.size(), 0);
             GridPane.setConstraints(addPhoto, photoViewers.size() + 1, 0);
             photosContainer.getChildren().add(newPhoto.getPhotoView());
+            photosContainer.getChildren().remove(errorMessage);
         }
     }
 
