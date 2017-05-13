@@ -89,6 +89,7 @@ public class Validation {
     }
 
     public static String convertTimeTo24Hour(String time) {
+        time=time.toLowerCase();
         if (time.contains("pm")) {
             time = time.replace(" pm", "");
             int hour = Integer.parseInt(time.charAt(0) + "" + time.charAt(1)) + 12;
