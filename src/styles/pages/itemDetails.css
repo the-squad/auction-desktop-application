@@ -34,6 +34,15 @@ THE SOFTWARE.
     -fx-text-fill: #fff;
 }
 
+.delete-btn {
+    -fx-background-color: -fx-danger-color;
+}
+
+.delete-btn:hover {
+    -fx-background-color: -fx-danger-color;
+    -fx-effect: innershadow(one-pass-box, rgba(0, 0, 0, 0.3), 0, 0, 0, -3) !important;
+}
+
 .error-message {
     -fx-max-width: 300px;
     -fx-text-fill: -fx-danger-color;

@@ -117,6 +117,18 @@ public class DropdownField extends Input {
         return (String) input.getValue();
     }
 
+    public void setValue(String value) {
+        input.setValue(value);
+    }
+
+    public void clear() {
+        input.setValue("");
+    }
+
+    public void disable() {
+        input.setDisable(true);
+    }
+
     public void setDefaultSelect() {
         input.getSelectionModel().selectFirst();
     }

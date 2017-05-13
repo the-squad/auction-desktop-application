@@ -337,7 +337,7 @@ public class LandingPage extends GridPane {
         }));
 
         //TESTING PURPOSING ONLY
-        emailField.setValue("tarek.buyer@firefly.com");
+        emailField.setValue("tarek.seller@firefly.com");
         passwordField.setValue("Firefly101");
         callToActionButton.fire();
     }

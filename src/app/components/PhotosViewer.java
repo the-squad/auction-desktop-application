@@ -184,10 +184,13 @@ public class PhotosViewer {
         return uploadedImages;
     }
 
-    public void resetPhotoView() {
+    public void resetPhotoView(int mode) {
         currentPhotoViewer.setFill(Color.rgb(245,248,250));
         photoViewers.clear();
         photosContainer.getChildren().clear();
+        if (mode == EDIT_MODE) {
+            photosContainer.getChildren().add(addPhoto);
+        }
     }
 
     private void addPhoto() throws IOException {
