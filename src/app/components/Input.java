@@ -32,6 +32,7 @@ import static app.Partials.SHOW_ERROR_MESSAGE;
 class Input {
 
     private final String inputName;
+    private int inputSize;
     private Boolean hideErrorMessage = SHOW_ERROR_MESSAGE;
 
     GridPane inputFieldContainer;
@@ -39,8 +40,9 @@ class Input {
     private Label errorMessage;
 
 
-    Input(String inputName) {
+    Input(String inputName, int inputSize) {
         this.inputName = inputName;
+        this.inputSize = inputSize;
         this.render();
     }
 
@@ -59,11 +61,12 @@ class Input {
         errorMessage = new Label("Please enter a valid mail");
         errorMessage.getStyleClass().add("error-message");
         errorMessage.setWrapText(true);
-        //FIXME
+        errorMessage.setMaxWidth(inputSize);
         errorMessage.setVisible(false);
 
         //Adding to the grid pane
         inputFieldContainer = new GridPane();
+        inputFieldContainer.setMaxWidth(inputSize);
         inputFieldContainer.getStyleClass().add("input-field");
 
         GridPane.setConstraints(inputLabel, 0, 0);

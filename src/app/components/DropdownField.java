@@ -42,12 +42,12 @@ public class DropdownField extends Input {
     private int index;
 
     public DropdownField(String inputName) {
-        super(inputName);
+        super(inputName, NORMAL);
         this.render();
     }
 
     public DropdownField(String inputName, ArrayList<String> items) {
-        super(inputName);
+        super(inputName, NORMAL);
         this.items = items;
 
         this.render();

@@ -24,6 +24,7 @@
 
 package app.views;
 
+import app.components.EmptyState;
 import app.components.InputField;
 import app.components.PhotosViewer;
 import app.components.UserDetails;
@@ -42,6 +43,7 @@ import models.Auction;
 import models.Image;
 
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static app.Partials.*;
@@ -66,6 +68,9 @@ public class AuctionView {
     private UserDetails userDetails;
     private PhotosViewer photosViewer;
 
+    private EmptyState emptyState;
+    private DecimalFormat decimalFormat;
+
     private static Thread loadingAuctionDataThread = null;
 
     private AuctionView() {
@@ -89,6 +94,9 @@ public class AuctionView {
         priceHeadline.getStyleClass().add("price-headline");
 
         //Current bid
+        decimalFormat = new DecimalFormat("#");
+        decimalFormat.setMaximumFractionDigits(2);
+
         currentPrice = new Text();
         currentPrice.getStyleClass().add("auction-bid");
 
@@ -99,17 +107,18 @@ public class AuctionView {
 
         submitBid = new Button("Bid");
         submitBid.setDisable(true);
-        submitBid.getStyleClass().add("btn-primary");
+        submitBid.getStyleClass().addAll("btn-primary", "bid-btn");
         
         submitBid.setOnAction(e -> {
             if (Double.parseDouble(bidField.getValue()) < auction.getHighestPrice())
                 bidField.markAsDanger("Enter a higher number!");
-            else if ((Double.parseDouble(bidField.getValue()) + auction.getBiddingRate() ) < auction.getHighestPrice())
+            else if (Double.parseDouble(bidField.getValue()) < auction.getHighestPrice() + auction.getBiddingRate())
                 bidField.markAsDanger("Bidding rate is " + auction.getBiddingRate());
             else {
-                if (currentBuyer.bidOnAuction(this.auction, Double.parseDouble(bidField.getValue())))
-                    currentPrice.setText(String.valueOf(auction.getHighestPrice()));
-                else {
+                if (currentBuyer.bidOnAuction(this.auction, Double.parseDouble(bidField.getValue()))) {
+                    currentPrice.setText(decimalFormat.format(auction.getHighestPrice()) + "$");
+                    bidField.clear();
+                } else {
                     bidField.markAsDanger("Auction is finished!");
                     submitBid.setDisable(true);
                 }
@@ -136,9 +145,9 @@ public class AuctionView {
         auctionDetailsContainer.setMaxWidth(300);
 
         GridPane.setConstraints(itemName, 0 ,0);
-        GridPane.setConstraints(itemDescription, 0 , 1);
-        GridPane.setConstraints(priceBlock, 0, 2);
-        GridPane.setConstraints(userDetails.getUserDetails(), 0, 3);
+        GridPane.setConstraints(userDetails.getUserDetails(), 0, 1);
+        GridPane.setConstraints(itemDescription, 0 , 2);
+        GridPane.setConstraints(priceBlock, 0, 3);
         GridPane.setConstraints(biddingBlock, 0, 4);
 
         auctionDetailsContainer.getChildren().addAll(itemName,
@@ -162,49 +171,64 @@ public class AuctionView {
         //Auction view scrollbar
         auctionViewContainer = new ScrollView(auctionCardContainer);
         auctionViewContainer.getScrollView().setPadding(new Insets(20));
+
+        //Empty state
+        emptyState = new EmptyState();
+        emptyState.setEmptyMessage("This Auction has been deleted or terminated");
     }
 
     public void fillAuctionData(Auction auction) {
-        this.clearAuctionData();
-        this.auction = auction;
-
-        //Loading auction details
-        Task<String> loadingAuctionData = new Task<String>() {
-            String name;
-            String description;
-            String price;
-            String sellerName;
-            BufferedImage sellerImage;
-            int sellerId;
-            ArrayList<Image> auctionImages;
-
-            @Override
-            protected String call() throws Exception {
-                name = auction.getItem().getName();
-                description = auction.getItem().getDescription();
-                price = String.valueOf(auction.getHighestPrice());
-                sellerName = auction.getSeller().getName();
-                sellerImage = auction.getSeller().getPhoto();
-                sellerId = auction.getUserID();
-                auctionImages = auction.getItem().getItemPhotos();
-                return null;
+        if (auction == null) {
+            parentContainer.setCenter(emptyState.getEmptyState());
+            parentContainer.setLeft(null);
+            parentContainer.setRight(null);
+        } else {
+            if (parentContainer.getLeft() != null || parentContainer.getRight() != null) {
+                parentContainer.setLeft(auctionDetailsContainer);
+                parentContainer.setRight(photosViewer.getPhotos());
             }
 
-            @Override
-            protected void succeeded() {
-                super.succeeded();
-                itemName.setText(name);
-                itemDescription.setText((description.length() == 0)? "There is no description..." : description);
-                currentPrice.setText(price + "$");
-                userDetails.setUserDetails(sellerName, sellerImage, sellerId);
-                photosViewer.setPhotos(auctionImages);
-                submitBid.setDisable(false);
-            }
-        };
+            this.clearAuctionData();
+            this.auction = auction;
 
-        if (loadingAuctionDataThread == null || !loadingAuctionDataThread.isAlive()) {
-            loadingAuctionDataThread = new Thread(loadingAuctionData);
-            loadingAuctionDataThread.start();
+            //Loading auction details
+            Task<String> loadingAuctionData = new Task<String>() {
+                String name;
+                String description;
+                double price;
+                String sellerName;
+                BufferedImage sellerImage;
+                int sellerId;
+                ArrayList<Image> auctionImages;
+
+                @Override
+                protected String call() throws Exception {
+                    name = auction.getItem().getName();
+                    description = auction.getItem().getDescription();
+                    price = auction.getHighestPrice();
+                    sellerName = auction.getSeller().getName();
+                    sellerImage = auction.getSeller().getPhoto();
+                    sellerId = auction.getUserID();
+                    auctionImages = auction.getItem().getItemPhotos();
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                    super.succeeded();
+                    itemName.setText(name);
+                    itemDescription.setText((description.length() == 0)? "There is no description..." : description);
+                    currentPrice.setText(decimalFormat.format(price) + "$");
+                    userDetails.setUserDetails(sellerName, sellerImage, sellerId);
+                    photosViewer.setPhotos(auctionImages);
+                    submitBid.setDisable(false);
+                }
+            };
+
+            if (loadingAuctionDataThread == null || !loadingAuctionDataThread.isAlive()) {
+                loadingAuctionDataThread = new Thread(loadingAuctionData);
+                loadingAuctionDataThread.start();
+            }
         }
     }
 

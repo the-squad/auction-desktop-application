@@ -62,7 +62,7 @@ public class Filter {
         headline.getStyleClass().add("headline--category");
 
         //Filter fields
-        priceField = new InputField("Maximum price", TEXT, SHORT, HIDE_ERROR_MESSAGE);
+        priceField = new InputField("Maximum price", NUMBER, SHORT, HIDE_ERROR_MESSAGE);
 
         priceField.getInputField().getChildren().get(1).focusedProperty().addListener(
                 (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {

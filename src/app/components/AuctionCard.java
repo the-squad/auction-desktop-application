@@ -56,6 +56,7 @@ public class AuctionCard extends Card {
     private UserDetails userDetails;
 
     private Boolean userSubscribed;
+    private DecimalFormat decimalFormat;
 
     public AuctionCard(int viewType, Auction auction) {
         super();
@@ -128,9 +129,9 @@ public class AuctionCard extends Card {
         }
 
         //Current bid
-        DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(2);
-        currentBid = new Label(df.format(auction.getHighestPrice()));
+        decimalFormat = new DecimalFormat("#");
+        decimalFormat.setMaximumFractionDigits(2);
+        currentBid = new Label(decimalFormat.format(auction.getHighestPrice()) + "$");
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status

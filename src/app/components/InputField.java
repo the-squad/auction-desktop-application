@@ -41,13 +41,13 @@ public class InputField extends Input {
     private TextField input;
 
     public InputField(String inputName, int inputType) {
-        super(inputName);
+        super(inputName, NORMAL);
         this.inputType = inputType;
         this.render();
     }
 
     public InputField(String inputName, int inputType, int inputSize) {
-        super(inputName);
+        super(inputName, inputSize);
         this.inputType = inputType;
         this.inputSize = inputSize;
         this.render();
@@ -123,7 +123,7 @@ public class InputField extends Input {
                 errorMessage = "Time format should be HH:MM AM/PM";
             } else {
                 validationResult = Validation.validateNumber(this.getValue());
-                errorMessage = "Letters and special characters aren't allowed";
+                errorMessage = "Only number allowed";
             }
         }
 
