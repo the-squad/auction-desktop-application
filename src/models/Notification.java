@@ -57,6 +57,10 @@ public class Notification extends Model<Notification> {
         return _status;
     }
 
+    public String getNotification() {
+        return notificationString;
+    }
+
     public static ArrayList<Notification> getNewBids(int userId) {
         try {
             String Query = "SELECT * FROM (SELECT `notifications`.`ID`, `notifications`.`auctionId`,\n"
