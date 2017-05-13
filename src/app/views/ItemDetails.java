@@ -80,15 +80,15 @@ public class ItemDetails {
         controlItem.setTranslateX(275);
 
         controlItem.setOnAction(e -> {
+            if (itemNameField.getValue().length() == 0 || itemCategoryField.getValue().length() == 0 ||
+                    itemQuantityField.getValue().length() == 0)
+                return;
+            
             for (Node inputField : itemDetailsForm.getChildren()) {
                     if (inputField.getStyleClass().contains("input-field--danger")) {
                         return;
                     }
             }
-
-            if (itemNameField.getValue().length() == 0 || itemCategoryField.getValue().length() == 0 ||
-                    itemQuantityField.getValue().length() == 0)
-                return;
 
             sellerInventory.getItems();
 

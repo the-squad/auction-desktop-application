@@ -91,6 +91,12 @@ public class AuctionDetails {
         controlAuction.setTranslateX(250);
 
         controlAuction.setOnAction(e -> {
+            if (auctionItemField.getValue().length() == 0 || itemQuantityField.getValue().length() == 0 ||
+                    startingPriceField.getValue().length() == 0 || startingDateField.getValue().length() == 0 ||
+                    startingTimeField.getValue().length() == 0 || endingDateField.getValue().length() == 0 ||
+                    endingTimeField.getValue().length() == 0 || biddingRangeField.getValue().length() == 0)
+                return;
+            
             if (!Validation.validateAuctionTime(startingDateField.getValue(), startingTimeField.getValue(),
                     endingDateField.getValue(), endingTimeField.getValue())) {
                 endingDateField.markAsDanger("Ending date must be after starting date");
@@ -104,12 +110,6 @@ public class AuctionDetails {
                 if (inputField.getStyleClass().contains("input-field--danger"))
                     return;
             }
-
-            if (auctionItemField.getValue().length() == 0 || itemQuantityField.getValue().length() == 0 ||
-                    startingPriceField.getValue().length() == 0 || startingDateField.getValue().length() == 0 ||
-                    startingTimeField.getValue().length() == 0 || endingDateField.getValue().length() == 0 ||
-                    endingTimeField.getValue().length() == 0 || biddingRangeField.getValue().length() == 0)
-                return;
 
             if (controlAuction.getText().contains("Create")) {
                 currentSeller.createAuction(items.get(auctionItemField.getSelectedItemIndex()),
