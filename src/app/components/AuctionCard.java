@@ -36,6 +36,7 @@ import javafx.scene.paint.ImagePattern;
 import models.*;
 
 import static app.Partials.*;
+import java.text.DecimalFormat;
 
 import java.util.Objects;
 
@@ -127,7 +128,9 @@ public class AuctionCard extends Card {
         }
 
         //Current bid
-        currentBid = new Label(Double.toString(auction.getHighestPrice()));
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(2);
+        currentBid = new Label(df.format(auction.getHighestPrice()));
         currentBid.getStyleClass().add("item-bid");
 
         //Auction status
