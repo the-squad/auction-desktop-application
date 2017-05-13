@@ -64,7 +64,7 @@ public class Validation {
     }
 
     public static Boolean validateTime(String time) {
-        String ePattern = "(0[0-9]|1[01]):(0[1-9]|[12345][0-9]|00) (am|pm)"; //hh:mm (am|pm) 00:00 -->11:59 am/pm
+        String ePattern = "(0[0-9]|1[01]):(0[1-9]|[12345][0-9]|00) (am|pm|AM|PM)"; //hh:mm (am|pm|AM|PM) 00:00 -->11:59 am/pm
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(time);
         return m.matches();
