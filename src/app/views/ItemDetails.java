@@ -63,9 +63,11 @@ public class ItemDetails {
 
     private Item newItem;
     private static Thread loadingItemThread;
+    private Inventory sellerInventory;
     private int itemId;
 
     private ItemDetails() {
+        sellerInventory = currentSeller.getInventory();
         this.render();
     }
 
@@ -86,8 +88,9 @@ public class ItemDetails {
                         return;
                     }
                 }
-            Inventory sellerInventory = currentSeller.getInventory();
+
             sellerInventory.getItems();
+
             if (createItem.getText().contains("Create")) {
                 if (photosViewer.getUploadedImages().size() == 0) {
 
@@ -119,7 +122,6 @@ public class ItemDetails {
         deleteItem.getStyleClass().addAll("btn-primary", "delete-btn");
 
         deleteItem.setOnAction(e -> {
-            Inventory sellerInventory = currentSeller.getInventory();
             sellerInventory.getItems();
             currentSeller.deleteItemFromInventory(sellerInventory, itemId);
             InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
