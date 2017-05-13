@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2017 at 12:41 AM
+-- Generation Time: May 14, 2017 at 01:02 AM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.5.30
 
@@ -19,6 +19,64 @@ SET time_zone = "+00:00";
 --
 -- Database: `project-firefly`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNotifyOnStart` ()  NO SQL
+BEGIN
+DECLARE v_auction_ID INT;
+DECLARE cursor1 CURSOR FOR (SELECT auctions.ID FROM `auctions` WHERE auctions.StartDate <= CURRENT_TIMESTAMP);
+OPEN cursor1;
+read_loop: LOOP
+	FETCH cursor1 INTO v_auction_ID;
+    DELETE FROM notifications WHERE notifications.status = '2' AND notifications.auctionId = v_auction_ID;
+    INSERT INTO notifications (`auctionId`,`status`) VALUES (v_auction_ID , '2');
+ END LOOP read_loop;
+CLOSE cursor1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdatingItemState` ()  BEGIN
+DECLARE v_auction_ID INT;
+DECLARE v_auction_ItemID INT;
+DECLARE v_auction_ItemQuantity INT;
+DECLARE v_auction_highestBidder INT;
+DECLARE inverntory_ID INT;
+DECLARE item_id int;
+DECLARE imag_item mediumblob;
+DECLARE cursor1 CURSOR FOR (SELECT auctions.ID,auctions.ItemID, auctions.ItemQuantity,(SELECT bids.UserID FROM bids WHERE bids.AuctionID=auctions.ID ORDER BY bids.Price DESC LIMIT 1) AS `highestBidder` FROM `auctions` WHERE TerminationDate < CURRENT_TIMESTAMP);
+OPEN cursor1;
+read_loop: LOOP
+	FETCH cursor1 INTO v_auction_ID,v_auction_ItemID, v_auction_ItemQuantity, v_auction_highestBidder;
+      
+IF v_auction_highestBidder is null THEN
+    UPDATE items set items.Quantity = items.Quantity + v_auction_ItemQuantity WHERE items.ID = v_auction_ItemID;
+    else
+    select getinv(v_auction_highestBidder) into inverntory_ID;
+    INSERT INTO `items`(InventoryID, CategoryID, Name, Quantity, Description)
+    SELECT  inverntory_ID, `CategoryID`, `Name`, v_auction_ItemQuantity , `Description` FROM items WHERE items.ID = v_auction_ItemID;
+    SELECT MAX(id) INTO item_id FROM items WHERE items.InventoryID = inverntory_ID;
+    INSERT INTO `notifications`(`itemId`, `status`) VALUES (item_id , '0');
+    SELECT`images`.`Image` into imag_item FROM images WHERE images.ItemID = v_auction_ItemID LIMIT 1;
+    INSERT INTO `images`(`ItemID`, `Image`) VALUES (item_id,imag_item);
+    END IF;
+    DELETE FROM auctions WHERE auctions.ID = v_auction_ID;
+ END LOOP read_loop;
+CLOSE cursor1;
+END$$
+
+--
+-- Functions
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `getinv` (`id` INT(200) UNSIGNED) RETURNS INT(200) UNSIGNED NO SQL
+BEGIN
+DECLARE invid INT;
+SELECT inventories.ID INTO invid from inventories JOIN users ON inventories.SellerID = users.ID WHERE users.ID = id;
+RETURN invid;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -63,6 +121,17 @@ CREATE TABLE `bids` (
   `Price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Triggers `bids`
+--
+DELIMITER $$
+CREATE TRIGGER `AddBidNotify` AFTER INSERT ON `bids` FOR EACH ROW BEGIN
+	DELETE FROM notifications WHERE notifications.auctionId = NEW.AuctionID and status = '1';
+    INSERT INTO notifications(`auctionId`,`status`) VALUES (NEW.AuctionID , '1');
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -73,6 +142,20 @@ CREATE TABLE `categories` (
   `ID` int(11) NOT NULL,
   `Name` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`ID`, `Name`) VALUES
+(1, 'All'),
+(2, 'Appliances'),
+(3, 'Automotive Parts'),
+(4, 'Books'),
+(5, 'Computers'),
+(6, 'Electronics'),
+(7, 'Smart Phones'),
+(8, 'Smart Watches');
 
 -- --------------------------------------------------------
 
@@ -111,6 +194,19 @@ CREATE TABLE `items` (
   `Quantity` int(11) NOT NULL,
   `Description` varchar(5000) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `ID` int(11) NOT NULL,
+  `auctionId` int(11) DEFAULT NULL,
+  `itemId` int(11) DEFAULT NULL,
+  `status` enum('0','1','2') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -243,6 +339,14 @@ ALTER TABLE `items`
   ADD KEY `FK_Catagory_item` (`CategoryID`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `auctionID_FK` (`auctionId`),
+  ADD KEY `ItemId_FK` (`itemId`);
+
+--
 -- Indexes for table `seller_reports`
 --
 ALTER TABLE `seller_reports`
@@ -287,7 +391,7 @@ ALTER TABLE `user_types`
 -- AUTO_INCREMENT for table `auctions`
 --
 ALTER TABLE `auctions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `auction_reports`
 --
@@ -297,27 +401,32 @@ ALTER TABLE `auction_reports`
 -- AUTO_INCREMENT for table `bids`
 --
 ALTER TABLE `bids`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=448;
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `inventories`
 --
 ALTER TABLE `inventories`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 --
 -- AUTO_INCREMENT for table `seller_reports`
 --
@@ -327,12 +436,12 @@ ALTER TABLE `seller_reports`
 -- AUTO_INCREMENT for table `subscribe_auctions`
 --
 ALTER TABLE `subscribe_auctions`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `subscribe_sellers`
 --
 ALTER TABLE `subscribe_sellers`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -388,6 +497,13 @@ ALTER TABLE `items`
   ADD CONSTRAINT `FK_InventoryId_item` FOREIGN KEY (`InventoryID`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `ItemId_FK` FOREIGN KEY (`itemId`) REFERENCES `items` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auctionID_FK` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `seller_reports`
 --
 ALTER TABLE `seller_reports`
@@ -413,6 +529,17 @@ ALTER TABLE `subscribe_sellers`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `FK_UserType` FOREIGN KEY (`UserTypeID`) REFERENCES `user_types` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `TerminateAuction` ON SCHEDULE EVERY 1 SECOND STARTS '2017-05-14 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+call UpdatingItemState();
+call AddNotifyOnStart();
+END$$
+
+DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
