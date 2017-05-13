@@ -79,6 +79,7 @@ public class App extends Application {
         cssFiles.add("categoriesPanel");
         cssFiles.add("selectors");
         cssFiles.add("sellerDetails");
+        cssFiles.add("subscribeButton");
 
         return cssFiles;
     }

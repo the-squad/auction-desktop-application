@@ -22,62 +22,18 @@
  * THE SOFTWARE.
  */
 
-.card {
-    -fx-background-color: #fff;
-    -fx-background-radius: 5px;
-    -fx-border: 0;
-    -fx-effect: dropshadow(gaussian , rgba(0, 0, 0, 0.1), 0, 1, 1, 1);
-}
-
-.small-card {
-    -fx-min-width: 250px;
-    -fx-max-width: 250px;
-    -fx-max-height: 200px;
-}
-
-.item-name {
-    -fx-text-fill: -fx-darker-gray-color;
-    -fx-font-weight: 700;
-    -fx-font-size: 20px;
+.subscribe-btn {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
     -fx-cursor: hand;
+    -fx-min-height: 26px;
+    -fx-min-width: 26px;
+    -fx-background-image: url("../../assets/subscribe.png");
+    -fx-background-size: 24px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
 }
 
-.item-name:hover {
-    -fx-underline: true;
-}
-
-.item-description {
-    -fx-text-fill: -fx-dark-gray-color;
-    -fx-font-size: 13px;
-    -fx-wrap-text: true;
-    -fx-max-height: 45px;
-}
-
-.item-category {
-    -fx-text-fill: -fx-dark-gray-color;
-    -fx-font-size: 13px;
-    -fx-font-weight: 700;
-}
-
-.item-quantity-headline {
-    -fx-text-fill: -fx-medium-gray-color;
-    -fx-font-size: 12px;
-}
-
-.item-quantity {
-    -fx-text-fill: -fx-primary-color;
-    -fx-font-size: 20px;
-    -fx-font-weight: 700;
-    -fx-padding: 0 0 0 10;
-}
-
-.item-bid {
-    -fx-text-fill: -fx-primary-color;
-    -fx-font-weight: 700;
-    -fx-font-size: 19px;
-}
-
-.auction-status {
-    -fx-text-fill: -fx-medium-gray-color;
-    -fx-font-size: 10px;
+.subscribe-btn--active {
+    -fx-background-image: url("../../assets/subscribe-active.png");
 }
