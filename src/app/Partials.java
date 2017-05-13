@@ -35,8 +35,9 @@ public class Partials {
     public static int PASSWORD = 2;
     public static int DATE = 3;
     public static int TIME = 4;
-    public static int ADDRESS = 5;
-    public static int NUMBER = 6;
+    public static int PHONE_NUMBER = 5;
+    public static int INTERGET_NUMBER = 6;
+    public static int DECIMAL_NUMBER = 7;
 
     public static int BUYER = 3;
     public static int SELLER = 2;
@@ -60,13 +61,6 @@ public class Partials {
     public static int ADDITION_PAGE = 12;
     public static int ITEM_DETAILS = 13;
     public static int AUCTION_DETAILS = 14;
-
-    public static int AUCTION_CARD = 0;
-    public static int ITEM_CARD = 1;
-
-    //Background color
-    public static int GRAY = 0;
-    public static int WHITE = 1;
 
     //Input field sizes
     public static int SHORT = 175;

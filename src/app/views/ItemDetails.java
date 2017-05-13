@@ -24,10 +24,7 @@
 package app.views;
 
 import app.Navigator;
-import app.components.DropdownField;
-import app.components.InputField;
-import app.components.ParagraphField;
-import app.components.PhotosViewer;
+import app.components.*;
 import app.tabs.InventoryTab;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -58,7 +55,7 @@ public class ItemDetails {
     private DropdownField itemCategoryField;
     private InputField itemQuantityField;
     private PhotosViewer photosViewer;
-    private Button createItem;
+    private Button controlItem;
     private Button deleteItem;
 
     private Item newItem;
@@ -76,13 +73,13 @@ public class ItemDetails {
         itemNameField = new InputField("Item Name", TEXT);
         itemDescription = new ParagraphField("Item Description");
         itemCategoryField = new DropdownField("Item Category", new ArrayList<String>(Category.getCategories().stream().map(Category::getName).collect(Collectors.toList())));
-        itemQuantityField = new InputField("Item Quantity", NUMBER);
+        itemQuantityField = new InputField("Item Quantity", DECIMAL_NUMBER);
 
-        createItem = new Button("Create Item");
-        createItem.getStyleClass().add("btn-primary");
-        createItem.setTranslateX(275);
+        controlItem = new Button("Create Item");
+        controlItem.getStyleClass().add("btn-primary");
+        controlItem.setTranslateX(275);
 
-        createItem.setOnAction(e -> {
+        controlItem.setOnAction(e -> {
             for (Node inputField : itemDetailsForm.getChildren()) {
                     if (inputField.getStyleClass().contains("input-field--danger")) {
                         return;
@@ -91,7 +88,7 @@ public class ItemDetails {
 
             sellerInventory.getItems();
 
-            if (createItem.getText().contains("Create")) {
+            if (controlItem.getText().contains("Create")) {
                 if (photosViewer.getUploadedImages().size() == 0) {
                     photosViewer.markAsDanger();
                     return;
@@ -113,11 +110,12 @@ public class ItemDetails {
                 newItem.setItemPhotos(photosViewer.getUploadedImages());
                 InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
+                Header.getInstance().switchTab(INVENTORY_TAB);
         });
 
         //Delete button
         deleteItem = new Button("Delete");
-        deleteItem.getStyleClass().addAll("btn-primary", "delete-btn");
+        deleteItem.getStyleClass().addAll("btn-primary", "danger-btn");
 
         deleteItem.setOnAction(e -> {
             sellerInventory.getItems();
@@ -153,10 +151,10 @@ public class ItemDetails {
 
         GridPane.setConstraints(itemDetailsForm, 0, 0);
         GridPane.setConstraints(photosViewer.getPhotos(), 1, 0);
-        GridPane.setConstraints(createItem, 0, 1);
+        GridPane.setConstraints(controlItem, 0, 1);
         GridPane.setConstraints(deleteItem, 1, 1);
 
-        parentContainer.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), createItem);
+        parentContainer.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), controlItem);
 
         //Item details container
         itemDetailsContainer = new BorderPane();
@@ -171,7 +169,7 @@ public class ItemDetails {
         itemQuantityField.clear();
         photosViewer.resetPhotoView(EDIT_MODE);
         parentContainer.getChildren().remove(deleteItem);
-        createItem.setTranslateX(275);
+        controlItem.setTranslateX(275);
     }
 
     public void fillData(Item item) {
@@ -205,8 +203,8 @@ public class ItemDetails {
                 itemQuantityField.setValue(quantity);
                 photosViewer.setPhotos(itemImages);
                 parentContainer.getChildren().add(deleteItem);
-                createItem.setTranslateX(185);
-                createItem.setText("Update Item");
+                controlItem.setTranslateX(185);
+                controlItem.setText("Update Item");
             }
         };
 

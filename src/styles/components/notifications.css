@@ -22,29 +22,14 @@
  * THE SOFTWARE.
  */
 
-.auction-item-name {
-    -fx-font-size: 30px;
-    -fx-font-weight: 400;
+.notification {
+    -fx-padding: 10px;
     -fx-text-fill: -fx-darker-gray-color;
-}
-
-.auction-item-description {
-    -fx-font-size: 14px;
-    -fx-text-fill: -fx-darker-gray-color;
-}
-
-.price-headline {
-    -fx-fill: -fx-dark-gray-color;
-    -fx-font-size: 12px;
-}
-
-.auction-bid {
-    -fx-font-size: 30px;
-    -fx-font-weight: 400;
-    -fx-fill: -fx-primary-color;
-}
-
-.bid-btn {
-    -fx-padding: 9px 20px;
     -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+.notification:hover {
+    -fx-background-color: rgba(77,137,251, 0.2);
+    -fx-background-radius: 2px;
 }

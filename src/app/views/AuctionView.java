@@ -24,27 +24,29 @@
 
 package app.views;
 
-import app.components.EmptyState;
-import app.components.InputField;
-import app.components.PhotosViewer;
-import app.components.UserDetails;
+import app.Navigator;
+import app.components.*;
 import app.layouts.ScrollView;
 import javafx.concurrent.Task;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import models.Auction;
+import models.Buyer;
 import models.Image;
 
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static app.Partials.*;
 
@@ -57,7 +59,9 @@ public class AuctionView {
     private BorderPane auctionCardContainer;
     private BorderPane parentContainer;
     private GridPane auctionDetailsContainer;
+    private GridPane headlineContainer;
     private Label itemName;
+    private SubscribeButton subscribeButton;
     private Label itemDescription;
     private TextFlow priceBlock;
     private Text priceHeadline;
@@ -66,6 +70,7 @@ public class AuctionView {
     private InputField bidField;
     private Button submitBid;
     private UserDetails userDetails;
+    private Button editAuction;
     private PhotosViewer photosViewer;
 
     private EmptyState emptyState;
@@ -82,15 +87,41 @@ public class AuctionView {
         itemName = new Label();
         itemName.getStyleClass().add("auction-item-name");
 
+        //Subscribe button
+        if (userType == BUYER) {
+            subscribeButton = new SubscribeButton();
+        }
+
+        //Item and subscribe container
+        headlineContainer = new GridPane();
+        headlineContainer.setMaxWidth(350);
+
+        ColumnConstraints itemNameCol = new ColumnConstraints();
+        itemNameCol.setPercentWidth(85);
+
+        ColumnConstraints subscribeButtonCol = new ColumnConstraints();
+        subscribeButtonCol.setPercentWidth(15);
+        subscribeButtonCol.setHalignment(HPos.RIGHT);
+
+        headlineContainer.getColumnConstraints().addAll(itemNameCol, subscribeButtonCol);
+        GridPane.setConstraints(itemName, 0, 0);
+        headlineContainer.getChildren().add(itemName);
+
+        if (userType == BUYER) {
+            GridPane.setConstraints(subscribeButton.getSubscribeButton(), 1, 0);
+            headlineContainer.getChildren().add(subscribeButton.getSubscribeButton());
+        }
+
         //Item description
         itemDescription = new Label();
+        itemDescription.getStyleClass().add("auction-item-description");
         itemDescription.setWrapText(true);
         itemDescription.setAlignment(Pos.TOP_LEFT);
-        itemDescription.setMaxWidth(500);
+        itemDescription.setMaxWidth(300);
         itemDescription.setMinHeight(100);
 
         //Price headline
-        priceHeadline = new Text();
+        priceHeadline = new Text("Highest Bid:\t");
         priceHeadline.getStyleClass().add("price-headline");
 
         //Current bid
@@ -103,11 +134,12 @@ public class AuctionView {
         priceBlock = new TextFlow(priceHeadline, currentPrice);
 
         //Bidding field
-        bidField = new InputField("Enter your bid", NUMBER, SHORT);
+        bidField = new InputField("Enter your bid", DECIMAL_NUMBER, 200);
 
         submitBid = new Button("Bid");
         submitBid.setDisable(true);
         submitBid.getStyleClass().addAll("btn-primary", "bid-btn");
+        submitBid.setTranslateY(-1);
         
         submitBid.setOnAction(e -> {
             if (Double.parseDouble(bidField.getValue()) < auction.getHighestPrice())
@@ -134,27 +166,53 @@ public class AuctionView {
         biddingBlock.getChildren().addAll(bidField.getInputField(), submitBid);
 
         //Seller details
-        userDetails = new UserDetails(FIT_DATA);
+        if (userType == BUYER) {
+            userDetails = new UserDetails(FIT_DATA);
+            userDetails.getUserDetails().setMaxWidth(200);
+        } else {
+            editAuction = new Button("Update Auction");
+            editAuction.getStyleClass().add("btn-primary");
+            editAuction.setTranslateY(20);
+
+            editAuction.setOnAction(e -> {
+                if (!Auction.checkAuctionStatus(auction.getId())) {
+                    editAuction.setDisable(true);
+                    editAuction.setText("Auction already started!");
+                } else {
+                    AuctionDetails.getInstance().fillAuctionData(auction);
+                    Navigator.viewPage(AUCTION_DETAILS, "Update " + auction.getItem().getName() + "'s Auction");
+                }
+            });
+        }
 
         //Photo viewer
         photosViewer = new PhotosViewer(VIEW_MODE);
 
         //Auction Details container
         auctionDetailsContainer = new GridPane();
-        auctionDetailsContainer.setVgap(10);
-        auctionDetailsContainer.setMaxWidth(300);
+        auctionDetailsContainer.setVgap(8);
+        auctionDetailsContainer.setMaxWidth(350);
 
-        GridPane.setConstraints(itemName, 0 ,0);
-        GridPane.setConstraints(userDetails.getUserDetails(), 0, 1);
-        GridPane.setConstraints(itemDescription, 0 , 2);
+        GridPane.setConstraints(headlineContainer, 0 ,0);
+        GridPane.setConstraints(itemDescription, 0 , 1);
         GridPane.setConstraints(priceBlock, 0, 3);
-        GridPane.setConstraints(biddingBlock, 0, 4);
 
-        auctionDetailsContainer.getChildren().addAll(itemName,
+        if (userType == BUYER) {
+            GridPane.setConstraints(userDetails.getUserDetails(), 0, 2);
+            GridPane.setConstraints(biddingBlock, 0, 4);
+        } else {
+            GridPane.setConstraints(editAuction, 0, 4);
+        }
+
+        auctionDetailsContainer.getChildren().addAll(headlineContainer,
                                                      itemDescription,
-                                                     priceBlock,
-                                                     biddingBlock,
-                                                     userDetails.getUserDetails());
+                                                     priceBlock);
+
+        if (userType == BUYER)
+            auctionDetailsContainer.getChildren().addAll(biddingBlock,
+                    userDetails.getUserDetails());
+        else
+            auctionDetailsContainer.getChildren().add(editAuction);
 
         //Parent container
         parentContainer = new BorderPane();
@@ -162,6 +220,8 @@ public class AuctionView {
         parentContainer.getStyleClass().add("card");
         parentContainer.setPadding(new Insets(TOP_DOWN, RIGHT_LEFT, TOP_DOWN, RIGHT_LEFT));
         parentContainer.setLeft(auctionDetailsContainer);
+
+        BorderPane.setMargin(photosViewer.getPhotos(), new Insets(0, 0, 0, 30));
         parentContainer.setRight(photosViewer.getPhotos());
 
         //Card container
@@ -190,12 +250,23 @@ public class AuctionView {
 
             this.clearAuctionData();
             this.auction = auction;
+            if (userType == BUYER) {
+                subscribeButton.setAuctionId(auction.getId());
+
+                if (auction.getFollowers() != null) {
+                    for (Buyer buyer : auction.getFollowers()) {
+                        if (Objects.equals(buyer.getId(), currentBuyer.getId())) {
+                            subscribeButton.markAsSubscribed();
+                        }
+                    }
+                }
+            }
 
             //Loading auction details
             Task<String> loadingAuctionData = new Task<String>() {
                 String name;
                 String description;
-                double price;
+                int price;
                 String sellerName;
                 BufferedImage sellerImage;
                 int sellerId;
@@ -204,8 +275,8 @@ public class AuctionView {
                 @Override
                 protected String call() throws Exception {
                     name = auction.getItem().getName();
-                    description = auction.getItem().getDescription();
-                    price = auction.getHighestPrice();
+                    description = auction.getItem().getDescription().replaceAll("\\n\\n+", "\n");
+                    price = (int) auction.getHighestPrice();
                     sellerName = auction.getSeller().getName();
                     sellerImage = auction.getSeller().getPhoto();
                     sellerId = auction.getUserID();
@@ -219,9 +290,12 @@ public class AuctionView {
                     itemName.setText(name);
                     itemDescription.setText((description.length() == 0)? "There is no description..." : description);
                     currentPrice.setText(decimalFormat.format(price) + "$");
-                    userDetails.setUserDetails(sellerName, sellerImage, sellerId);
                     photosViewer.setPhotos(auctionImages);
-                    submitBid.setDisable(false);
+
+                    if (userType == BUYER) {
+                        userDetails.setUserDetails(sellerName, sellerImage, sellerId);
+                        submitBid.setDisable(false);
+                    }
                 }
             };
 
@@ -237,6 +311,8 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
+        editAuction.setDisable(false);
+        editAuction.setText("Update Auction");
         photosViewer.resetPhotoView(VIEW_MODE);
     }
 

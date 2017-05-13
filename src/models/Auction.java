@@ -211,7 +211,7 @@ public class Auction extends Model<Auction> {
 
     }
 
-    public Boolean checkAuctionStatus(int id) {
+    public static Boolean checkAuctionStatus(int id) {
         Date today = new Date();
         if (getAuction(id) == null) {
             return false;

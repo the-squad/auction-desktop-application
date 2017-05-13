@@ -180,7 +180,9 @@ public class Header extends BorderPane {
         notificationsButton = new Button();
         notificationsButton.getStyleClass().addAll("icon-button", "notification-icon");
 
-        // TODO notification action
+        notificationsButton.setOnAction(e -> {
+            Navigator.viewPage(NOTIFICATIONS_PAGE, "Notifications");
+        });
 
         //Profile picture
         userInfo = new UserDetails(FIT_DATA, currentUser.getName(), currentUser.getPhoto(), currentUser.getId());
@@ -281,6 +283,16 @@ public class Header extends BorderPane {
 
         //Switching the tabs
         Navigator.switchTab(tabId);
+    }
+
+    public void switchTab(int tabId) {
+        Label selectedLabel;
+        if (tabId == INVENTORY_TAB)
+            selectedLabel = inventoryTab;
+        else
+            selectedLabel = auctionsTab;
+
+        this.switchTab(selectedLabel, tabId);
     }
 
     public void setPageTitle(String title) {

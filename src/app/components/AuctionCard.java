@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package app.components;
 
 import app.Navigator;
@@ -49,7 +50,7 @@ public class AuctionCard extends Card {
 
     private GridPane itemNameAndButtonContainer;
     private Label itemName;
-    private Button subscribeButton;
+    private SubscribeButton subscribeButton;
     private Label currentBid;
     private Label auctionStatus;
 
@@ -81,30 +82,15 @@ public class AuctionCard extends Card {
 
         //Subscribe button
         if (viewType == BUYER) {
-            subscribeButton = new Button();
-            subscribeButton.getStyleClass().add("subscribe-btn");
-            userSubscribed = false;
+            subscribeButton = new SubscribeButton(auction.getId());
 
             if (auction.getFollowers() != null) {
                 for (Buyer buyer : auction.getFollowers()) {
                     if (Objects.equals(buyer.getId(), currentBuyer.getId())) {
-                        userSubscribed = true;
-                        subscribeButton.getStyleClass().add("subscribe-btn--active");
+                        subscribeButton.markAsSubscribed();
                     }
                 }
             }
-
-            subscribeButton.setOnAction(e -> {
-                if (userSubscribed) {
-                    subscribeButton.getStyleClass().remove("subscribe-btn--active");
-                    currentBuyer.unSubscribeFromAuction(auction.getId());
-                    userSubscribed = false;
-                } else {
-                    subscribeButton.getStyleClass().add("subscribe-btn--active");
-                    currentBuyer.subscribeToAuction(auction.getId());
-                    userSubscribed = true;
-                }
-            });
         }
 
         //Item and button container
@@ -124,8 +110,8 @@ public class AuctionCard extends Card {
         itemNameAndButtonContainer.getChildren().add(itemName);
 
         if (viewType == BUYER) {
-            GridPane.setConstraints(subscribeButton, 1, 0);
-            itemNameAndButtonContainer.getChildren().add(subscribeButton);
+            GridPane.setConstraints(subscribeButton.getSubscribeButton(), 1, 0);
+            itemNameAndButtonContainer.getChildren().add(subscribeButton.getSubscribeButton());
         }
 
         //Current bid

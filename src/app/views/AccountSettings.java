@@ -125,7 +125,7 @@ public class AccountSettings {
         addressField = new InputField("Address", TEXT, LONG);
         addressField.setValue(currentUser.getAddress());
 
-        phoneField = new InputField("Phone Number", NUMBER, LONG);
+        phoneField = new InputField("Phone Number", PHONE_NUMBER, LONG);
         phoneField.setValue(currentUser.getPhone());
 
         updateAccountButton = new Button("Update");

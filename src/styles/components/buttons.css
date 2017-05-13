@@ -54,6 +54,7 @@
 
 .btn-primary:disabled {
     -fx-background-color: -fx-medium-gray-color;
+    -fx-text-fill: #fff !important;
 }
 
 .btn-secondary {
@@ -94,4 +95,13 @@
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: transparent;
+}
+
+.danger-btn {
+    -fx-background-color: -fx-danger-color;
+}
+
+.danger-btn:hover {
+    -fx-background-color: -fx-danger-color;
+    -fx-effect: innershadow(one-pass-box, rgba(0, 0, 0, 0.3), 0, 0, 0, -3) !important;
 }
