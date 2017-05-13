@@ -54,6 +54,7 @@
 
 .btn-primary:disabled {
     -fx-background-color: -fx-medium-gray-color;
+    -fx-text-fill: #fff !important;
 }
 
 .btn-secondary {
