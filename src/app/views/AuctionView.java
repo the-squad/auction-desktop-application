@@ -311,8 +311,10 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
-        editAuction.setDisable(false);
-        editAuction.setText("Update Auction");
+        if (userType == SELLER) {
+            editAuction.setDisable(false);
+            editAuction.setText("Update Auction");
+        }
         photosViewer.resetPhotoView(VIEW_MODE);
     }
 
