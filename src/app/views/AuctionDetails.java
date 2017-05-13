@@ -253,7 +253,7 @@ public class AuctionDetails {
 
             @Override
             protected String call() throws Exception {
-                auctionItemField.disable();
+                auctionItemField.disable(true);
 
                 name = auction.getItem().getName();
                 quantity = auction.getItemQuantity();

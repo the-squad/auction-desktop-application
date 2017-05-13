@@ -125,8 +125,8 @@ public class DropdownField extends Input {
         input.setValue("");
     }
 
-    public void disable() {
-        input.setDisable(true);
+    public void disable(Boolean disable) {
+        input.setDisable(disable);
     }
 
     public void setDefaultSelect() {
