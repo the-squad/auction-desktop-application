@@ -24,6 +24,8 @@
 
 package app.components;
 
+import app.Navigator;
+import app.views.ItemDetails;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -34,6 +36,7 @@ import models.Category;
 import models.ImageUtils;
 import models.Item;
 import models.Model;
+import static app.Partials.*;
 
 public class ItemCard extends Card {
 
@@ -61,6 +64,11 @@ public class ItemCard extends Card {
         //Item name
         itemName = new Label(item.getName());
         itemName.getStyleClass().add("item-name");
+
+        itemName.setOnMouseClicked(e -> {
+            ItemDetails.getInstance().fillData(item);
+            Navigator.viewPage(ITEM_DETAILS, itemName.getText());
+        });
 
         //Item Description
         itemDescription = new Label(item.getDescription());

@@ -213,7 +213,7 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
-        photosViewer.resetPhotoView();
+        photosViewer.resetPhotoView(VIEW_MODE);
     }
 
     public ScrollPane getAuctionView() {

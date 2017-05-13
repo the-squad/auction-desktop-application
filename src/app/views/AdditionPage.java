@@ -144,6 +144,7 @@ public class AdditionPage {
 
         selectButton.setOnAction(e -> {
             if (Objects.equals(hiddenField.getValue(), "Item")) {
+                ItemDetails.getInstance().clearDetails();
                 Navigator.viewPage(ITEM_DETAILS, "Create new item");
             } else {
                 Navigator.viewPage(AUCTION_DETAILS, "Create new auction");

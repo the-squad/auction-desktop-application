@@ -29,6 +29,8 @@ import app.components.DropdownField;
 import app.components.InputField;
 import app.components.ParagraphField;
 import app.components.PhotosViewer;
+import app.tabs.InventoryTab;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -36,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import models.Category;
+import models.Image;
 import models.Item;
 
 import java.util.ArrayList;
@@ -56,8 +59,10 @@ public class ItemDetails {
     private InputField itemQuantityField;
     private PhotosViewer photosViewer;
     private Button createItem;
+    private Button deleteItem;
 
     private Item newItem;
+    private static Thread loadingItemThread;
 
     private ItemDetails() {
         this.render();
@@ -83,15 +88,29 @@ public class ItemDetails {
                         return;
                 }
 
-                newItem = currentSeller.addItemToInventory(currentSeller.getInventory(),
-                                                            itemNameField.getValue(),
-                                                            Integer.parseInt(itemQuantityField.getValue()),
-                                                            itemCategoryField.getValue(),
-                                                            itemDescription.getValue());
+                if (createItem.getText().contains("Create")) {
+                    newItem = currentSeller.addItemToInventory(currentSeller.getInventory(),
+                            itemNameField.getValue(),
+                            Integer.parseInt(itemQuantityField.getValue()),
+                            itemCategoryField.getValue(),
+                            itemDescription.getValue());
 
-                newItem.setItemPhotos(photosViewer.getUploadedImages());
+                    newItem.setItemPhotos(photosViewer.getUploadedImages());
+                } else {
+                    // TODO
+                }
+
+                InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
             }
+        });
+
+        //Delete button
+        deleteItem = new Button("Delete");
+        deleteItem.getStyleClass().addAll("btn-primary", "delete-btn");
+
+        deleteItem.setOnAction(e -> {
+            // TODO
         });
 
         //Item photosViewer
@@ -122,6 +141,7 @@ public class ItemDetails {
         GridPane.setConstraints(itemDetailsForm, 0, 0);
         GridPane.setConstraints(photosViewer.getPhotos(), 1, 0);
         GridPane.setConstraints(createItem, 0, 1);
+        GridPane.setConstraints(deleteItem, 1, 1);
 
         parentContainer.getChildren().addAll(itemDetailsForm, photosViewer.getPhotos(), createItem);
 
@@ -129,6 +149,57 @@ public class ItemDetails {
         itemDetailsContainer = new BorderPane();
         itemDetailsContainer.setPadding(new Insets(20));
         itemDetailsContainer.setCenter(parentContainer);
+    }
+
+    public void clearDetails() {
+        itemNameField.clear();
+        itemDescription.clear();
+        itemCategoryField.clear();
+        itemQuantityField.clear();
+        photosViewer.resetPhotoView(EDIT_MODE);
+        parentContainer.getChildren().remove(deleteItem);
+        createItem.setTranslateX(275);
+    }
+
+    public void fillData(Item item) {
+        clearDetails();
+
+        Task<String> loadData = new Task<String>() {
+            String name;
+            String description;
+            String category;
+            String quantity;
+            ArrayList<Image> itemImages;
+
+            @Override
+            protected String call() throws Exception {
+                name = item.getName();
+                description = item.getDescription();
+                category = Category.getCategories().get(item.getCategoryID()).getName();
+                quantity = String.valueOf(item.getQuantity());
+                itemImages = item.getItemPhotos();
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                itemNameField.setValue(name);
+                itemDescription.setValue(description);
+                itemCategoryField.setValue(category);
+                itemCategoryField.disable();
+                itemQuantityField.setValue(quantity);
+                photosViewer.setPhotos(itemImages);
+                parentContainer.getChildren().add(deleteItem);
+                createItem.setTranslateX(185);
+                createItem.setText("Update Item");
+            }
+        };
+
+        if (loadingItemThread == null || !loadingItemThread.isAlive()) {
+            loadingItemThread = new Thread(loadData);
+            loadingItemThread.start();
+        }
     }
 
     public BorderPane getItemDetails() {

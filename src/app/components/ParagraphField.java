@@ -83,6 +83,10 @@ public class ParagraphField extends Input {
         input.setText(value);
     }
 
+    public void clear() {
+        input.setText("");
+    }
+
     /*
      When the user lose focus on an input it will validate the value
      */
