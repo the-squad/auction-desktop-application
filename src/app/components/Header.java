@@ -285,6 +285,16 @@ public class Header extends BorderPane {
         Navigator.switchTab(tabId);
     }
 
+    public void switchTab(int tabId) {
+        Label selectedLabel;
+        if (tabId == INVENTORY_TAB)
+            selectedLabel = inventoryTab;
+        else
+            selectedLabel = auctionsTab;
+
+        this.switchTab(selectedLabel, tabId);
+    }
+
     public void setPageTitle(String title) {
         pageTitle.setText(title);
     }
