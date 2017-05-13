@@ -177,8 +177,9 @@ public class AuctionView {
             editAuction.setOnAction(e -> {
                 if (Auction.checkAuctionStatus(auction.getId())) {
                     editAuction.setDisable(true);
-                    editAuction.setText("Auction has finished");
+                    editAuction.setText("Auction already started!");
                 } else {
+                    AuctionDetails.getInstance().fillAuctionData(auction);
                     Navigator.viewPage(AUCTION_DETAILS, "Update " + auction.getItem().getName() + "'s Auction");
                 }
             });
