@@ -149,6 +149,7 @@ public class AdditionPage {
             } else {
                 Navigator.viewPage(AUCTION_DETAILS, "Create new auction");
                 AuctionDetails.getInstance().fillSellerItems();
+                AuctionDetails.getInstance().clearAuctionData();
             }
         });
 
