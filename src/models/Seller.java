@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package models;
 
 import app.Validation;
@@ -42,7 +41,7 @@ public class Seller extends User implements IAuctionInterface {
     private ArrayList<Auction> auctions;
 
     public Auction createAuction(Item item, int ItemQuantity, String StartDate, String StartTime,
-                                 String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+            String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
         if (item.getQuantity() < ItemQuantity) {
             return null;
         }
@@ -76,8 +75,8 @@ public class Seller extends User implements IAuctionInterface {
         return false;
     }
 
-    public void updateAuction(int auctionID , String StartDate, String StartTime,
-                              String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
+    public void updateAuction(int auctionID, String StartDate, String StartTime,
+            String TerminationDate, String TerminationTime, double InitialPrice, double BidRate) {
 
         Auction auc = auctions.stream().filter(p -> p.getId() == auctionID).findFirst().get();
 
@@ -94,16 +93,16 @@ public class Seller extends User implements IAuctionInterface {
 
     }
 
-    public Item addItemToInventory(Inventory inventory , String name, int quantity, String category, String description) {
+    public Item addItemToInventory(Inventory inventory, String name, int quantity, String category, String description) {
         return inventory.createItem(name, quantity, Model.find(Category.class, "Name=?", category).get(0), description);
     }
 
-    public void deleteItemFromInventory(Inventory inventory , int itemID) {
+    public void deleteItemFromInventory(Inventory inventory, int itemID) {
         inventory.deleteItem(itemID);
     }
 
-    public Item updateItemInInventory(Inventory inv ,int itemId,String name, int quantity, String description) {
-        return inv.updateItem(itemId, name, quantity , description);
+    public Item updateItemInInventory(Inventory inv, int itemId, String name, int quantity, String description) {
+        return inv.updateItem(itemId, name, quantity, description);
     }
 
     public int getFollowersNumber() {
@@ -141,19 +140,15 @@ public class Seller extends User implements IAuctionInterface {
 
     @Override
     public ArrayList<Auction> getAuctions() {
-        if (auctions == null) {
-            auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
-        }
+        auctions = new ArrayList<>(Model.find(Auction.class, "UserID = ?", this.getId()));
         return auctions;
     }
 
-    public ArrayList<Item> getItems(Inventory inventory)
-    {
+    public ArrayList<Item> getItems(Inventory inventory) {
         return inventory.getItems();
     }
 
-    public boolean checkFollow(int userId)
-    {
-        return Model.find(SubscribeSeller.class , "SelleID = ? and SubscriberID = ?" ,this.getId() , userId).size() == 1;
+    public boolean checkFollow(int userId) {
+        return Model.find(SubscribeSeller.class, "SelleID = ? and SubscriberID = ?", this.getId(), userId).size() == 1;
     }
 }

@@ -25,7 +25,7 @@ package models;
 
 import java.util.ArrayList;
 
-public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
+public class Inventory extends Model<Inventory> implements IReadOnlyInventory {
 
     private int _id;
     private int _sellerID;
@@ -67,27 +67,24 @@ public class Inventory extends Model<Inventory> implements IReadOnlyInventory{
                 .setInventoryID(this._id)
                 .setName(name)
                 .setQuantity(quantity);
-        if (t.create())
-        {
+        if (t.create()) {
             items.add(t);
-            return  t;
+            return t;
         }
         return null;
     }
-    
-    public Item updateItem(int itemId,String name, int quantity , String description)
-    {
+
+    public Item updateItem(int itemId, String name, int quantity, String description) {
         Item item = items.stream().filter(a -> a.getId() == itemId).findFirst().get();
         item.setName(name).setQuantity(quantity).setDescription(description);
-        if (item.save())
+        if (item.save()) {
             return item;
+        }
         return null;
     }
 
     public ArrayList<Item> getItems() {
-        if (items == null) {
-            items = new ArrayList(Model.find(Item.class, "InventoryID = ?", this.getId()));
-        }
+        items = new ArrayList(Model.find(Item.class, "InventoryID = ?", this.getId()));
         return items;
     }
 }
