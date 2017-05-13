@@ -27,6 +27,7 @@ package app.views;
 import app.Navigator;
 import app.Validation;
 import app.components.DropdownField;
+import app.components.EmptyState;
 import app.components.InputField;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -35,6 +36,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import models.Auction;
 import models.Item;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ import static app.Partials.*;
 public class AuctionDetails {
 
     private static AuctionDetails instance;
+    private Auction auction;
 
     private BorderPane auctionDetailsContainer;
 
@@ -57,11 +60,14 @@ public class AuctionDetails {
     private InputField startingTimeField;
     private InputField endingDateField;
     private InputField endingTimeField;
-    private Button createAuction;
+    private Button controlAuction;
+    private Button deleteAuction;
 
     private ArrayList<Item> items;
+    private EmptyState emptyState;
 
     private static Thread loadItemsThread;
+    private static Thread loadAuctionThread;
 
     private AuctionDetails() {
         this.render();
@@ -78,11 +84,11 @@ public class AuctionDetails {
         endingDateField = new InputField("Ending day", DATE);
         endingTimeField = new InputField("Ending hour", TIME);
 
-        createAuction = new Button("Create Auction");
-        createAuction.getStyleClass().add("btn-primary");
-        createAuction.setTranslateX(250);
+        controlAuction = new Button("Create Auction");
+        controlAuction.getStyleClass().add("btn-primary");
+        controlAuction.setTranslateX(250);
 
-        createAuction.setOnAction(e -> {
+        controlAuction.setOnAction(e -> {
             for (Node inputField : auctionFormContainer.getChildren()) {
                 if (inputField.getStyleClass().contains("input-field--danger"))
                     return;
@@ -107,6 +113,21 @@ public class AuctionDetails {
             }
         });
 
+        //Delete auction
+        deleteAuction = new Button("Delete");
+        deleteAuction.getStyleClass().addAll("btn-primary", "danger-btn");
+        deleteAuction.setTranslateX(-10);
+
+        deleteAuction.setOnAction(e  -> {
+            if (Auction.checkAuctionStatus(auction.getId())) {
+                deleteAuction.setText("Auction has started");
+                deleteAuction.setDisable(true);
+                controlAuction.setDisable(true);
+            } else {
+                // TODO
+            }
+        });
+
         //Auction form container
         auctionFormContainer = new GridPane();
         auctionFormContainer.getStyleClass().add("card");
@@ -124,7 +145,8 @@ public class AuctionDetails {
         GridPane.setConstraints(startingTimeField.getInputField(), 1 ,2);
         GridPane.setConstraints(endingDateField.getInputField(), 0 ,3);
         GridPane.setConstraints(endingTimeField.getInputField(), 1 ,3);
-        GridPane.setConstraints(createAuction, 0 ,4);
+        GridPane.setConstraints(controlAuction, 0 ,4);
+        GridPane.setConstraints(deleteAuction, 1, 4);
 
         auctionFormContainer.getChildren().addAll(auctionItemField.getDropdownField(),
                                                   itemQuantityField.getInputField(),
@@ -134,12 +156,17 @@ public class AuctionDetails {
                                                   startingTimeField.getInputField(),
                                                   endingDateField.getInputField(),
                                                   endingTimeField.getInputField(),
-                                                  createAuction);
+                controlAuction,
+                deleteAuction);
 
         //Auction details container
         auctionDetailsContainer = new BorderPane();
         auctionDetailsContainer.setPadding(new Insets(20));
         auctionDetailsContainer.setCenter(auctionFormContainer);
+
+        //Empty state
+        emptyState = new EmptyState();
+        emptyState.setEmptyMessage("This Auction has been deleted or terminated");
     }
 
     public void fillSellerItems() {
@@ -168,6 +195,71 @@ public class AuctionDetails {
         }
     }
 
+    public void clearAuctionData() {
+        auctionItemField.clear();
+        itemQuantityField.clear();
+        startingPriceField.clear();
+        biddingRangeField.clear();
+        startingDateField.clear();
+        startingTimeField.clear();
+        endingDateField.clear();
+        endingTimeField.clear();
+        controlAuction.setTranslateX(250);
+        controlAuction.setText("Create Auction");
+        auctionFormContainer.getChildren().remove(deleteAuction);
+    }
+
+    public void fillAuctionData(Auction auction) {
+        controlAuction.setTranslateX(210);
+        controlAuction.setText("Update");
+        auctionFormContainer.getChildren().add(deleteAuction);
+        this.auction = auction;
+
+        Task<String> loadData = new Task<String>() {
+            String name;
+            double quantity;
+            double price;
+            double biddingRate;
+            String startingDate;
+            String startingTime;
+            String endingDate;
+            String endingTime;
+
+            @Override
+            protected String call() throws Exception {
+                auctionItemField.disable();
+
+                name = auction.getItem().getName();
+                quantity = auction.getItemQuantity();
+                price = auction.getInitialPrice();
+                biddingRate = auction.getBiddingRate();
+                startingDate = String.valueOf(auction.getStartDate());
+                //startingTime = auction.
+                endingDate = String.valueOf(auction.getTerminationDate());
+                //endingTime
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                auctionItemField.setValue(name);
+                itemQuantityField.setValue(String.valueOf(quantity));
+                startingPriceField.setValue(String.valueOf(price));
+                biddingRangeField.setValue(String.valueOf(biddingRate));
+                startingDateField.setValue("");
+                startingTimeField.setValue("");
+                endingDateField.setValue("");
+                endingTimeField.setValue("");
+            }
+        };
+
+        if (loadAuctionThread == null || !loadAuctionThread.isAlive()) {
+            loadAuctionThread = new Thread(loadData);
+            loadAuctionThread.start();
+        }
+    }
+
     public BorderPane getAuctionDetails() {
         return auctionDetailsContainer;
     }
@@ -178,5 +270,4 @@ public class AuctionDetails {
         }
         return instance;
     }
-    
 }
