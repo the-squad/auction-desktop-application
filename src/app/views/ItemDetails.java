@@ -24,10 +24,7 @@
 package app.views;
 
 import app.Navigator;
-import app.components.DropdownField;
-import app.components.InputField;
-import app.components.ParagraphField;
-import app.components.PhotosViewer;
+import app.components.*;
 import app.tabs.InventoryTab;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -76,7 +73,7 @@ public class ItemDetails {
         itemNameField = new InputField("Item Name", TEXT);
         itemDescription = new ParagraphField("Item Description");
         itemCategoryField = new DropdownField("Item Category", new ArrayList<String>(Category.getCategories().stream().map(Category::getName).collect(Collectors.toList())));
-        itemQuantityField = new InputField("Item Quantity", NUMBER);
+        itemQuantityField = new InputField("Item Quantity", DECIMAL_NUMBER);
 
         controlItem = new Button("Create Item");
         controlItem.getStyleClass().add("btn-primary");
@@ -113,6 +110,7 @@ public class ItemDetails {
                 newItem.setItemPhotos(photosViewer.getUploadedImages());
                 InventoryTab.getInstance().loadCards(currentSeller.getItems(currentSeller.getInventory()));
                 Navigator.hidePage();
+                Header.getInstance().switchTab(INVENTORY_TAB);
         });
 
         //Delete button
