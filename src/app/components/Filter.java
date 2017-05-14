@@ -85,7 +85,7 @@ public class Filter {
                     }
                 });
 
-        numberOfBidsField = new InputField("Number of bidders", INTERGET_NUMBER, SHORT, HIDE_ERROR_MESSAGE);
+        numberOfBidsField = new InputField("Number of bidders", INTEGER_NUMBER, SHORT, HIDE_ERROR_MESSAGE);
 
         numberOfBidsField.getInputField().getChildren().get(1).focusedProperty().addListener(
                 (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {

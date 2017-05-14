@@ -335,11 +335,6 @@ public class LandingPage extends GridPane {
             repeatPassword.setValue("");
             userTypeField.setValue("");
         }));
-
-        //TESTING PURPOSING ONLY
-        emailField.setValue("tarek.buyer@firefly.com");
-        passwordField.setValue("Firefly101");
-        callToActionButton.fire();
     }
 
     public GridPane getLandingPage() {

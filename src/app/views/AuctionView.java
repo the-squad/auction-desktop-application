@@ -294,7 +294,10 @@ public class AuctionView {
 
                     if (userType == BUYER) {
                         userDetails.setUserDetails(sellerName, sellerImage, sellerId);
-                        submitBid.setDisable(false);
+                        if (Auction.checkAuctionStatus(auction.getId()))
+                            submitBid.setDisable(true);
+                        else
+                            submitBid.setDisable(false);
                     }
                 }
             };
@@ -311,11 +314,16 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
+        bidField.clear();
         if (userType == SELLER) {
             editAuction.setDisable(false);
             editAuction.setText("Update Auction");
         }
         photosViewer.resetPhotoView(VIEW_MODE);
+    }
+
+    public void destroy() {
+        instance = null;
     }
 
     public ScrollPane getAuctionView() {

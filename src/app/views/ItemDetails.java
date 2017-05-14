@@ -33,15 +33,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import models.Category;
-import models.Image;
-import models.Item;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static app.Partials.*;
-import models.Inventory;
 
 public class ItemDetails {
 
@@ -70,7 +67,7 @@ public class ItemDetails {
 
     private void render() {
         //Form fields
-        itemNameField = new InputField("Item Name", TEXT);
+        itemNameField = new InputField("Item Name", FREE_TEXT);
         itemDescription = new ParagraphField("Item Description");
         itemCategoryField = new DropdownField("Item Category", new ArrayList<String>(Category.getCategories().stream().map(Category::getName).collect(Collectors.toList())));
         itemQuantityField = new InputField("Item Quantity", DECIMAL_NUMBER);
@@ -80,15 +77,17 @@ public class ItemDetails {
         controlItem.setTranslateX(275);
 
         controlItem.setOnAction(e -> {
-            for (Node inputField : itemDetailsForm.getChildren()) {
-                    if (inputField.getStyleClass().contains("input-field--danger")) {
-                        return;
-                    }
-            }
-
             if (itemNameField.getValue().length() == 0 || itemCategoryField.getValue().length() == 0 ||
                     itemQuantityField.getValue().length() == 0)
                 return;
+            
+            for (Node inputField : itemDetailsForm.getChildren()) {
+                    if (inputField.getStyleClass().contains("input-field--danger")) {
+                        inputField.getStyleClass().remove("input-field--danger");
+                        inputField.requestFocus();
+                        return;
+                    }
+            }
 
             sellerInventory.getItems();
 
@@ -191,10 +190,9 @@ public class ItemDetails {
             protected String call() throws Exception {
                 name = item.getName();
                 description = item.getDescription();
-                category = Category.getCategories().get(item.getCategoryID()).getName();
+                category = Model.find(Category.class,item.getCategoryID()).getName();
                 quantity = String.valueOf(item.getQuantity());
                 itemImages = item.getItemPhotos();
-                itemId = item.getId();
                 return null;
             }
 
@@ -216,6 +214,7 @@ public class ItemDetails {
         if (loadingItemThread == null || !loadingItemThread.isAlive()) {
             loadingItemThread = new Thread(loadData);
             loadingItemThread.start();
+
         }
     }
 

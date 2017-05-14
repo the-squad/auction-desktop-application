@@ -33,7 +33,7 @@ public class EmptyState {
         //Empty state container
         emptyStateContainer = new GridPane();
         emptyStateContainer.setMaxWidth(350);
-        emptyStateContainer.setStyle("-fx-max-height: 150px");
+        emptyStateContainer.setStyle("-fx-max-height: 250px");
 
         GridPane.setConstraints(icon, 0, 0);
         GridPane.setMargin(icon, new Insets(0, 0, 25, 0));

@@ -36,8 +36,9 @@ public class Partials {
     public static int DATE = 3;
     public static int TIME = 4;
     public static int PHONE_NUMBER = 5;
-    public static int INTERGET_NUMBER = 6;
+    public static int INTEGER_NUMBER = 6;
     public static int DECIMAL_NUMBER = 7;
+    public static int FREE_TEXT = 8;
 
     public static int BUYER = 3;
     public static int SELLER = 2;

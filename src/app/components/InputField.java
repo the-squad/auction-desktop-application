@@ -121,13 +121,13 @@ public class InputField extends Input {
             } else if (inputType == TIME) {
                 validationResult = Validation.validateTime(this.getValue());
                 errorMessage = "Time format should be HH:MM AM/PM";
-            } else if (inputType == PHONE_NUMBER){
+            } else if (inputType == PHONE_NUMBER) {
                 validationResult = Validation.validatePhone(this.getValue());
                 errorMessage = "Only numbers allowed";
-            } else if (inputType == DECIMAL_NUMBER){
+            } else if (inputType == DECIMAL_NUMBER) {
                 validationResult = Validation.validatDecimalNumber(this.getValue());
                 errorMessage = "Only numbers and dot are allowed";
-            } else {
+            } else if (inputType == INTEGER_NUMBER){
                 validationResult = Validation.validateIntegerNumber(this.getValue());
                 errorMessage = "Only integer numbers allowed";
             }
