@@ -110,7 +110,8 @@ public class Buyer extends User implements IAuctionInterface {
 
     public ArrayList<Auction> exploreAuctions(Category category) {
         if (category.getName().equals("All")) {
-            return new ArrayList<>(Model.find(Auction.class));
+            List<Auction> auctions = Model.find(Auction.class);
+            return auctions !=null ? new ArrayList<>(auctions) : null;
         }
 
         List<Item> items = Model.find(Item.class, "CategoryID = ?", category.getId());
