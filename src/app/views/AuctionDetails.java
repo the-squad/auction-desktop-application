@@ -78,7 +78,7 @@ public class AuctionDetails {
     private void render() {
         //Form fields
         auctionItemField = new DropdownField("Choose an item");
-        itemQuantityField = new InputField("Quantity", INTERGET_NUMBER);
+        itemQuantityField = new InputField("Quantity", INTEGER_NUMBER);
         startingPriceField = new InputField("Starting price", DECIMAL_NUMBER);
         biddingRangeField = new InputField("Bidding Range", DECIMAL_NUMBER);
         startingDateField = new InputField("Starting day", DATE);

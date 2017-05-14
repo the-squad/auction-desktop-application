@@ -70,7 +70,7 @@ public class ItemDetails {
 
     private void render() {
         //Form fields
-        itemNameField = new InputField("Item Name", TEXT);
+        itemNameField = new InputField("Item Name", FREE_TEXT);
         itemDescription = new ParagraphField("Item Description");
         itemCategoryField = new DropdownField("Item Category", new ArrayList<String>(Category.getCategories().stream().map(Category::getName).collect(Collectors.toList())));
         itemQuantityField = new InputField("Item Quantity", DECIMAL_NUMBER);
@@ -194,7 +194,6 @@ public class ItemDetails {
                 category = Category.getCategories().get(item.getCategoryID()).getName();
                 quantity = String.valueOf(item.getQuantity());
                 itemImages = item.getItemPhotos();
-                itemId = item.getId();
                 return null;
             }
 
