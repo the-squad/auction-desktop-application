@@ -314,6 +314,7 @@ public class AuctionView {
         itemDescription.setText("Description");
         currentPrice.setText("Price" + "$");
         submitBid.setDisable(true);
+        bidField.clear();
         if (userType == SELLER) {
             editAuction.setDisable(false);
             editAuction.setText("Update Auction");
