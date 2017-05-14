@@ -33,15 +33,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import models.Category;
-import models.Image;
-import models.Item;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static app.Partials.*;
-import models.Inventory;
 
 public class ItemDetails {
 
@@ -86,6 +83,8 @@ public class ItemDetails {
             
             for (Node inputField : itemDetailsForm.getChildren()) {
                     if (inputField.getStyleClass().contains("input-field--danger")) {
+                        inputField.getStyleClass().remove("input-field--danger");
+                        inputField.requestFocus();
                         return;
                     }
             }
@@ -191,7 +190,7 @@ public class ItemDetails {
             protected String call() throws Exception {
                 name = item.getName();
                 description = item.getDescription();
-                category = Category.getCategories().get(item.getCategoryID()).getName();
+                category = Model.find(Category.class,item.getCategoryID()).getName();
                 quantity = String.valueOf(item.getQuantity());
                 itemImages = item.getItemPhotos();
                 return null;
@@ -215,6 +214,7 @@ public class ItemDetails {
         if (loadingItemThread == null || !loadingItemThread.isAlive()) {
             loadingItemThread = new Thread(loadData);
             loadingItemThread.start();
+
         }
     }
 
