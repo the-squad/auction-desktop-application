@@ -136,6 +136,7 @@ public class Navigator {
         HomePage.getInstance().destory();
         InventoryTab.getInstance().destroy();
         Header.getInstance().destroy();
+        AuctionView.getInstance().destroy();
 
         if (userType == BUYER) {
             ExploreTab.getInstance().destroy();

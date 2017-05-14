@@ -322,6 +322,10 @@ public class AuctionView {
         photosViewer.resetPhotoView(VIEW_MODE);
     }
 
+    public void destroy() {
+        instance = null;
+    }
+
     public ScrollPane getAuctionView() {
         return auctionViewContainer.getScrollView();
     }
