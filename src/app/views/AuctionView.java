@@ -294,7 +294,10 @@ public class AuctionView {
 
                     if (userType == BUYER) {
                         userDetails.setUserDetails(sellerName, sellerImage, sellerId);
-                        submitBid.setDisable(false);
+                        if (Auction.checkAuctionStatus(auction.getId()))
+                            submitBid.setDisable(true);
+                        else
+                            submitBid.setDisable(false);
                     }
                 }
             };
